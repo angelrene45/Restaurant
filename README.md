@@ -19,19 +19,15 @@ docker-compose up -d
 
 * Now you can open your browser and interact with these URLs:
 
-Frontend, built with Docker, with routes handled based on the path: http://localhost
+Frontend, built with Docker, with routes handled based on the path: http://localhost:3000
 
-Backend, JSON based web API based on OpenAPI: http://localhost/api/
+Backend, JSON based web API based on OpenAPI: http://localhost:8000/
 
-Automatic interactive documentation with Swagger UI (from the OpenAPI backend): http://localhost/docs
+Automatic interactive documentation with Swagger UI (from the OpenAPI backend): http://localhost:8000/docs
 
-Alternative automatic documentation with ReDoc (from the OpenAPI backend): http://localhost/redoc
+Alternative automatic documentation with ReDoc (from the OpenAPI backend): http://localhost:8000/redoc
 
 PGAdmin, PostgreSQL web administration: http://localhost:5050
-
-Flower, administration of Celery tasks: http://localhost:5555
-
-Traefik UI, to see how the routes are being handled by the proxy: http://localhost:8090
 
 
 To check the logs, run:

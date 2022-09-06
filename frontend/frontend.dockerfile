@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:16
+FROM node:16-alpine
 # set working directory
 WORKDIR /frontend
 # add all frontend files

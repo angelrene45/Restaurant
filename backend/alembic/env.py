@@ -14,9 +14,7 @@ config = context.config
 fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
-from os.path import abspath, dirname
-sys.path.insert(0, dirname(abspath(__file__)))
-from models import Base
+from app.db.base import Base
 
 target_metadata = Base.metadata
 
