@@ -1,30 +1,31 @@
 # Tutorial
 
-# all librarys from backend and put into requeriments.txt
-pip install fastapi fastapi-sqlalchemy pydantic alembic psycopg2 uvicorn python-dotenv
-
-# execute docker-compose.yml file and download the images 
-docker-compose build
-# raise the containers
-docker-compose up
-
 # do migrations 
 docker-compose run backend alembic revision --autogenerate -m "New Migration"
 docker-compose run backend alembic upgrade head
 
 
-# docker cotainer running 
+## DOCKER TIPS
+# execute docker-compose.yml and build images
+docker-compose build
+# up the containers
+docker-compose up
+# see docker containers running 
 docker ps -a
-# docker images
+# see docker images
 docker images
 # Enter inside container
 winpty docker exec -it <docker-image-id> bash
 # stop all containers
 docker stop $(docker ps -a -q)
+# Stop the container(s) in docker-compose:
+docker-compose down
 # remove cotainers
 docker rm $(docker ps -a -q)
-
-# search how to update or replace the current docker image with docker-compose build command
+# Delete all volumes using the following command:
+docker volume rm $(docker volume ls -q)
+# Restart the containers using the following command:
+docker-compose up -d
 
 # alpine shell 
 /bin/ash
