@@ -16,19 +16,6 @@
 ```bash
 docker-compose up -d
 ```
-* Start the stack Frontend:
-
-```bash
-docker-compose up -d db pgadmin backend
-```
-
-## When there are new changes in database
-
-* Update database with alembic migrations:
-
-```bash
-docker-compose run backend alembic upgrade head
-```
 
 ## Available services
 You can open your browser and interact with these URLs:
