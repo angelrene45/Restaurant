@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: str
+    FIRST_SUPERUSER: str
+    FIRST_SUPERUSER_PASSWORD: str
+    USERS_OPEN_REGISTRATION: str
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
@@ -24,7 +27,7 @@ class Settings(BaseSettings):
             return v
         return PostgresDsn.build(
             scheme="postgresql+psycopg2",
-            user=values.get("DB_NAME"),
+            user=values.get("DB_USER"),
             password=values.get("DB_PASSWORD"),
             host=values.get("DB_SERVER"),
             path=f"/{values.get('DB_NAME') or ''}",

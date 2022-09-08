@@ -52,7 +52,7 @@ services:
       context: ./frontend
       dockerfile: frontend.dockerfile
     restart: always
-    command: npm start
+    command: ash -c "npm install && npm start"
     env_file:
       - .env
     volumes:
