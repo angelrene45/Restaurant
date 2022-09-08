@@ -16,22 +16,37 @@
 ```bash
 docker-compose up -d
 ```
+* Start the stack Frontend:
 
-* Now you can open your browser and interact with these URLs:
+```bash
+docker-compose up -d db pgadmin backend
+```
 
-Frontend, built with Docker, with routes handled based on the path: http://localhost:3000
+## When there are new changes in database
 
-Backend, JSON based web API based on OpenAPI: http://localhost:8000/
+* Update database with alembic migrations:
 
-Automatic interactive documentation with Swagger UI (from the OpenAPI backend): http://localhost:8000/docs
+```bash
+docker-compose run backend alembic upgrade head
+```
 
-Alternative automatic documentation with ReDoc (from the OpenAPI backend): http://localhost:8000/redoc
+## Available services
+You can open your browser and interact with these URLs:
 
-PGAdmin, PostgreSQL web administration: http://localhost:5050
+Frontend:
+* http://localhost:3000
+
+Backend, JSON based web API based on OpenAPI: 
+* http://localhost:8000/
+* http://localhost:8000/docs
+* http://localhost:8000/redoc
+
+PGAdmin, PostgreSQL web administration
+* http://localhost:5050
 
 
+## Docker Logs
 To check the logs, run:
-
 ```bash
 docker-compose logs
 ```
