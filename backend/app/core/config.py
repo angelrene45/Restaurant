@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     FIRST_SUPERUSER: str
     FIRST_SUPERUSER_PASSWORD: str
+    USERS_OPEN_REGISTRATION: str
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
