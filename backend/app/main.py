@@ -33,6 +33,8 @@ if settings.BACKEND_CORS_ORIGINS:
 # set all endpoints
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
+
+### REMOVE LATER
 html = """
         <!DOCTYPE html>
         <html>
@@ -59,6 +61,14 @@ html = """
         </html>
 """
 
+from fastapi import Depends
+from app.api.deps import reusable_oauth2
+from app.db.init_db import init_db
+from app.db.session import SessionLocal
+
 @app.get("/")
 async def get():
+    # create super user if dont exists
+    db = SessionLocal()
+    init_db(db)
     return HTMLResponse(html)
