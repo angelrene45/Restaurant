@@ -2,12 +2,14 @@ from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
+from app.models.user import RolUser
+
 
 # Shared properties
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     is_active: Optional[bool] = True
-    is_superuser: bool = False
+    role: RolUser = RolUser.client
     full_name: Optional[str] = None
 
 
