@@ -21,6 +21,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             first_name=obj_in.first_name,
             last_name=obj_in.last_name,
             role=obj_in.role,
+            is_active=obj_in.is_active,
         )
         db.add(db_obj)
         db.commit()

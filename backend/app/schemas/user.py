@@ -18,7 +18,6 @@ class UserBase(BaseModel):
 
     @validator("mobile")
     def phone_validation(cls, v):
-        print(f"phone in 2 validator:{v}")
         regex = r"^(\+)[1-9][0-9\-\(\)\.]{9,15}$"
         if v and not re.search(regex, v, re.I):
             raise ValueError("Phone Number Invalid.")
