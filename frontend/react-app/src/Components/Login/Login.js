@@ -7,8 +7,15 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const switchAuthModeHandler = async () => {
-    const result = await fetch()
+  const switchAuthModeHandler = async (event) => {
+    event.preventDefault();
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password })
+    };
+    const result = await fetch('http://localhost:8000/api/v1/login/access-token', requestOptions)
+    console.log(result.json)
   };
 
   const handleEmail = (event) => {
