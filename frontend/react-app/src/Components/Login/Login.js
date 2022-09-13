@@ -7,8 +7,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const switchAuthModeHandler = () => {
-    console.log('')
+  const switchAuthModeHandler = async () => {
+    const result = await fetch()
   };
 
   const handleEmail = (event) => {
