@@ -46,6 +46,6 @@ async def lobby(data: dict):
     print('message received with ', data)
 
 
-start_server()
-loop = asyncio.get_event_loop()
-loop.run_until_complete(run_client())
+# start_server()
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(run_client())
