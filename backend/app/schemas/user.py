@@ -1,15 +1,27 @@
+import re
 from typing import Optional
+from datetime import datetime
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, validator
+
+from app.models.user import RolUser
 
 
 # Shared properties
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
+    mobile: Optional[str] = None
     is_active: Optional[bool] = True
-    is_superuser: bool = False
-    full_name: Optional[str] = None
+    role: Optional[RolUser] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
 
+    @validator("mobile")
+    def phone_validation(cls, v):
+        regex = r"^(\+)[1-9][0-9\-\(\)\.]{9,15}$"
+        if v and not re.search(regex, v, re.I):
+            raise ValueError("Phone Number Invalid.")
+        return v
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
@@ -31,7 +43,7 @@ class UserInDBBase(UserBase):
 
 # Additional properties to return via API
 class User(UserInDBBase):
-    pass
+    last_login: Optional[datetime] = None
 
 
 # Additional properties stored in DB
