@@ -42,7 +42,7 @@ html = """
                 <title>Chat</title>
             </head>
             <body>
-                <h1>Socket IO Chat</h1>
+                <h1>Socket IO Chat Test</h1>
                 <form action="" onsubmit="sendMessage(event)">
                     <input type="text" id="messageText" autocomplete="off"/>
                     <button>Send</button>

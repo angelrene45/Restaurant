@@ -1,7 +1,7 @@
 import secrets
 from typing import Optional, Dict, Any, List
 
-from pydantic import AnyHttpUrl, BaseSettings,  PostgresDsn, validator
+from pydantic import AnyHttpUrl, BaseSettings,  PostgresDsn, validator, EmailStr
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     FIRST_SUPERUSER: str
     FIRST_SUPERUSER_PASSWORD: str
+    EMAIL_TEST_USER: EmailStr = "test@example.com"
     USERS_OPEN_REGISTRATION: str
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
