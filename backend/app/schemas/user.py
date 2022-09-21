@@ -6,15 +6,22 @@ from pydantic import BaseModel, EmailStr, validator
 
 from app.models.user import RolUser
 
+from app.models.user import RolUser
+
 
 # Shared properties
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     mobile: Optional[str] = None
     is_active: Optional[bool] = True
+<<<<<<< Updated upstream
     role: Optional[RolUser] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+=======
+    role: RolUser = RolUser.client
+    full_name: Optional[str] = None
+>>>>>>> Stashed changes
 
     @validator("mobile")
     def phone_validation(cls, v):

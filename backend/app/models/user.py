@@ -11,8 +11,12 @@ class RolUser(enum.Enum):
     hostess = "hostess"
     waiter = "waiter"
     cook = "cook"
+<<<<<<< Updated upstream
     employee = "employee"
 
+=======
+    client = "client"
+>>>>>>> Stashed changes
 
 class User(Base):
     id = Column(Integer, primary_key=True, index=True)
@@ -22,7 +26,11 @@ class User(Base):
     mobile = Column(String, unique=True, index=True)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean(), default=True)
+<<<<<<< Updated upstream
     role = Column(ENUM(RolUser), default=RolUser.employee)
     last_login = Column(DateTime)
+=======
+    role = Column(ENUM(RolUser), default=RolUser.client)
+>>>>>>> Stashed changes
     created_date = Column(DateTime, server_default=func.now())
     updated_date = Column(DateTime, server_default=func.now(), onupdate=func.current_timestamp())
