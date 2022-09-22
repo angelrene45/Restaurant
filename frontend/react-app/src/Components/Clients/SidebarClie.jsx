@@ -1,12 +1,12 @@
 import { Link  } from 'react-router-dom';
 
 
-const Sidebar = () => {
+const SidebarClie = () => {
   return (
     <div>
         <ul>
             <li>
-                Inicio
+                <Link to=''>Inicio </Link>
             </li>
             <li>
                 Ventas
@@ -22,4 +22,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default SidebarClie
