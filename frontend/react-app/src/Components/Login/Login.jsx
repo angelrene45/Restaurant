@@ -2,7 +2,7 @@ import React from 'react';
 import loginImg from '../../assets/login2.jpg';
 import { useState } from 'react';
 
-function Login() {
+export default function Login() {
     
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState("");
@@ -65,4 +65,3 @@ function Login() {
     </div>
 )
 }
-export default Login
