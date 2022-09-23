@@ -11,24 +11,12 @@ const DashClie = () => {
       url: "/"
     },
     {
-      name: "Red Meats",
-      url: "/r_meats"
+      name: "Menu",
+      url: "/menu"
     },
     {
-      name: "White Meats",
-      url: "/w_meats"
-    },
-    {
-      name: "Sea food",
-      url: "/seafood"
-    },
-    {
-      name: "Drinks without Alcohol ",
-      url: "/drinks_wo"
-    },
-    {
-      name: "Alcoholic Drinks ",
-      url: "/drinks_w"
+      name: "Payment",
+      url: "/payment"
     }
   ];
 
@@ -41,16 +29,15 @@ const DashClie = () => {
         <SideBar links={linksJson} />
       </div>
       <div>
-        <Routes>
-          <Route path='/' element={<dashClie />} />
-          <Route path='/home' element={<dashClie />} />
-          <Route path='/tables' element={<dashClie />} />
-          <Route path='/r_meat' element={<dashClie />} />
-          <Route path='/w_meats' element={<dashClie />} />
-          <Route path='/seafood' element={<dashClie />} />
-          <Route path='/drinks_wo' element={<dashClie />} />
-          <Route path='/drinks_w' element={<dashClie />} />
-        </Routes>
+        <Router>
+          <Routes>
+            <Route path='/' element={<dashClie />} />
+            <Route path='/home' element={<dashClie />} />
+            <Route path='/tables' element={<dashClie />} />
+            <Route path='/menu' element={<dashClie />} />
+            <Route path='/payment' element={<dashClie />} />
+          </Routes>
+        </Router>
       </div>
     </>
   )
