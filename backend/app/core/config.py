@@ -17,12 +17,12 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str
     EMAIL_TEST_USER: EmailStr = "test@example.com"
     USERS_OPEN_REGISTRATION: str
-    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
+    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
@@ -33,6 +33,19 @@ class Settings(BaseSettings):
             password=values.get("DB_PASSWORD"),
             host=values.get("DB_SERVER"),
             path=f"/{values.get('DB_NAME') or ''}",
+        )
+
+    SQLALCHEMY_DATABASE_URI_TEST: Optional[PostgresDsn] = None
+    @validator("SQLALCHEMY_DATABASE_URI_TEST", pre=True)
+    def assemble_db_connection_test(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
+        if isinstance(v, str):
+            return v
+        return PostgresDsn.build(
+            scheme="postgresql+psycopg2",
+            user=values.get("DB_USER"),
+            password=values.get("DB_PASSWORD"),
+            host=values.get("DB_SERVER"),
+            path=f"/{values.get('DB_NAME_TEST') or ''}",
         )
 
     SMTP_TLS: bool = True

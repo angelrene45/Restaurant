@@ -5,6 +5,10 @@ docker-compose run backend alembic revision --autogenerate -m "New Migration"
 docker-compose run backend alembic upgrade head
 docker-compose run backend alembic downgrade -1
 
+# run unittest
+docker-compose exec backend pytest
+# run single unittest
+docker-compose exec backend pytest -s -k "<name_test>"
 
 ## DOCKER TIPS
 # execute docker-compose.yml and build images
