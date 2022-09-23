@@ -2,7 +2,7 @@ import React from 'react'
 
 const NavbarClie = () => {
     return (
-      <div>Navbar</div>
+      <h2>Clientes</h2>
   )
 }
 

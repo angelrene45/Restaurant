@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { NavbarAdm, SidebarAdm } from '../../components'
+
 export default function DashAdmin(){
   return (
     
