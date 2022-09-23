@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Tuple
 
 import emails
 from emails.template import JinjaTemplate
@@ -10,23 +10,24 @@ from jose import jwt
 from app.core.config import settings
 
 
-def generate_password_reset_token(email: str) -> str:
+def generate_password_reset_token(email: str, user_type: str) -> str:
     delta = timedelta(hours=settings.EMAIL_RESET_TOKEN_EXPIRE_HOURS)
     now = datetime.utcnow()
     expires = now + delta
     exp = expires.timestamp()
     encoded_jwt = jwt.encode(
-        {"exp": exp, "nbf": now, "sub": email}, settings.SECRET_KEY, algorithm="HS256",
+        {"exp": exp, "nbf": now, "sub": email, "user_type": user_type},
+        settings.SECRET_KEY, algorithm="HS256",
     )
     return encoded_jwt
 
 
-def verify_password_reset_token(token: str) -> Optional[str]:
+def verify_password_reset_token(token: str) -> Tuple[str, str]:
     try:
         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-        return decoded_token["sub"]
+        return decoded_token["sub"], decoded_token["user_type"]
     except jwt.JWTError:
-        return None
+        return None, None
 
 def send_email(
     email_to: str,
@@ -85,10 +86,23 @@ def send_reset_password_email(email_to: str, email: str, token: str) -> None:
     )
 
 
-def send_new_account_email(email_to: str, username: str, password: str) -> None:
+def send_new_account_email(email_to: str, username: str, password: str, type_user: int = 0) -> None:
+    """
+        send to user a mail with the user is created 
+        params:
+            type: 
+                - 0 is user system
+                - 1 is customer
+    """
     project_name = settings.PROJECT_NAME
-    subject = f"{project_name} - New account for user {username}"
-    with open(Path(settings.EMAIL_TEMPLATES_DIR) / "new_account.html") as f:
+    if type_user == 0:
+        subject = f"{project_name} - New account for user system {username}"
+        template_path = Path(settings.EMAIL_TEMPLATES_DIR) / "new_account.html"
+    else:
+        subject = f"{project_name} - New account for customer {username}"
+        template_path = Path(settings.EMAIL_TEMPLATES_DIR) / "new_customer.html"
+
+    with open(template_path) as f:
         template_str = f.read()
     link = settings.SERVER_HOST
     send_email(

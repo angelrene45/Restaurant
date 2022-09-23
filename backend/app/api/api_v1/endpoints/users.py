@@ -1,6 +1,6 @@
 from typing import Any, List
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, BackgroundTasks
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
 from sqlalchemy.orm import Session
@@ -29,13 +29,14 @@ def read_users(
 
 @router.post("/", response_model=schemas.User)
 def create_user(
+    background_tasks: BackgroundTasks,
     *,
     db: Session = Depends(deps.get_db),
     user_in: schemas.UserCreate,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
-    Create new user.
+    Create new user system by admin.
     """
     user = crud.user.get_by_email(db, email=user_in.email)
     if user:
@@ -45,9 +46,7 @@ def create_user(
         )
     user = crud.user.create(db, obj_in=user_in)
     if settings.EMAILS_ENABLED and user_in.email:
-        send_new_account_email(
-            email_to=user_in.email, username=user_in.email, password=user_in.password
-        )
+        background_tasks.add_task(send_new_account_email,  email_to=user_in.email, username=user_in.email, password=user_in.password, type_user=0)
     return user
 
 
