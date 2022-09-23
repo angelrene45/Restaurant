@@ -6,16 +6,22 @@ const SidebarAdm = () => {
     <div>
         <ul>
             <li>
-                <Link to=''>Inicio </Link>
+                <Link className='hover:text-green-50' to='/'>Home </Link>
             </li>
             <li>
-                Ventas
+                <Link className='hover:text-green-50' to='/sales'>Sales</Link>
             </li>
             <li>
-                Empleados
+                <Link className='hover:text-green-50' to='/employees'> Employees </Link>
             </li>
             <li>
-                Proveedores
+                <Link className='hover:text-green-50' to='/providers'> Providers </Link>
+            </li>
+            <li>
+                <Link className='hover:text-green-50' to='/reports'> Reports </Link>
+            </li>
+            <li>
+                <Link className='hover:text-green-50' to='/menu_reg'> Menu register </Link>
             </li>
         </ul>
     </div>

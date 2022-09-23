@@ -1,8 +1,8 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { SidebarEmp, NavbarEmp } from '../../components'
 
-
-export const dashEmp = () => {
+export const DashEmp = () => {
   return (
     <Router>
         <div className='fixed md:static bg-sky-900 navbar w-full text-green-400 p-5 m-0'>

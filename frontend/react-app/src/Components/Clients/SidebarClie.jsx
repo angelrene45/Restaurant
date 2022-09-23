@@ -6,10 +6,10 @@ const SidebarClie = () => {
     <div>
         <ul>
             <li>
-                <Link to=''>Inicio </Link>
+                <Link to='/'>Mapa de mesas </Link>
             </li>
             <li>
-                Ventas
+                <Link to='/'> Bebidas </Link>
             </li>
             <li>
                 Empleados
