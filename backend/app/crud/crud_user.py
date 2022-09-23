@@ -18,10 +18,15 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             email=obj_in.email,
             mobile=obj_in.mobile,
             hashed_password=get_password_hash(obj_in.password),
+<<<<<<< Updated upstream
             first_name=obj_in.first_name,
             last_name=obj_in.last_name,
             role=obj_in.role,
             is_active=obj_in.is_active,
+=======
+            full_name=obj_in.full_name,
+            role=obj_in.role,
+>>>>>>> Stashed changes
         )
         db.add(db_obj)
         db.commit()
