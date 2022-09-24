@@ -27,7 +27,7 @@ def read_customers(
     return customers
 
 @router.get("/{user_id}", response_model=schemas.User)
-def read_user_by_id(
+def read_customer_by_id(
     customer_id: int,
     db: Session = Depends(deps.get_db),
     current_user: models.Customer = Depends(deps.get_current_active_superuser),
@@ -64,13 +64,13 @@ def create_customer(
         background_tasks.add_task(send_new_account_email,  email_to=customer_in.email, username=customer_in.email, password=customer_in.password, type_user=1)
     return customer
 
-@router.put("/{customer_id}", response_model=schemas.User)
+@router.put("/{customer_id}", response_model=schemas.Customer)
 def update_customer(
     *,
     db: Session = Depends(deps.get_db),
     customer_id: int,
-    user_in: schemas.UserUpdate,
-    current_user: models.User = Depends(deps.get_current_active_superuser),
+    user_in: schemas.CustomerUpdate,
+    current_user: models.Customer = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Update a customer being admin.
@@ -85,21 +85,21 @@ def update_customer(
     return customer
 
 
-@router.put("/me", response_model=schemas.User)
-def update_user_me(
+@router.put("/me", response_model=schemas.Customer)
+def update_customer_me(
     *,
     db: Session = Depends(deps.get_db),
     password: str = Body(None),
     first_name: str = Body(None),
     last_name: str = Body(None),
     email: EmailStr = Body(None),
-    current_user: models.User = Depends(deps.get_current_active_user),
+    current_user: models.Customer = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Update own customer.
     """
     current_user_data = jsonable_encoder(current_user)
-    user_in = schemas.UserUpdate(**current_user_data)
+    user_in = schemas.CustomerUpdate(**current_user_data)
     if password is not None:
         user_in.password = password
     if first_name is not None:
@@ -112,19 +112,19 @@ def update_user_me(
     return customer
 
 
-@router.get("/me", response_model=schemas.User)
-def read_user_me(
+@router.get("/me", response_model=schemas.Customer)
+def read_customer_me(
     db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(deps.get_current_active_user),
+    current_user: models.Customer = Depends(deps.get_current_active_user),
 ) -> Any:
-    """
+    """s
     Get current customer.
     """
     return current_user
 
 
-@router.post("/open", response_model=schemas.User)
-def create_user_open(
+@router.post("/open", response_model=schemas.Customer)
+def create_customer_open(
     *,
     db: Session = Depends(deps.get_db),
     password: str = Body(...),

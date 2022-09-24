@@ -12,7 +12,7 @@ from app.api.deps import get_db
 from app.core.config import settings
 from app import crud, schemas, models
 from app.tests.utils.user import authentication_token_from_email
-from app.tests.utils.utils import get_superuser_token_headers
+from app.tests.utils.utils import get_superuser_token_headers, get_customer_token_headers
 
 TestingSessionLocal: sessionmaker = None
 engine_server: Engine = None
@@ -93,6 +93,10 @@ def client() -> Generator:
 @pytest.fixture(scope="module")
 def superuser_token_headers(client: TestClient) -> Dict[str, str]:
     return get_superuser_token_headers(client)
+
+@pytest.fixture(scope="module")
+def customer_token_headers(client: TestClient, db: Session) -> Dict[str, str]:
+    return get_customer_token_headers(client, db)
 
 
 @pytest.fixture(scope="module")
