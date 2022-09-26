@@ -12,6 +12,41 @@ from app.utils import send_new_account_email
 
 router = APIRouter()
 
+@router.get("/me", response_model=schemas.Customer)
+def read_customer_me(
+    db: Session = Depends(deps.get_db),
+    current_user: models.Customer = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Get current customer.
+    """
+    return current_user
+
+@router.put("/me", response_model=schemas.Customer)
+def update_customer_me(
+    *,
+    db: Session = Depends(deps.get_db),
+    password: str = Body(None),
+    first_name: str = Body(None),
+    last_name: str = Body(None),
+    email: EmailStr = Body(None),
+    current_user: models.Customer = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Update own customer.
+    """
+    current_user_data = jsonable_encoder(current_user)
+    user_in = schemas.CustomerUpdate(**current_user_data)
+    if password is not None:
+        user_in.password = password
+    if first_name is not None:
+        user_in.first_name = first_name
+    if last_name is not None:
+        user_in.last_name = last_name
+    if email is not None:
+        user_in.email = email
+    customer = crud.customer.update(db, db_obj=current_user, obj_in=user_in)
+    return customer
 
 @router.get("/", response_model=List[schemas.Customer])
 def read_customers(
@@ -83,45 +118,6 @@ def update_customer(
         )
     customer = crud.customer.update(db, db_obj=customer, obj_in=user_in)
     return customer
-
-
-@router.put("/me", response_model=schemas.Customer)
-def update_customer_me(
-    *,
-    db: Session = Depends(deps.get_db),
-    password: str = Body(None),
-    first_name: str = Body(None),
-    last_name: str = Body(None),
-    email: EmailStr = Body(None),
-    current_user: models.Customer = Depends(deps.get_current_active_user),
-) -> Any:
-    """
-    Update own customer.
-    """
-    current_user_data = jsonable_encoder(current_user)
-    user_in = schemas.CustomerUpdate(**current_user_data)
-    if password is not None:
-        user_in.password = password
-    if first_name is not None:
-        user_in.first_name = first_name
-    if last_name is not None:
-        user_in.last_name = last_name
-    if email is not None:
-        user_in.email = email
-    customer = crud.customer.update(db, db_obj=current_user, obj_in=user_in)
-    return customer
-
-
-@router.get("/me", response_model=schemas.Customer)
-def read_customer_me(
-    db: Session = Depends(deps.get_db),
-    current_user: models.Customer = Depends(deps.get_current_active_user),
-) -> Any:
-    """s
-    Get current customer.
-    """
-    return current_user
-
 
 @router.post("/open", response_model=schemas.Customer)
 def create_customer_open(

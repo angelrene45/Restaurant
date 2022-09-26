@@ -12,7 +12,8 @@ from app.api.deps import get_db
 from app.core.config import settings
 from app import crud, schemas, models
 from app.tests.utils.user import authentication_token_from_email
-from app.tests.utils.utils import get_superuser_token_headers, get_customer_token_headers
+from app.tests.utils.utils import get_superuser_token_headers
+from app.tests.utils.customer import get_customer_token_headers
 
 TestingSessionLocal: sessionmaker = None
 engine_server: Engine = None
@@ -94,16 +95,17 @@ def client() -> Generator:
 def superuser_token_headers(client: TestClient) -> Dict[str, str]:
     return get_superuser_token_headers(client)
 
-@pytest.fixture(scope="module")
-def customer_token_headers(client: TestClient, db: Session) -> Dict[str, str]:
-    return get_customer_token_headers(client, db)
-
 
 @pytest.fixture(scope="module")
 def normal_user_token_headers(client: TestClient, db: Session) -> Dict[str, str]:
     return authentication_token_from_email(
         client=client, email=settings.EMAIL_TEST_USER, db=db
     )
+
+
+@pytest.fixture(scope="module")
+def customer_token_headers(client: TestClient, db: Session) -> Dict[str, str]:
+    return get_customer_token_headers(client=client, db=db)
 
 # all endpoints to redirect to testing database
 app.dependency_overrides[get_db] = override_get_db
