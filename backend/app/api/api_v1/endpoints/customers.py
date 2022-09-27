@@ -61,7 +61,7 @@ def read_customers(
     customers = crud.customer.get_multi(db, skip=skip, limit=limit)
     return customers
 
-@router.get("/{user_id}", response_model=schemas.User)
+@router.get("/{customer_id}", response_model=schemas.User)
 def read_customer_by_id(
     customer_id: int,
     db: Session = Depends(deps.get_db),

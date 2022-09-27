@@ -74,7 +74,7 @@ class Settings(BaseSettings):
             and values.get("EMAILS_FROM_EMAIL")
         )
 
-    EMAIL_TEST_USER: EmailStr = "test@example.com"
+    EMAIL_TEST_USER: EmailStr = "test_user@example.com"
 
     class Config:
         case_sensitive = True
