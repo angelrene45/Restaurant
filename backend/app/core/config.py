@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SERVER_HOST: str
     DB_SERVER: str
     DB_NAME: str
+    DB_NAME_TEST: str
     DB_USER: str
     DB_PASSWORD: str
     FIRST_SUPERUSER: str

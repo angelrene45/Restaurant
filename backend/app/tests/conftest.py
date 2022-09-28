@@ -1,10 +1,14 @@
 from typing import Dict, Generator
 
 import pytest
+from starlette.config import environ
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session, sessionmaker
+from alembic import command
+from alembic.config import Config
+from sqlalchemy.orm import Session, sessionmaker, session
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
+from sqlalchemy_utils import database_exists, create_database, drop_database
 
 from app.main import app
 from app.db.base import Base
@@ -15,9 +19,8 @@ from app.tests.utils.user import authentication_token_from_email
 from app.tests.utils.utils import get_superuser_token_headers
 from app.tests.utils.customer import get_customer_token_headers
 
+environ['TESTING'] = 'True'
 TestingSessionLocal: sessionmaker = None
-engine_server: Engine = None
-engine_db: Engine = None
 
 def override_get_db():
     try:
@@ -26,28 +29,9 @@ def override_get_db():
     finally:
         db.close()
 
-def create_test_database() -> None:
-    global engine_server
-    engine_server = create_engine(settings.SQLALCHEMY_DATABASE_URI, pool_pre_ping=True)
-    conn = engine_server.connect()
-    result = conn.execute("SELECT count(*) FROM pg_database WHERE datname='test' ")
-    if not result.fetchone()[0]:
-        conn.execute("commit")
-        conn.execute("create database test")
-    conn.close()
-
-def create_engine_database() -> None:
-    """create engine for database test"""
-    global TestingSessionLocal, engine_db
-    engine_db = create_engine(settings.SQLALCHEMY_DATABASE_URI_TEST, pool_pre_ping=True)
-    # create all tables from models
-    Base.metadata.create_all(bind=engine_db)
-    # create sessionmaker
-    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_db)
-
-def create_super_user_test() -> None:
+def create_super_user_test(session: sessionmaker) -> None:
     """create user super in test database"""
-    db = TestingSessionLocal()
+    db = session()
     user = crud.user.get_by_email(db, email=settings.FIRST_SUPERUSER)
     if not user:
         user_in = schemas.UserCreate(
@@ -58,27 +42,26 @@ def create_super_user_test() -> None:
         user = crud.user.create(db, obj_in=user_in)
     db.close()
 
-def drop_test_database() -> None:
-    """ Drop database test """
-    # close all connections opened
-    sessionmaker.close_all()
-    engine_db.dispose()
-    # drop database
-    conn = engine_server.connect()
-    conn.execute("commit")
-    conn.execute("DROP DATABASE test")
-    conn.close()
-    engine_server.dispose()
 
-def pytest_configure(config) -> None:
-    """before start all test"""
-    create_test_database()
-    create_engine_database()
-    create_super_user_test()
+@pytest.fixture(scope="session", autouse=True)
+def create_test_database():
+    """
+    Create a clean database.
+    For safety, we should abort if a database already exists.
+    """
+    global TestingSessionLocal
+    url = settings.SQLALCHEMY_DATABASE_URI_TEST
+    engine = create_engine(url, pool_pre_ping=True)
+    assert not database_exists(url), 'Test database already exists. Aborting tests.'
+    create_database(url)             # Create the test database.
+    config = Config("alembic.ini")   # Run the migrations.
+    command.upgrade(config, "head") 
+    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    create_super_user_test(TestingSessionLocal)
+    yield                            # Run the tests.
+    session.close_all_sessions()     # Close open connections
+    drop_database(url)               # Drop the test database.
 
-def pytest_unconfigure(config) -> None:
-    """after run all test"""
-    drop_test_database()
 
 @pytest.fixture(scope="session")
 def db() -> Generator:
@@ -87,6 +70,7 @@ def db() -> Generator:
 
 @pytest.fixture(scope="module")
 def client() -> Generator:
+    # set up
     with TestClient(app) as c:
         yield c
 

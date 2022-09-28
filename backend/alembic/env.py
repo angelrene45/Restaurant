@@ -22,7 +22,7 @@ def get_url():
     user = os.getenv("DB_USER", "postgres")
     password = os.getenv("DB_PASSWORD", "")
     server = os.getenv("DB_SERVER", "db")
-    db = os.getenv("DB_NAME", "app")
+    db = os.getenv("DB_NAME", "app") if os.getenv("TESTING") != "True" else os.getenv("DB_NAME_TEST", "app")
     return f"postgresql+psycopg2://{user}:{password}@{server}/{db}"
 
 def run_migrations_offline():
