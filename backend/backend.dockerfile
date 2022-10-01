@@ -5,7 +5,7 @@ FROM python:3.10-slim-buster
 WORKDIR /backend
 
 # set environment variable
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/backend
 
