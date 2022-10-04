@@ -5,6 +5,7 @@ import SideBar from '../../Components/SideBar/SideBar';
 
 
 const DashAdmin = () => {
+  
   const linksJson = [
     {
       name: "Home",
@@ -42,13 +43,11 @@ const DashAdmin = () => {
       </div>
       <div>
         <Routes>
-          <Route path='/' element={<dashAdmin />} />
-          <Route path='/home' element={<dashAdmin />} />
-          <Route path='/sales' element={<dashAdmin />} />
-          <Route path='/employees' element={<dashAdmin />} />
-          <Route path='/providers' element={<dashAdmin />} />
-          <Route path='/reports' element={<dashAdmin />} />
-          <Route path='/menu_reg' element={<dashAdmin />} />
+          <Route path='/sales' element={<DashAdmin />} />
+          <Route path='/employees' element={<DashAdmin />} />
+          <Route path='/providers' element={<DashAdmin />} />
+          <Route path='/reports' element={<DashAdmin />} />
+          <Route path='/menu_reg' element={<DashAdmin />} /> 
         </Routes>
       </div>
     </>

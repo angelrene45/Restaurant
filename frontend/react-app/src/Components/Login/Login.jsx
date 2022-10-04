@@ -1,31 +1,70 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+
 import React from 'react';
 import loginImg from '../../assets/login2.jpg';
-import { useState } from 'react';
+import Types from '../../store/Types';
+import { useEffect } from 'react';
 
-export default function Login() {
+
+const Login = (props) => {
     
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const token =localStorage.getItem('TOKEN');
+
+    if (token !== null) {
+      dispatch({ type: Types.setToken, payload: token });
+    };
+
+
+
     const switchAuthModeHandler = async (event) => {
-        event.preventDefault();
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: email, password })
-        };
-        const result = await fetch('http://localhost:8000/api/v1/login/access-token', requestOptions)
-        console.log(result.json)
+      event.preventDefault();
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      myHeaders.append("Accept", "application/json");
+
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("username", email);
+      urlencoded.append("password", password);
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: 'follow',
       };
+      try {
+        const response = await fetch("http://localhost:8000/api/v1/login/access-token", requestOptions);
+        if (response.ok) {
+          const data = await response.json()    
+          dispatch({ type: Types.setToken, payload: data.access_token });
+          localStorage.setItem('TOKEN', data.access_token);
+          
+          
+        } else {
+
+          throw new Error("Invalid credentials")
+        }
+        
+      } catch(e) {
+        //mostrar error
+        window.alert(e)
+      }
+    };
 
     const handleEmail = (event) => {
         setEmail(event.target.value)
-        console.log(email)
       };
     
       const handlePassword = (event) => {
         setPassword(event.target.value)
-        console.log(password)
       };
   
     return (
@@ -35,7 +74,7 @@ export default function Login() {
         
         <div className='w-screen bg-gray-800 flex flex-col justify-center'>
         
-            <form className='max-w-[400px] w-full mx-auto bg-gray-900 p-8 px-8 rounded-lg'>
+            <form className='max-w-[400px] w-full mx-auto bg-gray-900 p-8 px-8 rounded-lg' onSubmit={switchAuthModeHandler}>
                 <h2 className='text-4xl dark:text-white font-bold text-center'>{isLogin ? 'Login' : 'Sign Up'}
                 <div className='hidden sm:block'>
             <img className='w-screen h-fit justify-around object-fixed bg-gray-800' src={loginImg} alt='' />
@@ -56,7 +95,7 @@ export default function Login() {
                 <button className='w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/30 text-white font-semibold rounded-lg'>{isLogin ? 'Login' : 'Create Account'}</button>
                 <button
             type='button'
-            onClick={switchAuthModeHandler}
+            
           >
             {isLogin ? 'Create new account' : 'Login with existing account'}
           </button>
@@ -65,3 +104,5 @@ export default function Login() {
     </div>
 )
 }
+
+export default Login;

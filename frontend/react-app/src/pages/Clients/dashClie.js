@@ -42,8 +42,6 @@ const DashClie = () => {
       </div>
       <div>
         <Routes>
-          <Route path='/' element={<dashClie />} />
-          <Route path='/home' element={<dashClie />} />
           <Route path='/tables' element={<dashClie />} />
           <Route path='/r_meat' element={<dashClie />} />
           <Route path='/w_meats' element={<dashClie />} />

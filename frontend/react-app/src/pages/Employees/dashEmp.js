@@ -32,10 +32,6 @@ const DashEmp = () => {
       <div className='w-40 fixed sidebar  bg-gray-900 shadow-lg shadow-gray-500/90 h-full text-green-300 p-5'>
         <SideBar links={linksJson} />
       </div>
-      <Routes>
-        <Route path='/' element={<dashEmp />} />
-        <Route path='/home' element={<dashEmp />} />
-      </Routes>
     </>
   )
 }
