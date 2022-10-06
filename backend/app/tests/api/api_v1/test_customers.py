@@ -1,0 +1,102 @@
+from typing import Dict
+
+from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session
+
+from app import crud
+from app.core.config import settings
+from app.schemas.customer import CustomerCreate
+from app.tests.utils.utils import random_email, random_lower_string
+
+
+def test_get_customers_me(
+    client: TestClient, customer_token_headers: Dict[str, str]
+) -> None:
+    r = client.get(f"{settings.API_V1_STR}/customers/me", headers=customer_token_headers)
+    current_customer = r.json()
+    assert current_customer
+    assert current_customer["is_active"] is True
+    assert current_customer["email"]
+
+
+def test_create_customer_new_email(
+    client: TestClient, superuser_token_headers: dict, db: Session
+) -> None:
+    username = random_email()
+    password = random_lower_string()
+    data = {"email": username, "password": password}
+    r = client.post(
+        f"{settings.API_V1_STR}/customers/", headers=superuser_token_headers, json=data,
+    )
+    assert 200 <= r.status_code < 300
+    created_user = r.json()
+    customer = crud.customer.get_by_email(db, email=username)
+    assert customer
+    assert customer.email == created_user["email"]
+
+
+def test_get_existing_customer(
+    client: TestClient, superuser_token_headers: dict, db: Session
+) -> None:
+    username = random_email()
+    password = random_lower_string()
+    user_in = CustomerCreate(email=username, password=password)
+    customer = crud.customer.create(db, obj_in=user_in)
+    customer_id = customer.id
+    r = client.get(
+        f"{settings.API_V1_STR}/customers/{customer_id}", headers=superuser_token_headers,
+    )
+    assert 200 <= r.status_code < 300
+    api_user = r.json()
+    existing_user = crud.customer.get_by_email(db, email=username)
+    assert existing_user
+    assert existing_user.email == api_user["email"]
+
+
+def test_create_user_existing_username(
+    client: TestClient, superuser_token_headers: dict, db: Session
+) -> None:
+    username = random_email()
+    password = random_lower_string()
+    user_in = CustomerCreate(email=username, password=password)
+    crud.customer.create(db, obj_in=user_in)
+    data = {"email": username, "password": password}
+    r = client.post(
+        f"{settings.API_V1_STR}/customers/", headers=superuser_token_headers, json=data,
+    )
+    created_user = r.json()
+    assert r.status_code == 400
+    assert "_id" not in created_user
+
+
+def test_create_customer_by_normal_user(
+    client: TestClient, normal_user_token_headers: Dict[str, str]
+) -> None:
+    username = random_email()
+    password = random_lower_string()
+    data = {"email": username, "password": password}
+    r = client.post(
+        f"{settings.API_V1_STR}/customers/", headers=normal_user_token_headers, json=data,
+    )
+    assert r.status_code == 400
+
+
+def test_retrieve_customers(
+    client: TestClient, superuser_token_headers: dict, db: Session
+) -> None:
+    username = random_email()
+    password = random_lower_string()
+    user_in = CustomerCreate(email=username, password=password)
+    crud.customer.create(db, obj_in=user_in)
+
+    username2 = random_email()
+    password2 = random_lower_string()
+    user_in2 = CustomerCreate(email=username2, password=password2)
+    crud.customer.create(db, obj_in=user_in2)
+
+    r = client.get(f"{settings.API_V1_STR}/customers/", headers=superuser_token_headers)
+    all_users = r.json()
+
+    assert len(all_users) > 1
+    for item in all_users:
+        assert "email" in item
