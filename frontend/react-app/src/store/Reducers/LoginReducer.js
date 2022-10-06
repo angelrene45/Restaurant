@@ -3,7 +3,7 @@ import Types from '../Types';
 const initialState =  {
     authToken: '',
     authorization: false,
-    user:''
+    role:''
 };
 
 const LoginReducer = (state = initialState, action) => {
@@ -12,8 +12,16 @@ const LoginReducer = (state = initialState, action) => {
         case Types.setToken:
           return {
             ...state,
-            authToken: action.payload,
+            authToken: action.payload.token,
+            role: action.payload.role,
             authorization: true,
+          };
+        case Types.deleteToken:
+          return {
+            ...state,
+            authToken: '',
+            role: '',
+            authorization: false,
           };
         default:
           return state

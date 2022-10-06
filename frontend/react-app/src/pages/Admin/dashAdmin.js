@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from '../../Components/NavBar/NavBar';
+import { useDispatch } from 'react-redux';
+
+import Types from '../../store/Types';
 import SideBar from '../../Components/SideBar/SideBar';
 
 
 const DashAdmin = () => {
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: Types.setDashBoard, payload: "ADMIN" });
+  });
+  
   
   const linksJson = [
     {
@@ -32,12 +40,11 @@ const DashAdmin = () => {
       url: "/menu_reg"
     }
   ];
+
+
    
   return (
     <>
-      <div className='fixed md:static bg-sky-900 navbar w-full text-green-400 p-5 m-0'>
-        <Navbar theme="Administrator" />
-      </div>
       <div className='w-40 fixed sidebar  bg-gray-900 shadow-lg shadow-gray-500/90 h-full text-green-300 p-5'>
         <SideBar links={linksJson} />
       </div>

@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
 
-import Navbar from '../../Components/NavBar/NavBar';
 import SideBar from '../../Components/SideBar/SideBar';
+import Types from '../../store/Types';
 
 const DashClie = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: Types.setDashBoard, payload: "CLIENT" });
+  });
+
   const linksJson = [
     {
       name: "Table Map",
@@ -34,9 +40,6 @@ const DashClie = () => {
 
   return (
     <>
-      <div className='fixed md:static bg-sky-900 navbar w-full text-green-400 p-5 m-0'>
-        <Navbar theme="Client" />
-      </div>
       <div className='w-40 fixed sidebar  bg-gray-900 shadow-lg shadow-gray-500/90 h-full text-green-300 p-5'>
         <SideBar links={linksJson} />
       </div>
