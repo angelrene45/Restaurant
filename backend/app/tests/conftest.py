@@ -59,7 +59,10 @@ def create_test_database():
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     create_super_user_test(TestingSessionLocal)
     yield                            # Run the tests.
+<<<<<<< HEAD
     session.close_all_sessions()     # Close open connections
+=======
+>>>>>>> refs/remotes/origin/FrontBeto
     drop_database(url)               # Drop the test database.
 
 
