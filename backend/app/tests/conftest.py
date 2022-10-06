@@ -59,7 +59,6 @@ def create_test_database():
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     create_super_user_test(TestingSessionLocal)
     yield                            # Run the tests.
-    session.close_all_sessions()     # Close open connections
     drop_database(url)               # Drop the test database.
 
 
