@@ -5,28 +5,22 @@ from sqlalchemy.sql import func
 
 from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
-from app.models.user import User, RolUser
-from app.schemas.user import UserCreate, UserUpdate
+from app.models.customer import Customer
+from app.schemas.customer import CustomerCreate, CustomerUpdate
 
 
-class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
-        return db.query(User).filter(User.email == email).first()
+class CRUDCustomer(CRUDBase[Customer, CustomerCreate, CustomerUpdate]):
+    def get_by_email(self, db: Session, *, email: str) -> Optional[Customer]:
+        return db.query(Customer).filter(Customer.email == email).first()
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
-        db_obj = User(
+    def create(self, db: Session, *, obj_in: CustomerCreate) -> Customer:
+        db_obj = Customer(
             email=obj_in.email,
             mobile=obj_in.mobile,
             hashed_password=get_password_hash(obj_in.password),
-<<<<<<< Updated upstream
             first_name=obj_in.first_name,
             last_name=obj_in.last_name,
-            role=obj_in.role,
             is_active=obj_in.is_active,
-=======
-            full_name=obj_in.full_name,
-            role=obj_in.role,
->>>>>>> Stashed changes
         )
         db.add(db_obj)
         db.commit()
@@ -34,8 +28,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return db_obj
 
     def update(
-        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
-    ) -> User:
+        self, db: Session, *, db_obj: Customer, obj_in: Union[CustomerUpdate, Dict[str, Any]]
+    ) -> Customer:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
@@ -46,26 +40,23 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data["hashed_password"] = hashed_password
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
-    def update_lastlogin(self, db: Session, *, db_obj: User) -> User:
+    def update_lastlogin(self, db: Session, *, db_obj: Customer) -> Customer:
         db_obj.last_login = func.current_timestamp()
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
 
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
-        user = self.get_by_email(db, email=email)
-        if not user:
+    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[Customer]:
+        customer = self.get_by_email(db, email=email)
+        if not customer:
             return None
-        if not verify_password(password, user.hashed_password):
+        if not verify_password(password, customer.hashed_password):
             return None
-        return user
+        return customer
 
-    def is_active(self, user: User) -> bool:
-        return user.is_active
-
-    def is_admin(self, user: User) -> bool:
-        return user.role == RolUser.admin
+    def is_active(self, customer: Customer) -> bool:
+        return customer.is_active
 
 
-user = CRUDUser(User)
+customer = CRUDCustomer(Customer)
