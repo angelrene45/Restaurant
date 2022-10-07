@@ -12,6 +12,35 @@ from app.utils import send_new_account_email
 
 router = APIRouter()
 
+
+@router.post("/open", response_model=schemas.Customer)
+def create_customer_open(
+    background_tasks: BackgroundTasks,
+    *,
+    db: Session = Depends(deps.get_db),
+    customer_in: schemas.CustomerCreate,
+) -> Any:
+    """
+    Create new customer without the need to be logged in.
+    """
+    if not settings.USERS_OPEN_REGISTRATION:
+        raise HTTPException(
+            status_code=403,
+            detail="Open customer registration is forbidden on this server",
+        )
+    customer = crud.customer.get_by_email(db, email=customer_in.mobile)
+    if not customer: customer = crud.customer.get_by_mobile(db, mobile=customer_in.mobile)
+    if customer:
+        raise HTTPException(
+            status_code=400,
+            detail="The customer with this username already exists in the system",
+        )
+    customer = crud.customer.create(db, obj_in=customer_in)
+    if settings.EMAILS_ENABLED and customer_in.email:
+        background_tasks.add_task(send_new_account_email,  email_to=customer_in.email, username=customer_in.email, password=customer_in.password, type_user=1)
+    return customer
+
+
 @router.get("/me", response_model=schemas.Customer)
 def read_customer_me(
     db: Session = Depends(deps.get_db),
@@ -49,7 +78,7 @@ def update_customer_me(
     return customer
 
 @router.get("/", response_model=List[schemas.Customer])
-def read_customers(
+def read_customers_being_admin(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
@@ -62,7 +91,7 @@ def read_customers(
     return customers
 
 @router.get("/{customer_id}", response_model=schemas.User)
-def read_customer_by_id(
+def read_customer_by_id_being_admin(
     customer_id: int,
     db: Session = Depends(deps.get_db),
     current_user: models.Customer = Depends(deps.get_current_active_superuser),
@@ -78,7 +107,7 @@ def read_customer_by_id(
     return customer
 
 @router.post("/", response_model=schemas.Customer)
-def create_customer(
+def create_customer_being_admin(
     background_tasks: BackgroundTasks,
     *,
     db: Session = Depends(deps.get_db),
@@ -89,10 +118,11 @@ def create_customer(
     Create new customer being admin customer.
     """
     customer = crud.customer.get_by_email(db, email=customer_in.email)
+    if not customer: customer = crud.customer.get_by_mobile(db, mobile=customer_in.mobile)
     if customer:
         raise HTTPException(
             status_code=400,
-            detail="The customer with this email already exists in the system.",
+            detail="The customer with this email or mobile already exists in the system.",
         )
     customer = crud.customer.create(db, obj_in=customer_in)
     if settings.EMAILS_ENABLED and customer_in.email:
@@ -100,7 +130,7 @@ def create_customer(
     return customer
 
 @router.put("/{customer_id}", response_model=schemas.Customer)
-def update_customer(
+def update_customer_being_admin(
     *,
     db: Session = Depends(deps.get_db),
     customer_id: int,
@@ -117,31 +147,4 @@ def update_customer(
             detail="The customer with this username does not exist in the system",
         )
     customer = crud.customer.update(db, db_obj=customer, obj_in=user_in)
-    return customer
-
-@router.post("/open", response_model=schemas.Customer)
-def create_customer_open(
-    *,
-    db: Session = Depends(deps.get_db),
-    password: str = Body(...),
-    email: EmailStr = Body(...),
-    first_name: str = Body(None),
-    last_name: str = Body(None),
-) -> Any:
-    """
-    Create new customer without the need to be logged in.
-    """
-    if not settings.USERS_OPEN_REGISTRATION:
-        raise HTTPException(
-            status_code=403,
-            detail="Open customer registration is forbidden on this server",
-        )
-    customer = crud.customer.get_by_email(db, email=email)
-    if customer:
-        raise HTTPException(
-            status_code=400,
-            detail="The customer with this username already exists in the system",
-        )
-    user_in = schemas.CustomerCreate(password=password, email=email, first_name=first_name, last_name=last_name)
-    customer = crud.customer.create(db, obj_in=user_in)
     return customer

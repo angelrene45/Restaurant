@@ -13,6 +13,10 @@ class CRUDCustomer(CRUDBase[Customer, CustomerCreate, CustomerUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[Customer]:
         return db.query(Customer).filter(Customer.email == email).first()
 
+    def get_by_mobile(self, db: Session, *, mobile: str) -> Optional[Customer]:
+        if not mobile: return None
+        return db.query(Customer).filter(Customer.mobile == mobile).first()
+
     def create(self, db: Session, *, obj_in: CustomerCreate) -> Customer:
         db_obj = Customer(
             email=obj_in.email,
