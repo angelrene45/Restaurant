@@ -1,9 +1,5 @@
 import { Link  } from 'react-router-dom';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/FrontBeto
 const SidebarAdm = (props) => {
   return (
     <div>
