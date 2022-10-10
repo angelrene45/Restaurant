@@ -11,6 +11,14 @@ def random_lower_string() -> str:
     return "".join(random.choices(string.ascii_lowercase, k=32))
 
 
+def random_integer() -> str:
+    return random.randint(0, 100)
+
+
+def random_float() -> str:
+    return round(random.uniform(0, 200), 2)
+
+
 def random_email() -> str:
     return f"{random_lower_string()}@{random_lower_string()}.com"
 

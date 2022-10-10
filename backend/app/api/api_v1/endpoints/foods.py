@@ -1,4 +1,4 @@
-from typing import Any, List, Sequence
+from typing import Any, List, Optional
 
 from fastapi import APIRouter, Body, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
@@ -46,16 +46,15 @@ def create_food_being_admin(
     categories: list = Body(..., description="Category id list"),
     discount: int = Body(default=..., gt=-1, lt=100),
     is_active: bool = Body(default=...),
-    file: UploadFile = File(),
+    file: Optional[UploadFile] = File(None),
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Create new food system by admin.
     """
     
-    categories_db = []
-    if categories and isinstance(categories, list): 
-        categories_db = [crud.category.get(db, id=category_id) for category_id in categories[0].split(',') if crud.category.get(db, id=category_id) is not None]
+    if categories and ',' in categories[0]: categories = categories[0].split(',') # fix problem with swagger UI
+    categories_db = [crud.category.get(db, id=category_id) for category_id in categories if crud.category.get(db, id=category_id) is not None]
 
     food_in = schemas.FoodCreate(
         name=name, 
@@ -80,7 +79,7 @@ def update_food_being_admin(
     categories: list = Body(..., description="Category id list"),
     discount: int = Body(default=..., gt=-1, lt=100),
     is_active: bool = Body(default=...),
-    file: UploadFile = File(),
+    file: Optional[UploadFile] = File(None),
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
@@ -98,9 +97,8 @@ def update_food_being_admin(
         discount=discount, 
         is_active=is_active)
     
-    categories_db = []
-    if categories and isinstance(categories, list): 
-        categories_db = [crud.category.get(db, id=category_id) for category_id in categories[0].split(',') if crud.category.get(db, id=category_id) is not None]
+    if categories and ',' in categories[0]: categories = categories[0].split(',') # fix problem with swagger UI
+    categories_db = [crud.category.get(db, id=category_id) for category_id in categories if crud.category.get(db, id=category_id) is not None]
 
     current_price = food.price
     food_updated = crud.food.update(db, db_obj=food, obj_in=food_in, categories_db=categories_db)
