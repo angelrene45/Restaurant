@@ -4,7 +4,8 @@
 """
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from fastapi_socketio import SocketManager
 
@@ -32,6 +33,9 @@ if settings.BACKEND_CORS_ORIGINS:
 
 # set all endpoints
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+# serving static files 
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 ### REMOVE LATER

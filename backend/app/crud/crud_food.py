@@ -19,7 +19,8 @@ class CRUDFood(CRUDBase[Food, FoodCreate, FoodUpdate]):
             price=obj_in.price, 
             discount=obj_in.discount, 
             is_active=obj_in.is_active, 
-            categories=categories_db
+            categories=categories_db,
+            image=obj_in.image
         )
         db.add(db_obj_food)
         db.commit()

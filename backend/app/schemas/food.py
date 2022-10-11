@@ -1,7 +1,7 @@
 from typing import Optional, List
 from datetime import datetime
 
-from pydantic import BaseModel, FilePath
+from pydantic import BaseModel
 
 from app.schemas.user import User
 from app.schemas.category import Category
@@ -24,7 +24,7 @@ class FoodBase(BaseModel):
     price: Optional[float] = None
     categories: Optional[List[Category]] = []
     discount: Optional[int] = None
-    image: Optional[FilePath] = None
+    image: Optional[str] = None
     is_active: Optional[bool] = None
 
 

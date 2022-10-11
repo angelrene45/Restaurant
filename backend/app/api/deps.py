@@ -1,6 +1,6 @@
-from typing import Generator
+from typing import Generator, Optional
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, UploadFile, File
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import ValidationError
@@ -66,3 +66,22 @@ def get_current_active_superuser(
             status_code=400, detail="The user doesn't have enough privileges"
         )
     return current_user
+
+
+def file_image_food(
+    file: Optional[UploadFile] = File(None, description="A file read as bytes"),
+) ->  models.User:
+    image_formats = ("image/png", "image/jpeg", "image/jpg")
+    if file:
+        if not file.content_type in image_formats:
+            raise HTTPException(
+                status_code=400, detail=f"The file {file.filename} is not a valid image"
+            )
+
+        size_bytes = len(file.file.read())
+        if size_bytes > settings.IMAGE_SIZE_LIMIT_BYTES:
+            raise HTTPException(
+                status_code=400, detail=f"The file {file.filename} is greater than {settings.IMAGE_SIZE_LIMIT_BYTES} Bytes"
+            )
+        file.file.seek(0)
+    return file
