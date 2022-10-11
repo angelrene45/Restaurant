@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-
-const MainNavigation = () => {
-
-  return (
-    <header >
-      
-    </header>
-=======
 import { Link  } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -32,7 +23,6 @@ const MainNavigation = () => {
         <h1 className='hover:text-green-50' style={{ cursor: "pointer"}} onClick={logOutHandler}>{'LogOut'}</h1>
       </div>
     </div>
->>>>>>> refs/remotes/origin/FrontBeto
   );
 };
 
