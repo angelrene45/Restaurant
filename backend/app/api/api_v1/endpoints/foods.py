@@ -22,6 +22,7 @@ def read_foods_open(
     foods = crud.food.get_multi(db, skip=skip, limit=limit)
     return foods
 
+
 @router.get("/open/{food_id}", response_model=schemas.Food)
 def read_food_by_id_open(
     food_id: int,
@@ -36,6 +37,7 @@ def read_food_by_id_open(
             status_code=400, detail="The food doesn't exists"
         )
     return food
+
 
 @router.post("/", response_model=schemas.Food)
 def create_food_being_admin(
@@ -70,6 +72,7 @@ def create_food_being_admin(
     crud.food.update_new_price(db, db_obj=food, user_id=current_user.id)
 
     return food
+
 
 @router.put("/{food_id}", response_model=schemas.Food)
 def update_food_being_admin(
@@ -119,4 +122,3 @@ def update_food_being_admin(
     if check_new_price: crud.food.update_new_price(db, db_obj=food, user_id=current_user.id)
 
     return food_updated
-

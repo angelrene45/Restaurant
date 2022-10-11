@@ -66,13 +66,12 @@ html = """
 """
 
 from fastapi import Depends
-from app.api.deps import reusable_oauth2
+from sqlalchemy.orm import Session
 from app.db.init_db import init_db
-from app.db.session import SessionLocal
+from app.api import deps
 
 @app.get("/")
-async def get():
+def get(db: Session = Depends(deps.get_db)):
     # create super user if dont exists
-    db = SessionLocal()
     init_db(db)
     return HTMLResponse(html)

@@ -9,8 +9,8 @@ from app.models.category import Category
 
 
 class CRUDFood(CRUDBase[Food, FoodCreate, FoodUpdate]):
-    def get_by_email(self, db: Session, *, email: str) -> Optional[Food]:
-        return db.query(Food).filter(Food.email == email).first()
+    def get_by_name(self, db: Session, *, name: str) -> Optional[Food]:
+        return db.query(Food).filter(Food.name == name).first()
 
     def create(self, db: Session, *, obj_in: FoodCreate, categories_db: list[Category]) -> Food:
         db_obj_food = Food(
