@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Shrimp Cocktail",
+        "description": "this food is prepared with shrimps",
+        "price": 20.99,
+        "categories": ["Seafood Cocktails"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "",
+        "description": "",
+        "price": 0,
+        "categories": [""],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "",
+        "description": "",
+        "price": 0,
+        "categories": [""],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    }
+]
