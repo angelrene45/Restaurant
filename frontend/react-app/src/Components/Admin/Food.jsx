@@ -2,27 +2,26 @@ import React from 'react'
 import { useState } from 'react';
 
 export default function Food() {
-  const [id, setId] = useState("");
   const [name, setName] = useState(""); 
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState("");
+  const [categories, setCategories] = useState("");
   const [disc, setDisc] = useState("");
-  const [rating, setRating] = useState("");
-  const [clas, setClas] = useState("");
   const [image, setImage] = useState("");
+  const [isActive, setIsActive] = useState("");
+  const [id, setId] = useState("");
+  const [createDate, setCreateDate] = useState("");
+  const [updateDate, setUpdateDate] = useState("");
+  const [historyPrice, setHistoryPrice] = useState("");
 
   const switchAuthModeHandler = async (event) => {
     event.preventDefault();
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, name, desc, price, disc, rating, clas, image })
+        body: JSON.stringify({ id, name, desc, price, disc, categories, isActive, image, createDate, updateDate, historyPrice })
     };
   }
-    const handleId = (event) => {
-      setId(event.target.value)
-      console.log(id)
-    };
     const handleName = (event) => {
       setName(event.target.value)
       console.log(name)
@@ -34,37 +33,58 @@ export default function Food() {
     const handlePrice = (event) => {
       setPrice(event.target.value)
       console.log(price)
+    }; 
+    const handleCategories = (event) => {
+      setCategories(event.target.value)
+      console.log(categories)
     };
     const handleDisc = (event) => {
       setDisc(event.target.value)
       console.log(disc)
     };
-    const handleRating = (event) => {
-      setRating(event.target.value)
-      console.log(rating)
-    };
-    const handleClas = (event) => {
-      setClas(event.target.value)
-      console.log(clas)
-    };
     const handleImage = (event) => {
       setImage(event.target.value)
       console.log(image)
     };
+    const handleIsActive = (event) => {
+      setIsActive(event.target.value)
+      console.log(isActive)
+    };   
+    const handleId = (event) => {
+      setId(event.target.value)
+      console.log(id)
+    };
+    const handleCreateDate = (event) => {
+      setCreateDate(event.target.value)
+      console.log(createDate)
+    };
+    const handleUpdateDate = (event) => {
+      setUpdateDate(event.target.value)
+      console.log(updateDate)
+    };
+    const handleHistoryPrice = (event) => {
+      setHistoryPrice(event.target.value)
+      console.log(historyPrice)
+    };
 
 
   return (
-    <div>
+    <div className='m-2 md:m-10 p-2 md:p-10 bg-gray-500'>
       <form>
-        <input type='number' required value={id} onClick={handleId} >id</input>
-        <input type='text' required value={name} onClick={handleName} >Name</input>
-        <input type='text' required value={desc} onClick={handleDesc} >Description</input>
-        <input type='number' required value={price} onClick={handlePrice} >Price</input>
-        <input type='text' required value={disc} onClick={handleDisc} >discount</input>
-        <input type='number' required value={rating} onClick={handleRating}>rating</input>
-        <input type='text' required value={clas} onClick={handleClas} >clasification</input>
-        <input type='text' value={image} onClick={handleImage} >Image</input>
-        <input type='buton' onClick={switchAuthModeHandler} />
+        <label> Name</label>
+        <input type='text' onChange={handleName} /><br /><br />
+        <label>Descripcion</label>
+        <input type='text' onChange={handleDesc} /><br /><br />
+        <input type='number' onChange={handlePrice} />Price<br /><br />
+        <input type='number' onChange={handleCategories} />rating<br /><br />
+        <input type='text' onChange={handleDisc} />discount<br /><br />
+        <input type='text' onChange={handleImage} />Image<br /><br />
+        <input type='number' onChange={handleIsActive} />is active <br /><br />
+        <input type='number' required onChange={handleId} />id<br /><br />
+        <input type='text' required onChange={handleCreateDate} />create date<br /><br />
+        <input type='text' required onChange={handleUpdateDate} />update date<br /><br />
+        <input type='text' required onChange={handleHistoryPrice} />history price<br /><br />
+        <input type='button' onClick={switchAuthModeHandler} />
       </form>
     </div>
   )

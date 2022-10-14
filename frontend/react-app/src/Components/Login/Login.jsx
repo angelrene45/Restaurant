@@ -87,7 +87,7 @@ const Login = (props) => {
                 <button className='w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/30 text-white font-semibold rounded-lg'>
                   {isLogin ? 'Login' : 'Create Account'}
                 </button>
-                <button type='button'>
+                <button type='button' className='text-teal-500'>
                   {isLogin ? 'Create new account' : 'Login with existing account'}
                 </button>
             </form>

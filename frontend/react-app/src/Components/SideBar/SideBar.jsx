@@ -1,8 +1,8 @@
 import { Link  } from 'react-router-dom';
 
-const SidebarAdm = (props) => {
+const Sidebar = (props) => {
   return (
-    <div>
+    <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10'>
         <ul>
             {props.links.map(link => 
                 <li key={link.name}>
@@ -14,4 +14,4 @@ const SidebarAdm = (props) => {
   )
 }
 
-export default SidebarAdm
+export default Sidebar

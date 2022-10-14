@@ -1,5 +1,5 @@
 import { useSelector }from 'react-redux';
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom';
 
 import DashAdmin from './pages/Admin/DashAdmin';
 import DashClie from './pages/Clients/DashClie';
@@ -15,9 +15,10 @@ const App = () => {
   return (  
       <Layout>
         <Routes>   
+        
           <Route path='/' element={ (authorization && role) === 'admin' ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />
           <Route path='/home' element={ (authorization && role) === 'admin' ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />
-          <Route path='/sales' element={ authorization ?  <DashClie /> :  <Login />  } /> 
+          <Route path='/client' element={ authorization ?  <DashClie /> :  <Login />  } /> 
           <Route path='/employees' element={ authorization ? <DashEmp /> : <Login />   } />
           <Route path='*' element={ (authorization && role) === 'admin' ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />
         </Routes>
