@@ -1,27 +1,99 @@
 [
     {
         "name": "Shrimp Cocktail",
-        "description": "this food is prepared with shrimps",
+        "description": "Shrimp cocktail",
         "price": 20.99,
-        "categories": ["Seafood Cocktails"],
+        "categories": ["Seafood Cocktails", "Mesa Fria"],
         "discount": 0,
         "image": "",
         "is_active": true
     },
     {
-        "name": "",
-        "description": "",
-        "price": 0,
-        "categories": [""],
+        "name": "Aguachile",
+        "description": "Cutted Shrimp with spicy lemon juice and onion.",
+        "price": 19.99,
+        "categories": ["Appetizer", "Mesa Fria"],
         "discount": 0,
         "image": "",
         "is_active": true
     },
     {
-        "name": "",
-        "description": "",
-        "price": 0,
-        "categories": [""],
+        "name": "Molcajete del Dios Huichol",
+        "description": "Molcajete filled with crab legs, mussels, shrimp, octopus, scallops and clams seasoned with our spicy spices and garlic",
+        "price": 30.99,
+        "categories": ["Platillos"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "Patas de Jaiba",
+        "description": "Crab legs seazoned",
+        "price": 20.99,
+        "categories": ["Appetizer"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "Salmon Zarandeado",
+        "description": "Salmon cooked on the grill with our special sweet and spicy sauce.",
+        "price": 20.99,
+        "categories": ["Platillos"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "Tostada Mixta",
+        "description": "Mixed shrimp and pulp of crab",
+        "price": 9.00,
+        "categories": ["Tostadas", "Mesa Fria"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "Camarones Zarandeados",
+        "description": "Shrimp cooked on the grill with our special sweet and special sauce.",
+        "price": 19.99,
+        "categories": ["Platillos", "Camarones"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+     {
+        "name": "Camarones a la Kora",
+        "description": "Shrimp prepared your way",
+        "price": 19.99,
+        "categories": ["Camarones", "Platillos"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "7 Mares",
+        "description": "Soup with crab and shrimp.",
+        "price": 22.99,
+        "categories": ["Caldos"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "Alambre de Pollo",
+        "description": "Cut chicken breast cooked with bacon, bell peppers, mushrooms and onions topped with cheese.",
+        "price": 17.99,
+        "categories": ["Platillos", "Pollo"],
+        "discount": 0,
+        "image": "",
+        "is_active": true
+    },
+    {
+        "name": "Tacos de pescado (3)",
+        "description": "Fish tacos",
+        "price": 13.99,
+        "categories": ["Platillos", "Starters"],
         "discount": 0,
         "image": "",
         "is_active": true

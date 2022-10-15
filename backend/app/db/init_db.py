@@ -34,7 +34,6 @@ def init_db(db: Session) -> None:
             )
             crud.category.create(db, obj_in=category_in)
 
-
     # Load foods
     path_foods = os.path.join(path_assets, "foods.json")
     with open(path_foods) as json_file:
