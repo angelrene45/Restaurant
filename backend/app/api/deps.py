@@ -1,4 +1,4 @@
-from typing import Generator, Optional
+from typing import Generator, Optional, List
 
 from fastapi import Depends, HTTPException, status, UploadFile, File
 from fastapi.security import OAuth2PasswordBearer
@@ -69,19 +69,20 @@ def get_current_active_superuser(
 
 
 def file_image_food(
-    file: Optional[UploadFile] = File(None, description="A file read as bytes"),
+    list_files: Optional[List[UploadFile]] = File(None, description="A file read as bytes"),
 ) ->  models.User:
     image_formats = ("image/png", "image/jpeg", "image/jpg")
-    if file:
-        if not file.content_type in image_formats:
-            raise HTTPException(
-                status_code=400, detail=f"The file {file.filename} is not a valid image"
-            )
+    for file in list_files:
+        if file:
+            if not file.content_type in image_formats:
+                raise HTTPException(
+                    status_code=400, detail=f"The file {file.filename} is not a valid image"
+                )
 
-        size_bytes = len(file.file.read())
-        if size_bytes > settings.IMAGE_SIZE_LIMIT_BYTES:
-            raise HTTPException(
-                status_code=400, detail=f"The file {file.filename} is greater than {settings.IMAGE_SIZE_LIMIT_BYTES} Bytes"
-            )
-        file.file.seek(0)
-    return file
+            size_bytes = len(file.file.read())
+            if size_bytes > settings.IMAGE_SIZE_LIMIT_BYTES:
+                raise HTTPException(
+                    status_code=400, detail=f"The file {file.filename} is greater than {settings.IMAGE_SIZE_LIMIT_BYTES} Bytes"
+                )
+            file.file.seek(0)
+    return list_files

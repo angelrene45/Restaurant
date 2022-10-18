@@ -1,9 +1,10 @@
 from typing import Any, Dict, Optional, Union
 
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.models.food import Food, Food_History_Price
+from app.models.food import Food, Food_Unit, Food_Variant
 from app.schemas.food import FoodCreate, FoodUpdate
 from app.models.category import Category
 
@@ -13,14 +14,26 @@ class CRUDFood(CRUDBase[Food, FoodCreate, FoodUpdate]):
         return db.query(Food).filter(Food.name == name).first()
 
     def create(self, db: Session, *, obj_in: FoodCreate, categories_db: list[Category]) -> Food:
+        """
+            Create food 
+                - Create food
+                - Create variants (one to many)
+                - Create Units (one to many)
+                - Link existing categories (many to many)
+        """
+        # map schemas pydantic to sqlalchemy model
+        variants = [Food_Variant(**variant.dict()) for variant in obj_in.variants]
+        units = [Food_Unit(**unit.dict()) for unit in obj_in.units]
+
+        # map model
         db_obj_food = Food(
             name=obj_in.name, 
             description=obj_in.description, 
-            price=obj_in.price, 
+            variants=variants,
+            units=units,
             discount=obj_in.discount, 
             is_active=obj_in.is_active, 
             categories=categories_db,
-            image=obj_in.image
         )
         db.add(db_obj_food)
         db.commit()
@@ -30,22 +43,25 @@ class CRUDFood(CRUDBase[Food, FoodCreate, FoodUpdate]):
     def update(
         self, db: Session, *, db_obj: Food, obj_in: Union[FoodUpdate, Dict[str, Any]], categories_db: list[Category]
     ) -> Food:
-        if isinstance(obj_in, dict):
-            update_data = obj_in
-        else:
-            update_data = obj_in.dict(exclude_unset=True)
-        db_obj.categories = categories_db
-        return super().update(db, db_obj=db_obj, obj_in=update_data)
+        # map schemas pydantic to sqlalchemy model
+        variants = [Food_Variant(**variant.dict()) for variant in obj_in.variants]
+        units = [Food_Unit(**unit.dict()) for unit in obj_in.units]
 
-    def update_new_price(self, db: Session, *, db_obj: Food, user_id: int) -> Food:
-        db_obj_price = Food_History_Price(
-            food_id = db_obj.id,
-            user_id = user_id,
-            price = db_obj.price
-        )
-        db.add(db_obj_price)
+        obj_data = jsonable_encoder(db_obj)
+        update_data = obj_in.dict(exclude_unset=True)
+
+        # update all values except relations
+        for field in obj_data:
+            if field in update_data and field not in ["variants", "units"]:
+                setattr(db_obj, field, update_data[field])
+
+        db_obj.categories = categories_db
+        db_obj.variants = variants
+        db_obj.units = units
+
+        db.add(db_obj)
         db.commit()
-        db.refresh(db_obj_price)
+        db.refresh(db_obj)
         return db_obj
 
     def is_active(self, food: Food) -> bool:
