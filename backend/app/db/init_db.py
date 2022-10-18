@@ -1,10 +1,14 @@
 import os
 import json
+import io
 
+import requests
+from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
 from app import crud, schemas, models
 from app.core.config import settings
+from app.utils.image import store_image_in_static_path
 
 def init_db(db: Session) -> None:
     """
@@ -44,21 +48,33 @@ def init_db(db: Session) -> None:
             if not data_food.get("name"): continue
             categories = [crud.category.get_by_name(db=db, name=category_name) for category_name in data_food.get("categories")]
             
-            # bytes_io = io.BytesIO(contents)
-            # file = UploadFile(
-            #     filename="test.jpg",
-            #     file = bytes_io,
-            #     content_type="image/jpg",
-            # )
-            # image = store_image_in_static_path(file) if file else None
-            # print(image)
+            # Upload images
+            variants = data_food.get("variants", [])
+            for variant in variants:
+                image = variant.get("image", None)
+                if not image: continue
+                # download the image from url
+                response = requests.get(image)
+                if response.status_code != 200: continue
+                # convert to bytes io
+                bytes_io = io.BytesIO(response.content)
+                # instance of UploadFile
+                file = UploadFile(
+                    filename="test.jpg",
+                    file = bytes_io,
+                    content_type="image/jpg",
+                )
+                public_url = store_image_in_static_path(file) if file else None
+                variant["image"] = public_url
 
+            # create food
             food_in = schemas.FoodCreate(
                 name=data_food.get("name"),
                 description=data_food.get("description"),
-                price=data_food.get("price"),
+                variants=data_food.get("variants"),
+                units=data_food.get("units"),
                 discount=data_food.get("discount"),
-                image=data_food.get("image"),
                 is_active=data_food.get("is_active"),
             )
+            
             crud.food.create(db, obj_in=food_in, categories_db=categories)
