@@ -59,6 +59,19 @@ class FoodCreate(FoodBase):
             return cls(**json.loads(value))
         return value
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "Shrimp Cocktail",
+                "description": "Served with hot shrimp juice",
+                "variants": [{"name": "variant cocktail 1", "image": "<name-of-image-that-upload>"}, {"name": "variant cocktail 2", "image": "<name-of-image-that-upload>"}],
+                "units": [{"unit":"Sm", "price": 15.99}, {"unit": "Lg", "price": 20.98}],
+                "categories": [{"id": 1}],
+                "discount": 0,
+                "is_active": True
+            }
+        }
+
 
 # Properties to receive via API on update
 class FoodUpdate(FoodBase):
@@ -75,6 +88,19 @@ class FoodUpdate(FoodBase):
         if isinstance(value, str):
             return cls(**json.loads(value))
         return value
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "Shrimp Cocktail",
+                "description": "Served with hot shrimp juice",
+                "variants": [{"id": 1, "name": "variant cocktail 1", "image": "<name-of-image-that-upload>"}, {"id": 2, "name": "variant cocktail 2", "image": "<name-of-image-that-upload>"}],
+                "units": [{"id": 1, "unit":"Sm", "price": 15.99}, {"id": 2, "unit": "Lg", "price": 20.98}],
+                "categories": [{"id": 1}],
+                "discount": 0,
+                "is_active": True
+            }
+        }
 
 
 class FoodInDBBase(FoodBase):
