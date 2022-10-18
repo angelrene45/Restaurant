@@ -24,7 +24,7 @@ def store_image_in_static_path(file: UploadFile) -> str:
 
     # create the public url 
     url_image = os.path.join(
-        f"{settings.SERVER_HOST}:{settings.BACKEND_PORT}", 
+        f"http://{settings.SERVER_HOST}:{settings.BACKEND_PORT}", 
         out_image_path)
 
     return url_image
@@ -70,6 +70,6 @@ def generate_qr_board(id: int) -> str:
     img_qr.save(out_image_path)
     # create the public url 
     url_image = os.path.join(
-        f"{settings.SERVER_HOST}:{settings.BACKEND_PORT}", 
+        f"http://{settings.SERVER_HOST}:{settings.BACKEND_PORT}", 
         out_image_path)
     return url_image

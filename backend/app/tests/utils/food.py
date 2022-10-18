@@ -1,5 +1,6 @@
-from typing import Optional
+import io
 
+from PIL import Image
 from sqlalchemy.orm import Session
 
 from app import crud, models
@@ -8,12 +9,25 @@ from app.tests.utils.utils import random_boolean, random_lower_string, random_fl
 from app.tests.utils.category import create_random_category
 
 
-def create_random_food_variants(n=3) -> models.Food_Variant:
-    return [FoodVariant(name=random_lower_string(), image="", is_active=random_boolean()) for _ in range(n)]
+def create_random_image_in_memory() -> bytes:
+    image_bytes = io.BytesIO()
+    image_pil = Image.new(mode="RGB", size=(200, 200), color=(153, 153, 255))
+    image_pil.save(image_bytes, "PNG")
+    return image_bytes.getvalue()
 
 
-def create_random_food_units(n=3) -> models.Food_Variant:
-    return [FoodUnit(unit=random_lower_string(), price=random_float(), is_active=random_boolean()) for _ in range(n)]
+def create_random_food_variants(n=3, as_dict=False) -> models.Food_Variant:
+    if as_dict:
+        return [FoodVariant(name=random_lower_string(), image="", is_active=random_boolean()).dict() for _ in range(n)]
+    else:
+        return [FoodVariant(name=random_lower_string(), image="", is_active=random_boolean()) for _ in range(n)]
+
+
+def create_random_food_units(n=3, as_dict=False) -> models.Food_Variant:
+    if as_dict:
+        return [FoodUnit(unit=random_lower_string(), price=random_float(), is_active=random_boolean()).dict() for _ in range(n)]
+    else:
+        return [FoodUnit(unit=random_lower_string(), price=random_float(), is_active=random_boolean()) for _ in range(n)]
 
 
 def create_random_food(db: Session) -> models.Food:

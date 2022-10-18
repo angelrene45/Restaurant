@@ -13,6 +13,9 @@ class CRUDFood(CRUDBase[Food, FoodCreate, FoodUpdate]):
     def get_by_name(self, db: Session, *, name: str) -> Optional[Food]:
         return db.query(Food).filter(Food.name == name).first()
 
+    def get_variant_by_name(self, db: Session, *, food_id: int, name: str) -> Optional[Food_Variant]:
+        return db.query(Food_Variant).filter(Food_Variant.food_id == food_id and Food_Variant.name == name).first()
+
     def create(self, db: Session, *, obj_in: FoodCreate, categories_db: list[Category]) -> Food:
         """
             Create food 

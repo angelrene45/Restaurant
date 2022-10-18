@@ -69,10 +69,10 @@ def get_current_active_superuser(
 
 
 def file_image_food(
-    list_files: Optional[List[UploadFile]] = File(None, description="A file read as bytes"),
-) ->  models.User:
+    files: Optional[List[UploadFile]] = File([], description="A file read as bytes"),
+) -> Optional[List[UploadFile]]:
     image_formats = ("image/png", "image/jpeg", "image/jpg")
-    for file in list_files:
+    for file in files:
         if file:
             if not file.content_type in image_formats:
                 raise HTTPException(
@@ -85,4 +85,4 @@ def file_image_food(
                     status_code=400, detail=f"The file {file.filename} is greater than {settings.IMAGE_SIZE_LIMIT_BYTES} Bytes"
                 )
             file.file.seek(0)
-    return list_files
+    return files
