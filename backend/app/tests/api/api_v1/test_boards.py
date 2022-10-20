@@ -2,15 +2,21 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.tests.utils.utils import random_lower_string
+from app.tests.utils.utils import random_boolean, random_integer, random_lower_string
 from app.tests.utils.board import create_random_board
+from app.tests.utils.layout import create_random_layout
 
 
 def test_create_boards(
-    client: TestClient, normal_user_token_headers: dict
+    client: TestClient, normal_user_token_headers: dict, db: Session
 ) -> None:
-
-    data = {"name": random_lower_string()}
+    layout = create_random_layout(db)
+    data = {
+        "name": random_lower_string(),
+        "layout_id": layout.id, 
+        "capacity": random_integer(),
+        "can_smoke": random_boolean() 
+    }
     r = client.post(
         f"{settings.API_V1_STR}/boards/", headers=normal_user_token_headers, json=data,
     )
@@ -18,7 +24,24 @@ def test_create_boards(
     assert r.status_code == 200
     assert created_board
     assert created_board.get("name") == data.get("name")
-    assert "static/test" in created_board.get("qr")
+    assert created_board.get("capacity") == data.get("capacity")
+    assert created_board.get("can_smoke") == data.get("can_smoke")
+    assert "static/test" in created_board.get("qr") # check if exists qr code image
+
+
+def test_create_with_bad_layout_boards(
+    client: TestClient, normal_user_token_headers: dict
+) -> None:
+    data = {
+        "name": random_lower_string(),
+        "layout_id": 0, 
+        "capacity": random_integer(),
+        "can_smoke": random_boolean() 
+    }
+    r = client.post(
+        f"{settings.API_V1_STR}/boards/", headers=normal_user_token_headers, json=data,
+    )
+    assert r.status_code == 400
 
 
 def test_get_boards(
@@ -64,14 +87,35 @@ def test_update_board(
 ) -> None:
     board_created = create_random_board(db)
     board_id = board_created.id
-
-    data = {"name": random_lower_string()}
+    data = {
+        "name": random_lower_string(),
+        "layout_id": board_created.layout_id, 
+        "capacity": random_integer(),
+        "can_smoke": random_boolean() 
+    }
     r = client.put(
         f"{settings.API_V1_STR}/boards/{board_id}", headers=normal_user_token_headers, json=data,
     )
     board_updated = r.json()
     assert r.status_code == 200
     assert board_updated
-    assert board_created.name != board_updated.get("name")
     assert board_updated.get("name") == data.get("name")
+    assert board_updated.get("capacity") == data.get("capacity")
+    assert board_updated.get("can_smoke") == data.get("can_smoke")
 
+
+def test_update_with_bad_layout_boards(
+    client: TestClient, normal_user_token_headers: dict, db: Session
+) -> None:
+    board_created = create_random_board(db)
+    board_id = board_created.id
+    data = {
+        "name": random_lower_string(),
+        "layout_id": 0, 
+        "capacity": random_integer(),
+        "can_smoke": random_boolean() 
+    }
+    r = client.put(
+        f"{settings.API_V1_STR}/boards/{board_id}", headers=normal_user_token_headers, json=data,
+    )
+    assert r.status_code == 400

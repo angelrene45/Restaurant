@@ -57,6 +57,12 @@ def create_board(
             status_code=400,
             detail="The board name already exists in the system",
         )
+    layout = crud.layout.get(db, id=board_in.layout_id)
+    if not layout:
+        raise HTTPException(
+            status_code=400,
+            detail="The Layout does not exist in the system",
+        )
     board = crud.board.create(db, obj_in=board_in)
     # Gnerate Qr with id
     qr = generate_qr_board(id=board.id)
@@ -87,6 +93,12 @@ def update_board(
     if not board:
         raise HTTPException(
             status_code=400, detail="The Board doesn't exist"
+        )
+    layout = crud.layout.get(db, id=board_in.layout_id)
+    if not layout:
+        raise HTTPException(
+            status_code=400,
+            detail="The Layout does not exist in the system",
         )
     board_updated = crud.board.update(db, db_obj=board, obj_in=board_in)
     return board_updated
