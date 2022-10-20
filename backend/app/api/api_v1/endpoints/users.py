@@ -40,6 +40,7 @@ def create_user_open(
     user = crud.user.create(db, obj_in=user_in)
     return user
 
+
 @router.get("/me", response_model=schemas.User)
 def read_user_me(
     db: Session = Depends(deps.get_db),

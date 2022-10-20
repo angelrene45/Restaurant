@@ -51,31 +51,20 @@ def read_customer_me(
     """
     return current_user
 
+
 @router.put("/me", response_model=schemas.Customer)
 def update_customer_me(
     *,
     db: Session = Depends(deps.get_db),
-    password: str = Body(None),
-    first_name: str = Body(None),
-    last_name: str = Body(None),
-    email: EmailStr = Body(None),
+    user_in: schemas.CustomerUpdate,
     current_user: models.Customer = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Update own customer.
     """
-    current_user_data = jsonable_encoder(current_user)
-    user_in = schemas.CustomerUpdate(**current_user_data)
-    if password is not None:
-        user_in.password = password
-    if first_name is not None:
-        user_in.first_name = first_name
-    if last_name is not None:
-        user_in.last_name = last_name
-    if email is not None:
-        user_in.email = email
     customer = crud.customer.update(db, db_obj=current_user, obj_in=user_in)
     return customer
+
 
 @router.get("/", response_model=List[schemas.Customer])
 def read_customers_being_admin(
@@ -89,6 +78,7 @@ def read_customers_being_admin(
     """
     customers = crud.customer.get_multi(db, skip=skip, limit=limit)
     return customers
+
 
 @router.get("/{customer_id}", response_model=schemas.User)
 def read_customer_by_id_being_admin(
@@ -105,6 +95,7 @@ def read_customer_by_id_being_admin(
             status_code=400, detail="The customer doesn't exists"
         )
     return customer
+
 
 @router.post("/", response_model=schemas.Customer)
 def create_customer_being_admin(
@@ -126,8 +117,9 @@ def create_customer_being_admin(
         )
     customer = crud.customer.create(db, obj_in=customer_in)
     if settings.EMAILS_ENABLED and customer_in.email:
-        background_tasks.add_task(send_new_account_email,  email_to=customer_in.email, username=customer_in.email, password=customer_in.password, type_user=1)
+        background_tasks.add_task(send_new_account_email, email_to=customer_in.email, username=customer_in.email, password=customer_in.password, type_user=1)
     return customer
+
 
 @router.put("/{customer_id}", response_model=schemas.Customer)
 def update_customer_being_admin(
