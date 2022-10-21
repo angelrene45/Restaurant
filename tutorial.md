@@ -25,7 +25,7 @@ winpty docker exec -it <docker-image-id> bash
 docker stop $(docker ps -a -q)
 # Stop the container(s) in docker-compose:
 docker-compose down
-# remove cotainers
+# remove containers
 docker rm $(docker ps -a -q)
 # Delete all volumes using the following command:
 docker volume rm $(docker volume ls -q)

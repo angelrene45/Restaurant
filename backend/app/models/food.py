@@ -19,17 +19,15 @@ class Food(Base):
 
 
 class Food_Variant(Base):
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    food_id = Column(Integer, ForeignKey("food.id"), index=True, nullable=False)
-    name = Column(String, nullable=False)
+    food_id = Column(Integer, ForeignKey("food.id"), primary_key=True, index=True, nullable=False)
+    name = Column(String, primary_key=True, index=True, nullable=False)
     image = Column(String, nullable=True)
     is_active = Column(Boolean(), default=True)
 
 
 class Food_Unit(Base):
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    food_id = Column(Integer, ForeignKey("food.id"), index=True, nullable=False)
-    unit = Column(String, nullable=False)
+    food_id = Column(Integer, ForeignKey("food.id"), primary_key=True, index=True, nullable=False)
+    unit = Column(String, primary_key=True, index=True, nullable=False)
     price = Column(Numeric(10, 2), nullable=False)
     is_active = Column(Boolean(), default=True)
 

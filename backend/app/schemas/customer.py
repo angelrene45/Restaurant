@@ -4,8 +4,28 @@ from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, validator
 
+example_user = {
+    "example": {
+        "email": "user@example.com",
+        "mobile": "+524490227820",
+        "first_name": "string",
+        "last_name": "string",
+        "is_active": True,
+        "password": "string",
+        "addresses": [
+                {
+                    "street": "8 My Street",
+                    "city": "New York",
+                    "state": "NY",
+                    "country": "USA",
+                    "postal_code": 10014,
+                    "location": {},
+                }
+        ]
+    }
+}
+
 class CustomerAddress(BaseModel):
-    id: Optional[int]
     street: Optional[str]
     city: Optional[str]
     state: Optional[str]
@@ -39,27 +59,7 @@ class CustomerCreate(CustomerBase):
     addresses: List[CustomerAddress] = []
 
     class Config:
-        schema_extra = {
-            "example": {
-                "email": "user@example.com",
-                "mobile": "+524490227820",
-                "first_name": "string",
-                "last_name": "string",
-                "is_active": True,
-                "password": "string",
-                "addresses": [
-                        {
-                            "street": "8 My Street",
-                            "city": "New York",
-                            "state": "NY",
-                            "country": "USA",
-                            "postal_code": 10014,
-                            "location": {},
-                        }
-                ]
-            }
-        }
-
+        schema_extra = example_user
 
 
 # Properties to receive via API on update
@@ -68,27 +68,7 @@ class CustomerUpdate(CustomerBase):
     addresses: List[CustomerAddress] = []
 
     class Config:
-        schema_extra = {
-            "example": {
-                "email": "user@example.com",
-                "mobile": "+524490227820",
-                "first_name": "string",
-                "last_name": "string",
-                "is_active": True,
-                "password": "string",
-                "addresses": [
-                        {
-                            "id": "<fill with existing id for modfied or empty if is new address>",
-                            "street": "8 My Street",
-                            "city": "New York",
-                            "state": "NY",
-                            "country": "USA",
-                            "postal_code": 10014,
-                            "location": {},
-                        }
-                ]
-            }
-        }
+        schema_extra = example_user
 
 
 class CustomerInDBBase(CustomerBase):

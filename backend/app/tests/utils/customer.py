@@ -8,7 +8,7 @@ from app import schemas
 from app import models
 from app.core.config import settings
 from app.schemas.customer import CustomerCreate, CustomerAddress
-from app.tests.utils.utils import random_email, random_lower_string
+from app.tests.utils.utils import random_email, random_integer, random_lower_string
 
 
 def customer_authentication_headers(
@@ -53,11 +53,11 @@ def create_random_customer(db: Session) -> models.Customer:
 
 def random_list_addresses(n=3, as_dict=False) -> List:
     """
-    Return a list of random addresess
+    Return a list of random addresses
 
     send number of address that will be generated
     """
     if as_dict:
-        return [CustomerAddress(street="8 My Street", city="New York", state="NY", country="USA", postal_code=10014, location={}).dict() for _ in range(n)]
+        return [CustomerAddress(street=random_lower_string(), city="New York", state="NY", country="USA", postal_code=random_integer(), location={}).dict() for _ in range(n)]
     else:
-        return [CustomerAddress(street="8 My Street", city="New York", state="NY", country="USA", postal_code=10014, location={}) for _ in range(n)]
+        return [CustomerAddress(street=random_lower_string(), city="New York", state="NY", country="USA", postal_code=random_integer(), location={}) for _ in range(n)]

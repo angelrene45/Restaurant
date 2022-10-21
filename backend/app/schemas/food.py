@@ -7,8 +7,20 @@ from pydantic import BaseModel
 from app.schemas.category import Category
 
 
+schema_example = {
+    "example": {
+        "name": "Shrimp Cocktail",
+        "description": "Served with hot shrimp juice",
+        "variants": [{"name": "variant cocktail 1", "image": "<name-of-image-that-upload>"}, {"name": "variant cocktail 2", "image": "<name-of-image-that-upload>"}],
+        "units": [{"unit":"Sm", "price": 15.99}, {"unit": "Lg", "price": 20.98}],
+        "categories": [{"id": 1}],
+        "discount": 0,
+        "is_active": True
+    }
+}
+
+
 class FoodVariant(BaseModel):
-    id: Optional[int]
     name: Optional[str]
     image: Optional[str]
     is_active: Optional[bool]
@@ -18,7 +30,6 @@ class FoodVariant(BaseModel):
 
 
 class FoodUnit(BaseModel):
-    id: Optional[int]
     unit: Optional[str]
     price: Optional[float]
     is_active: Optional[bool] = True
@@ -39,7 +50,6 @@ class FoodBase(BaseModel):
     units: Optional[List[FoodUnit]] = []
     categories: Optional[List[Category]] = []
     discount: Optional[int] = None
-    image: Optional[str] = None
     is_active: Optional[bool] = None
 
 
@@ -60,17 +70,7 @@ class FoodCreate(FoodBase):
         return value
 
     class Config:
-        schema_extra = {
-            "example": {
-                "name": "Shrimp Cocktail",
-                "description": "Served with hot shrimp juice",
-                "variants": [{"name": "variant cocktail 1", "image": "<name-of-image-that-upload>"}, {"name": "variant cocktail 2", "image": "<name-of-image-that-upload>"}],
-                "units": [{"unit":"Sm", "price": 15.99}, {"unit": "Lg", "price": 20.98}],
-                "categories": [{"id": 1}],
-                "discount": 0,
-                "is_active": True
-            }
-        }
+        schema_extra = schema_example
 
 
 # Properties to receive via API on update
@@ -90,17 +90,7 @@ class FoodUpdate(FoodBase):
         return value
 
     class Config:
-        schema_extra = {
-            "example": {
-                "name": "Shrimp Cocktail",
-                "description": "Served with hot shrimp juice",
-                "variants": [{"id": 1, "name": "variant cocktail 1", "image": "<name-of-image-that-upload>"}, {"id": 2, "name": "variant cocktail 2", "image": "<name-of-image-that-upload>"}],
-                "units": [{"id": 1, "unit":"Sm", "price": 15.99}, {"id": 2, "unit": "Lg", "price": 20.98}],
-                "categories": [{"id": 1}],
-                "discount": 0,
-                "is_active": True
-            }
-        }
+        schema_extra = schema_example
 
 
 class FoodInDBBase(FoodBase):

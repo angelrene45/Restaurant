@@ -29,11 +29,10 @@ def create_customer_open(
             detail="Open customer registration is forbidden on this server",
         )
     customer = crud.customer.get_by_email(db, email=customer_in.mobile)
-    if not customer: customer = crud.customer.get_by_mobile(db, mobile=customer_in.mobile)
     if customer:
         raise HTTPException(
             status_code=400,
-            detail="The customer with this username already exists in the system",
+            detail="The customer with this email already exists in the system",
         )
     customer = crud.customer.create(db, obj_in=customer_in)
     if settings.EMAILS_ENABLED and customer_in.email:
@@ -109,11 +108,10 @@ def create_customer_being_admin(
     Create new customer being admin customer.
     """
     customer = crud.customer.get_by_email(db, email=customer_in.email)
-    if not customer: customer = crud.customer.get_by_mobile(db, mobile=customer_in.mobile)
     if customer:
         raise HTTPException(
             status_code=400,
-            detail="The customer with this email or mobile already exists in the system.",
+            detail="The customer with this email already exists in the system",
         )
     customer = crud.customer.create(db, obj_in=customer_in)
     if settings.EMAILS_ENABLED and customer_in.email:

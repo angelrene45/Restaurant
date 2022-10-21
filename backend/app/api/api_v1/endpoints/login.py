@@ -29,7 +29,7 @@ def login_access_token(
 ) -> Any:
     """
     OAuth2 compatible token login, get an access token for future requests
-    this access-token wortks for users and customers
+    this access-token works for users and customers
     """
     crud_object = crud.user if user_type == schemas.UserTypeEnum.user else crud.customer
     user = crud_object.authenticate(

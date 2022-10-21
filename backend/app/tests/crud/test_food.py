@@ -38,7 +38,7 @@ def test_update_food_existing_variant(db: Session) -> None:
     food = create_random_food(db)
     existing_variant = food.variants[0]
     new_name = "new variant"
-    update_variant = FoodVariant(id=existing_variant.id, food_id=existing_variant.food_id, name=new_name)
+    update_variant = FoodVariant(food_id=existing_variant.food_id, name=new_name)
     food_in_update = FoodUpdate(variants=[update_variant])
     crud.food.update(db, db_obj=food, obj_in=food_in_update, categories_db=[])
     food_2 = crud.food.get(db, id=food.id)
@@ -51,7 +51,7 @@ def test_update_food_existing_unit(db: Session) -> None:
     existing_unit = food.units[0]
     new_unit = "new unit"
     new_price = random_float()
-    update_unit = FoodUnit(id=existing_unit.id, food_id=existing_unit.food_id, unit=new_unit, price=new_price)
+    update_unit = FoodUnit(food_id=existing_unit.food_id, unit=new_unit, price=new_price)
     food_in_update = FoodUpdate(units=[update_unit])
     crud.food.update(db, db_obj=food, obj_in=food_in_update, categories_db=[])
     food_2 = crud.food.get(db, id=food.id)

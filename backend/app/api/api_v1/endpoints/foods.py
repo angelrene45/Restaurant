@@ -60,7 +60,7 @@ def create_food_being_admin(
         public_url = store_image_in_static_path(file) if file else None
         variant.image = public_url
 
-    # get instace of exsiting model category
+    # get instance of existing model category
     categories_db = [crud.category.get(db, id=category.id) for category in food_in.categories if crud.category.get(db, id=category.id) is not None]
     # create food
     food = crud.food.create(db, obj_in=food_in, categories_db=categories_db)
@@ -98,7 +98,7 @@ def update_food_being_admin(
         public_url = store_image_in_static_path(file) if file else None
         variant.image = public_url
 
-    # get instace of exsiting model category
+    # get instance of existing model category
     categories_db = [crud.category.get(db, id=category.id) for category in food_in.categories if crud.category.get(db, id=category.id) is not None]
     # update food
     food_updated = crud.food.update(db, db_obj=food, obj_in=food_in, categories_db=categories_db)

@@ -11,7 +11,7 @@ class Customer(Base):
     last_name = Column(String, index=True)
     addresses = relationship("Customer_Address", backref='customer', cascade='all, delete-orphan')
     email = Column(String, unique=True, index=True, nullable=False)
-    mobile = Column(String, unique=True, index=True)
+    mobile = Column(String, index=True)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean(), default=True)
     last_login = Column(DateTime)
@@ -20,9 +20,8 @@ class Customer(Base):
 
 
 class Customer_Address(Base):
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    customer_id = Column(Integer, ForeignKey("customer.id"), index=True, nullable=False)
-    street = Column(String)
+    customer_id = Column(Integer, ForeignKey("customer.id"), primary_key=True, index=True, nullable=False)
+    street = Column(String, primary_key=True, index=True, nullable=False)
     city = Column(String)
     state = Column(String)
     country = Column(String)
