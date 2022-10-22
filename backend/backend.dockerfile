@@ -7,6 +7,7 @@ WORKDIR /backend
 # set environment variable
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV WATCHFILES_FORCE_POLLING=True
 ENV PYTHONPATH=/backend
 
 # install system dependencies
