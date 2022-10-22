@@ -12,7 +12,8 @@ const Layout = (props) => {
     <Fragment>
        { authorization && <MainNavigation password/> }
        { authorization && <SideBar links={links} /> } 
-       <main className='fixed' style={{ marginLeft: '10rem', height: '100%', width: 'calc(100% - 10rem)'}}>{props.children}</main>
+       { authorization && <main className='fixed' style={{ marginLeft: '10rem', height: '100%', width: 'calc(100% - 10rem)'}}>{props.children}</main> }
+       { !authorization && <main className='fixed' style={{ height: '100%', width: 'calc(100% - 10rem)'}}>{props.children}</main> }
     </Fragment>
   );
 };
