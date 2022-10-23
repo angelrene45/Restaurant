@@ -1,6 +1,8 @@
 from typing import Dict, Generator
-
+import os
 import pytest
+import shutil
+
 from starlette.config import environ
 from fastapi.testclient import TestClient
 from alembic import command
@@ -19,7 +21,8 @@ from app.tests.utils.user import authentication_token_from_email
 from app.tests.utils.utils import get_superuser_token_headers
 from app.tests.utils.customer import get_customer_token_headers
 
-environ['TESTING'] = 'True'
+environ['TESTING'] = "True"
+PATH_STATIC_TESTS = "static/tests"
 TestingSessionLocal: sessionmaker = None
 
 def override_get_db():
@@ -42,6 +45,23 @@ def create_super_user_test(session: sessionmaker) -> None:
         user = crud.user.create(db, obj_in=user_in)
     db.close()
 
+def clear_static_test_files() -> bool:
+    """
+        Clear all files in static path
+    """
+    if os.path.isdir(PATH_STATIC_TESTS):
+        shutil.rmtree(PATH_STATIC_TESTS)
+    if not os.path.isdir(PATH_STATIC_TESTS): return True
+    return False
+
+def pytest_configure(config):
+    """This function execute before run the tests"""
+    clear_static_test_files()
+    os.makedirs(PATH_STATIC_TESTS)
+
+def pytest_unconfigure(config):
+    """This function execute after run the tests"""
+    clear_static_test_files()
 
 @pytest.fixture(scope="session", autouse=True)
 def create_test_database():
@@ -59,6 +79,10 @@ def create_test_database():
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     create_super_user_test(TestingSessionLocal)
     yield                            # Run the tests.
+<<<<<<< HEAD
+    session.close_all_sessions()     # Close open connections
+=======
+>>>>>>> refs/remotes/origin/FrontBeto
     drop_database(url)               # Drop the test database.
 
 

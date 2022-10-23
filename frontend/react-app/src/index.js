@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+<<<<<<< HEAD
 import { Provider, useSelector }from 'react-redux';
+=======
+import { Provider }from 'react-redux';
+>>>>>>> FrontBeto
 import store from './store/Store';
 import { BrowserRouter as Router } from 'react-router-dom'
 

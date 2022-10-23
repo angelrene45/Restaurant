@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export { default as NavBar } from './NavBar/NavBar'
 export { default as SideBar } from './SideBar/SideBar'
 export { default as Login } from './Login/Login'
@@ -9,3 +10,12 @@ export { default as Food } from './Admin/Food'
 export { default as Providers } from './Admin/Providers'
 export { default as Reports } from './Admin/Reports'
 export { default as Sales } from './Admin/Sales'
+=======
+export { default as NavbarAdm } from './Admin/NavbarAdm'
+export { default as SidebarAdm } from './Admin/SidebarAdm'
+export { default as NavbarEmp } from './Employees/NavbarEmp'
+export { default as SidebarEmp } from './Employees/SidebarEmp'
+export { default as NavbarClie } from './Clients/NavbarClie'
+export { default as SidebarClie } from './Clients/SidebarClie'
+export { default as Login } from './Login/Login'
+>>>>>>> FrontBeto

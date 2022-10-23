@@ -1,4 +1,4 @@
-from typing import Generator, Optional
+from typing import Generator, Optional, List
 
 from fastapi import Depends, HTTPException, status, UploadFile, File
 from fastapi.security import OAuth2PasswordBearer
@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 
 from app import crud, models, schemas
 from app.core import security
-from app.crud import crud_user
 from app.db.session import SessionLocal
 from app.core.config import settings
 
@@ -27,7 +26,7 @@ def get_db() -> Generator:
 
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
-) -> models.User | models.Customer:
+) -> models.User:
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
@@ -38,29 +37,23 @@ def get_current_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    crud_object = crud.user if token_data.user_type == schemas.UserTypeEnum.user else crud.customer
-    user = crud_object.get(db, id=token_data.sub)
+    user = crud.user.get(db, id=token_data.sub)
     if not user:
-        raise HTTPException(status_code=404, detail="User or Customer not found")
+        raise HTTPException(status_code=404, detail="User not found")
     return user
 
 
 def get_current_active_user(
-    current_user: models.User | models.Customer = Depends(get_current_user),
-) -> models.User | models.Customer:
-    crud_object = crud.user if isinstance(current_user, models.User) else crud.customer
-    if not crud_object.is_active(current_user):
-        raise HTTPException(status_code=400, detail="Inactive user or customer")
+    current_user: models.User = Depends(get_current_user),
+) -> models.User:
+    if not crud.user.is_active(current_user):
+        raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 
 def get_current_active_superuser(
     current_user: models.User = Depends(get_current_user),
-) ->  models.User:
-    if isinstance(current_user, models.Customer):
-        raise HTTPException(
-            status_code=400, detail="The user is customer and doesn't have enough privileges"
-        )
+) -> models.User:
     if not crud.user.is_admin(current_user):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
@@ -69,19 +62,20 @@ def get_current_active_superuser(
 
 
 def file_image_food(
-    file: Optional[UploadFile] = File(None, description="A file read as bytes"),
-) ->  models.User:
+    files: Optional[List[UploadFile]] = File([], description="A file read as bytes"),
+) -> Optional[List[UploadFile]]:
     image_formats = ("image/png", "image/jpeg", "image/jpg")
-    if file:
-        if not file.content_type in image_formats:
-            raise HTTPException(
-                status_code=400, detail=f"The file {file.filename} is not a valid image"
-            )
+    for file in files:
+        if file:
+            if not file.content_type in image_formats:
+                raise HTTPException(
+                    status_code=400, detail=f"The file {file.filename} is not a valid image"
+                )
 
-        size_bytes = len(file.file.read())
-        if size_bytes > settings.IMAGE_SIZE_LIMIT_BYTES:
-            raise HTTPException(
-                status_code=400, detail=f"The file {file.filename} is greater than {settings.IMAGE_SIZE_LIMIT_BYTES} Bytes"
-            )
-        file.file.seek(0)
-    return file
+            size_bytes = len(file.file.read())
+            if size_bytes > settings.IMAGE_SIZE_LIMIT_BYTES:
+                raise HTTPException(
+                    status_code=400, detail=f"The file {file.filename} is greater than {settings.IMAGE_SIZE_LIMIT_BYTES} Bytes"
+                )
+            file.file.seek(0)
+    return files

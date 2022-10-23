@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app import crud, models, schemas
 from app.api import deps
+from app.schemas.food import FoodCreate, FoodUpdate
 from app.utils.image import store_image_in_static_path, delete_image_in_static_path
 
 router = APIRouter()
@@ -43,34 +44,26 @@ def read_food_by_id_open(
 def create_food_being_admin(
     *,
     db: Session = Depends(deps.get_db),
-    name: str = Body(...),
-    description: str = Body(...),
-    price: float = Body(...),
-    categories: list = Body(..., description="Category id list"),
-    discount: int = Body(default=..., gt=-1, lt=100),
-    is_active: bool = Body(default=...),
-    file: Optional[UploadFile] = Depends(deps.file_image_food),
+    food_in: FoodCreate = Body(...),
+    files: Optional[List[UploadFile]] = Depends(deps.file_image_food),
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Create new food system by admin.
     """
-    image = store_image_in_static_path(file) if file else None
 
-    if categories and ',' in categories[0]: categories = categories[0].split(',') # fix problem with swagger UI
-    categories_db = [crud.category.get(db, id=category_id) for category_id in categories if crud.category.get(db, id=category_id) is not None]
+    # upload images
+    for file in files:
+        # find variant linked with image file that has the same filename 
+        variant = next((variant for variant in food_in.variants if variant.image == file.filename), None)
+        if not variant: continue
+        public_url = store_image_in_static_path(file) if file else None
+        variant.image = public_url
 
-    food_in = schemas.FoodCreate(
-        name=name, 
-        description=description, 
-        price=price, 
-        discount=discount,
-        image=image,
-        is_active=is_active)
+    # get instance of existing model category
+    categories_db = [crud.category.get(db, id=category.id) for category in food_in.categories if crud.category.get(db, id=category.id) is not None]
+    # create food
     food = crud.food.create(db, obj_in=food_in, categories_db=categories_db)
-
-    crud.food.update_new_price(db, db_obj=food, user_id=current_user.id)
-
     return food
 
 
@@ -79,13 +72,8 @@ def update_food_being_admin(
     *,
     db: Session = Depends(deps.get_db),
     food_id: int,
-    name: str = Body(...),
-    description: str = Body(...),
-    price: float = Body(...),
-    categories: list = Body(..., description="Category id list"),
-    discount: int = Body(default=..., gt=-1, lt=100),
-    is_active: bool = Body(default=...),
-    file: Optional[UploadFile] = Depends(deps.file_image_food),
+    food_in: FoodUpdate = Body(...),
+    files: Optional[List[UploadFile]] = Depends(deps.file_image_food),
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
@@ -97,28 +85,21 @@ def update_food_being_admin(
             status_code=400, detail="The Food doesn't exist"
         )
 
-    # check if is new file
-    if file:
-        delete_image_in_static_path(food.image)
-        image = store_image_in_static_path(file)
-    else:
-        image = food.image
+    # upload images
+    for file in files:
+        # find variant linked with image file that has the same filename 
+        variant = next((variant for variant in food_in.variants if variant.image == file.filename), None)
+        if not variant: continue
+        # get current image url
+        variant_db = crud.food.get_variant_by_name(db, food_id=food.id, name=variant.name)
+        # delete the current image in variant
+        delete_image_in_static_path(variant_db.image)
+        # store new image
+        public_url = store_image_in_static_path(file) if file else None
+        variant.image = public_url
 
-    food_in = schemas.FoodCreate(
-        name=name, 
-        description=description, 
-        price=price, 
-        discount=discount, 
-        is_active=is_active,
-        image=image)
-    
-    if categories and ',' in categories[0]: categories = categories[0].split(',') # fix problem with swagger UI
-    categories_db = [crud.category.get(db, id=category_id) for category_id in categories if crud.category.get(db, id=category_id) is not None]
-
-    current_price = food.price
+    # get instance of existing model category
+    categories_db = [crud.category.get(db, id=category.id) for category in food_in.categories if crud.category.get(db, id=category.id) is not None]
+    # update food
     food_updated = crud.food.update(db, db_obj=food, obj_in=food_in, categories_db=categories_db)
-
-    check_new_price = True if current_price != food_updated.price else False
-    if check_new_price: crud.food.update_new_price(db, db_obj=food, user_id=current_user.id)
-
     return food_updated

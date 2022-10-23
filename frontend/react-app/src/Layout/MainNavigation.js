@@ -1,4 +1,21 @@
+<<<<<<< HEAD
 import { Link  } from 'react-router-dom';
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+const MainNavigation = () => {
+
+  return (
+    <header >
+      
+    </header>
+=======
+import { Link  } from 'react-router-dom';
+=======
+
+>>>>>>> 3244ace7a7c7ec25543222531eacf37ae4beea4d
+>>>>>>> FrontBeto
 import { useSelector, useDispatch } from "react-redux";
 
 
@@ -23,6 +40,10 @@ const MainNavigation = () => {
         <h1 className='hover:text-green-50' style={{ cursor: "pointer"}} onClick={logOutHandler}>{'LogOut'}</h1>
       </div>
     </div>
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/FrontBeto
+>>>>>>> FrontBeto
   );
 };
 

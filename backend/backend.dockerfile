@@ -5,7 +5,11 @@ FROM python:3.10-slim-buster
 WORKDIR /backend
 
 # set environment variable
+<<<<<<< HEAD
+ENV PYTHONUNBUFFERED=1
+=======
 ENV PYTHONDONTWRITEBYTECODE=1
+>>>>>>> refs/remotes/origin/FrontBeto
 ENV PYTHONUNBUFFERED=1
 ENV WATCHFILES_FORCE_POLLING=True
 ENV PYTHONPATH=/backend

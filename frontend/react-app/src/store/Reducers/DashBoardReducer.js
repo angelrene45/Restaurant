@@ -2,6 +2,10 @@ import Types from '../Types';
 
 const initialState =  {
     dashBoard: '',
+<<<<<<< HEAD
+=======
+    links: []
+>>>>>>> FrontBeto
 };
 
 const DashBoardReducer = (state = initialState, action) => {
@@ -10,7 +14,12 @@ const DashBoardReducer = (state = initialState, action) => {
         case Types.setDashBoard:
           return {
             ...state,
+<<<<<<< HEAD
             dashBoard: action.payload,
+=======
+            dashBoard: action.payload.dashboard,
+            links: action.payload.links,
+>>>>>>> FrontBeto
           };
         default:
           return state
