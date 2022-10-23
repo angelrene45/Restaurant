@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 const MainNavigation = () => {
 
@@ -8,6 +9,9 @@ const MainNavigation = () => {
     </header>
 =======
 import { Link  } from 'react-router-dom';
+=======
+
+>>>>>>> 3244ace7a7c7ec25543222531eacf37ae4beea4d
 import { useSelector, useDispatch } from "react-redux";
 
 

@@ -7,8 +7,10 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 60 minutes * 24 hours * 8 days = 8 days
+    IMAGE_SIZE_LIMIT_BYTES: int = 5242880 # 5 megabytes
     PROJECT_NAME: str
     SERVER_HOST: str
+    BACKEND_PORT: int
     DB_SERVER: str
     DB_NAME: str
     DB_NAME_TEST: str
@@ -22,6 +24,14 @@ class Settings(BaseSettings):
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+
+    @validator("BACKEND_CORS_ORIGINS", pre=True)
+    def assemble_cors_origins(cls, v: str | List[str]) -> List[str] | str:
+        if isinstance(v, str) and not v.startswith("["):
+            return [i.strip() for i in v.split(",")]
+        elif isinstance(v, (list, str)):
+            return v
+        raise ValueError(v)
 
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)

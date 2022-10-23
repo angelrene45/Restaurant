@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app import crud
 from app.core.config import settings
-from app.models.user import User
+from app.models.user import User, RolUser
 from app.schemas.user import UserCreate, UserUpdate
 from app.tests.utils.utils import random_email, random_lower_string
 
@@ -26,6 +26,15 @@ def create_random_user(db: Session) -> User:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(username=email, email=email, password=password)
+    user = crud.user.create(db=db, obj_in=user_in)
+    return user
+
+
+def create_random_user_admin(db: Session) -> User:
+    email = random_email()
+    password = random_lower_string()
+    role = RolUser.admin
+    user_in = UserCreate(username=email, email=email, password=password, role=role)
     user = crud.user.create(db=db, obj_in=user_in)
     return user
 

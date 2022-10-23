@@ -27,6 +27,10 @@ def login_access_token(
 ) -> Any:
     """
     OAuth2 compatible token login, get an access token for future requests
+<<<<<<< HEAD
+=======
+    this access-token works for users and customers
+>>>>>>> 3244ace7a7c7ec25543222531eacf37ae4beea4d
     """
     user = crud.user.authenticate(
         db, email=form_data.username, password=form_data.password

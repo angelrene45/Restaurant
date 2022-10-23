@@ -4,7 +4,8 @@
 """
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from fastapi_socketio import SocketManager
 
@@ -21,17 +22,20 @@ socket_manager = SocketManager(app=app)
 app.sio.register_namespace(UserNamespace('/user_si'))
 
 # Set all CORS enabled origins
-if settings.BACKEND_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # set all endpoints
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+# serving static files 
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 ### REMOVE LATER
@@ -62,13 +66,12 @@ html = """
 """
 
 from fastapi import Depends
-from app.api.deps import reusable_oauth2
+from sqlalchemy.orm import Session
 from app.db.init_db import init_db
-from app.db.session import SessionLocal
+from app.api import deps
 
 @app.get("/")
-async def get():
+def get(db: Session = Depends(deps.get_db)):
     # create super user if dont exists
-    db = SessionLocal()
     init_db(db)
     return HTMLResponse(html)

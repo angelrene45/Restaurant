@@ -42,8 +42,9 @@ const App = () => {
   return (  
       <Layout>
         <Routes>   
-          <Route path='/' element={ (authorization && role) === 'admin' ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />
-          <Route path='/home' element={ (authorization && role) === 'admin' ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />
+          <Route path='/' element={ (authorization && role === 'admin') ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />
+          <Route path='/admin/:params' element={ (authorization && role === 'admin') && <DashAdmin />   } />
+          <Route path='/home/:params' element={ (authorization && role) === 'admin' ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />
           <Route path='/sales' element={ authorization ?  <DashClie /> :  <Login />  } /> 
           <Route path='/employees' element={ authorization ? <DashEmp /> : <Login />   } />
           <Route path='*' element={ (authorization && role) === 'admin' ? <DashAdmin />  : (authorization && role !== 'admin') ? <DashEmp /> : <Login /> } />

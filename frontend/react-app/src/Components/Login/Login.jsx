@@ -166,5 +166,9 @@ const Login = (props) => {
 };
 
 
+<<<<<<< HEAD
 export default Login;
 >>>>>>> refs/remotes/origin/FrontBeto
+=======
+export default Login;
+>>>>>>> 3244ace7a7c7ec25543222531eacf37ae4beea4d
