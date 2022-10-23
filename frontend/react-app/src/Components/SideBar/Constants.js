@@ -21,7 +21,7 @@ export  const linksJsonAdmin = [
     },
     {
       name: "Menu register",
-      url: "/menu_reg"
+      url: "admin/menu_reg"
     }
 ];
 
