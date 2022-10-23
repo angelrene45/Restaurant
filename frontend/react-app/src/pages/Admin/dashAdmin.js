@@ -1,33 +1,67 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 
 import Types from '../../store/Types';
 import SideBar from '../../Components/SideBar/SideBar';
-import { linksJsonAdmin} from '../../Components/SideBar/Constants'
-
-import TablesLayOut from '../../Components/Common/TablesLayOut';
-import MenuRegister from '../../Components/Admin/MenuRegister';
+import NavBar from '../../Components/NavBar/NavBar';
+import { Food, Employees, Providers, Reports, Sales } from '../../Components'
 
 
 const DashAdmin = () => {
-  const dispatch = useDispatch();
-  let { params } = useParams();
-  useEffect(() => {
-    dispatch({ type: Types.setDashBoard, payload: { dashboard: "ADMIN", links:linksJsonAdmin } });
-  });
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    
-  },[params]);
+    dispatch({ type: Types.setDashBoard, payload: "ADMIN" });
+  });
   
-   console.log(params)
+  
+  const linksJson = [
+    {
+      name: "Home",
+      url: "/"
+    },
+    {
+      name: "Sale",
+      url: "/sales"
+    },
+    {
+      name: "Employees",
+      url: "/employees"
+    },
+    {
+      name: "Providers",
+      url: "/providers"
+    },
+    {
+      name: "Reports",
+      url: "/reports"
+    },
+    {
+      name: "Menu register",
+      url: "/menu_reg"
+    }
+  ];
+
+
+   
   return (
-    <>
-      
-      { params === 'menu_reg' && <MenuRegister/> }
-      { params === undefined && <TablesLayOut />}
-    </>
+    <div>
+          <div className='w-40 fixed sidebar  bg-gray-900 shadow-lg shadow-gray-500/90 h-full text-green-300 p-5'>
+            <SideBar links={linksJson} />
+          </div>
+          <div className='flex relative bg-gray-500'>
+            <Routes>
+                
+                    <Route path='/client' element={<DashAdmin />} />
+                    <Route path='/employees' element={<Employees />} />
+                    <Route path='/providers' element={<Providers />} />
+                    <Route path='/reports' element={<Reports />} />
+                    <Route path='/menu_reg' element={<Food />} /> 
+              
+            </Routes>
+          </div>
+    </div>
   )
 };
 
