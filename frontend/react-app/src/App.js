@@ -1,8 +1,8 @@
 import { useSelector }from 'react-redux';
 import { Routes, Route } from 'react-router-dom'
 
-import DashAdmin from './pages/Admin/DashAdmin';
-import DashClie from './pages/Clients/DashClie';
+import DashAdmin from './pages/Admin/DashAdmin_';
+import DashClie from './pages/Clients/DashClie_';
 import DashEmp  from './pages/Employees/DashEmp';
 import Login from './Components/Login/Login'
 import Layout from './Layout/Layout';
