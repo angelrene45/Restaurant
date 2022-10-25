@@ -1,7 +1,7 @@
 # pull official base image 
 FROM python:3.10-slim-buster
 
-# set wroking directory
+# set working directory
 WORKDIR /backend
 
 # set environment variable
@@ -10,7 +10,15 @@ ENV PYTHONUNBUFFERED=1
 ENV WATCHFILES_FORCE_POLLING=True
 ENV PYTHONPATH=/backend
 
-# install system dependencies
+# install postgres-client-14 (pg_dump, pg_restore, psql)
+RUN apt-get update \
+  && apt-get -y install gnupg2 wget lsb-release\
+  && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
+  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+  && apt-get update \
+  && apt-get -y install postgresql-client-14
+
+# install system dependencies for python libraries
 RUN apt-get update \
   && apt-get -y install libpq-dev netcat gcc \
   && apt-get clean
