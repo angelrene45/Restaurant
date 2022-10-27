@@ -3,7 +3,7 @@ import Types from '../Types';
 const initialState =  {
     authToken: '',
     authorization: false,
-    role:''
+    role:'', 
 };
 
 const LoginReducer = (state = initialState, action) => {

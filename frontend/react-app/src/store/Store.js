@@ -1,6 +1,6 @@
 import { createStore, combineReducers, compose } from 'redux'
-import LoginReducer from './Reducers/LoginReducer'
-import DashBoardReducer from './Reducers/DashBoardReducer'
+import LoginReducer from './reducers/LoginReducer'
+import DashBoardReducer from './reducers/DashBoardReducer'
 
 const reducer = combineReducers({
     LoginReducer,

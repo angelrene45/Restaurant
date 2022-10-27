@@ -1,10 +1,10 @@
-import  greenTable from '../../images/round-table.png'
-import  greenSquare from '../../images/dinning-table.png'
-import  redTable from '../../images/round-table-red.png'
-import  bar from '../../images/cocktail.png'
-import  soda from '../../images/soda-can.png'
-import  cocina from '../../images/sarten.png'
-import  trash from '../../images/eliminar.png'
+import greenTable from '../images/round-table.png'
+import greenSquare from '../images/dinning-table.png'
+import redTable from '../images/round-table-red.png'
+import bar from '../images/cocktail.png'
+import soda from '../images/soda-can.png'
+import cocina from '../images/sarten.png'
+import trash from '../images/eliminar.png'
 
 const TablesLayOut = () => {
 

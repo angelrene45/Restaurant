@@ -1,31 +1,21 @@
-export  const linksJsonAdmin = [
+export const linksJsonAdmin = [
+
     {
-      name: "Home",
-      url: "/"
-    },
-    {
-      name: "Sale",
-      url: "/sales"
-    },
-    {
-      name: "Employees",
-      url: "/employees"
-    },
-    {
-      name: "Providers",
-      url: "/providers"
-    },
-    {
-      name: "Reports",
-      url: "/reports"
-    },
-    {
-      name: "Menu register",
-      url: "admin/menu_reg"
+      topic: "Food",
+      subTopics: [
+        {
+          name: "Categories",
+          url:"/admin/food/categories"
+        },
+        {
+          name: "Dish",
+          url:"/admin/food/dishes"
+        }
+      ]
     }
 ];
 
-export   const linksJsonClie = [
+export const linksJsonClie = [
     {
       name: "Table Map",
       url: "/"
@@ -69,6 +59,6 @@ export const linksJsonEmployees = [
       name: "Proveedores",
       url: "/proveedores"
     },
-  ];
+];
 
 

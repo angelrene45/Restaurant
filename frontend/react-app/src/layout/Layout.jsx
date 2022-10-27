@@ -1,19 +1,23 @@
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import MainNavigation from './MainNavigation';
 import SideBar from '../components/sideBar/SideBar';
 
 
 const Layout = (props) => {
-  const authorization = useSelector(state => state.LoginReducer.authorization)
   const links = useSelector(state => state.DashBoardReducer.links)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <Fragment>
-       { authorization && <MainNavigation password/> }
-       { authorization && <SideBar links={links} /> } 
-       { authorization && <main className='fixed flex items-center justify-center' style={{ marginLeft: '10rem', height: '100%', width: 'calc(100% - 10rem)', background: '#E3F8E4'}}>{props.children}</main> }
-       { !authorization && <main className='fixed' style={{ height: '100%', width: 'calc(100% - 10rem)'}}>{props.children}</main> }
+      <div className="flex h-screen overflow-hidden">
+        <SideBar links={links} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+        <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <MainNavigation password sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> 
+        <main className='fixed flex items-center justify-center' style={{  height: '100%', width: 'calc(100% - 10rem)'}}>{props.children}</main> 
+       </div>
+      </div>
     </Fragment>
   );
 };

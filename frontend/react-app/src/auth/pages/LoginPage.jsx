@@ -1,13 +1,14 @@
 import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 import React from 'react';
 import loginImg from '../../images/login2.jpg';
 import Types from '../../store/Types';
+import { navigateUser } from '../../utils';
 
 
-const Login = (props) => {
+export const LoginPage = (props) => {
     
     const [isLogin, setIsLogin] = useState(true);
     const emailInputRef = useRef();
@@ -17,13 +18,16 @@ const Login = (props) => {
     const token = localStorage.getItem('TOKEN');
     const role = localStorage.getItem('ROLE');
 
+    // if user is already authenticated redirect to proper page 
+    const {authorization} = useSelector(state => state.LoginReducer);
+    if (authorization) return navigateUser(role)
+
 
     if (token !== null) {
       dispatch({ type: Types.setToken, payload: { token, role } });
     };
 
-
-
+    
     const loginHandler = async (event) => {
       event.preventDefault();
       const enteredEmail = emailInputRef.current.value;
@@ -55,7 +59,7 @@ const Login = (props) => {
         }
         
       } catch(e) {
-        //mostrar error
+        //show error
         window.alert(e)
       }
     };
@@ -95,6 +99,3 @@ const Login = (props) => {
     </div>
   )
 };
-
-
-export default Login;
