@@ -1,4 +1,4 @@
-import { backendApi } from "../../../api/backendApi";
+import { backendApi } from "../../../api";
 import { setToken } from "./loginSlice"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'

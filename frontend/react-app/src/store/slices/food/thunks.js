@@ -1,4 +1,4 @@
-import { backendApi } from "../../../api/backendApi";
+import { backendApi } from "../../../api";
 import { setFoods, startLoadingFoods } from "./foodSlice"
 
 export const getFoods = (page = 0) => {
@@ -7,8 +7,6 @@ export const getFoods = (page = 0) => {
         dispatch(startLoadingFoods());
 
         // execute call api 
-        // const resp = await fetch(`/foods/open?skip=${page*10}&limit=100`);
-        // const data = await resp.json();
         const { data, status, statusText, headers } = await backendApi.get(`/foods/open?skip=${page*10}&limit=10`);
         dispatch(setFoods({foods: data, page: page + 1}));
     }
