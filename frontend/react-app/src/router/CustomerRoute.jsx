@@ -5,9 +5,11 @@ import { TypeUsers } from '../utils'
 
 export const CustomerRoute = ({ children }) => {
 
-    const {authorization, role} = useSelector(state => state.LoginReducer)
+    // const {authorization, role} = useSelector(state => state.LoginReducer)
     
-    return (authorization && role === TypeUsers.Customer)
-        ? children
-        : <LoginPage/>
+    // return (authorization && role === TypeUsers.Customer)
+    //     ? children
+    //     : <LoginPage/>
+    return children
+   
 }

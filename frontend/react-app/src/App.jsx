@@ -1,6 +1,6 @@
 import { AppRouter } from './router/AppRouter'
 
-const App = () => {
+export const App = () => {
 
   return (  
     <>   
@@ -9,5 +9,3 @@ const App = () => {
   );
 
 };
-
-export default App;

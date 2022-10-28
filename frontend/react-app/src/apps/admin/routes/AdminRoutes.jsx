@@ -5,14 +5,14 @@ import { useEffect } from 'react';
 import { AdminPage } from '../pages';
 import { linksJsonAdmin } from '../../../utils'
 import Layout from '../../../layout/Layout';
-import Types from '../../../store/Types';
 import CategoriesCRUD from '../pages/CategoriesCrud';
+import { setLinks } from '../../../store/slices/dashInfo/dashSlice';
 
 export const AdminRoutes = () => {
   // get sidebar options
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: Types.setDashBoard, payload: { dashboard: "ADMIN", links:linksJsonAdmin } });
+    dispatch( setLinks( {links:linksJsonAdmin}));
   });
 
   return (

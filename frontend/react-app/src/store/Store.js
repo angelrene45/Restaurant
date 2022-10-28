@@ -1,15 +1,13 @@
-import { createStore, combineReducers, compose } from 'redux'
-import LoginReducer from './reducers/LoginReducer'
-import DashBoardReducer from './reducers/DashBoardReducer'
+import { configureStore } from '@reduxjs/toolkit'
 
-const reducer = combineReducers({
-    LoginReducer,
-    DashBoardReducer
-});
+import { foodSlice } from './slices/food'
+import { loginSlice } from './slices/login'
+import { dashInfoSlice } from './slices/dashInfo/dashSlice'
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const Store = createStore(
-    reducer,
-    composeEnhancers());
-
-export default Store;
+export const store = configureStore({
+    reducer: {
+        login: loginSlice.reducer,
+        foods: foodSlice.reducer,
+        dashInfo: dashInfoSlice.reducer,
+    },
+})

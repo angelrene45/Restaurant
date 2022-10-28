@@ -7,7 +7,7 @@ import SideBar from '../components/sideBar/SideBar';
 
 
 const Layout = (props) => {
-  const links = useSelector(state => state.DashBoardReducer.links)
+  const links = useSelector(state => state.dashInfo.links)
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <Fragment>

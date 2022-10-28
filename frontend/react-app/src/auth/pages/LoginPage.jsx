@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import React from 'react';
 import loginImg from '../../images/login2.jpg';
-import Types from '../../store/Types';
 import { navigateUser } from '../../utils';
+import { getToken, setToken } from '../../store/slices/login';
 
 
 export const LoginPage = (props) => {
@@ -19,12 +19,11 @@ export const LoginPage = (props) => {
     const role = localStorage.getItem('ROLE');
 
     // if user is already authenticated redirect to proper page 
-    const {authorization} = useSelector(state => state.LoginReducer);
+    const {authorization} = useSelector(state => state.login);
     if (authorization) return navigateUser(role)
 
-
     if (token !== null) {
-      dispatch({ type: Types.setToken, payload: { token, role } });
+      dispatch(setToken({token, role }));
     };
 
     
@@ -32,38 +31,8 @@ export const LoginPage = (props) => {
       event.preventDefault();
       const enteredEmail = emailInputRef.current.value;
       const enteredPassword = passwordInputRef.current.value
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-      myHeaders.append("Accept", "application/json");
-
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("username", enteredEmail);
-      urlencoded.append("password", enteredPassword);
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: urlencoded,
-        redirect: 'follow',
-      };
-      try {
-        const response = await fetch("http://localhost:8000/api/v1/login/access-token", requestOptions);
-        if (response.ok) {
-          const data = await response.json()    
-          dispatch({ type: Types.setToken, payload: { token: data.access_token, role: data.user_data.role }});
-          localStorage.setItem('TOKEN', data.access_token);
-          localStorage.setItem('ROLE', data.user_data.role);
-        } else {
-
-          throw new Error("Invalid credentials")
-        }
-        
-      } catch(e) {
-        //show error
-        window.alert(e)
-      }
+      dispatch( getToken(enteredEmail, enteredPassword ) )
     };
-
 
   
     return (

@@ -3,18 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
 import UserMenu from '../Components/items/DropdownProfile'
-import Types from '../store/Types';
-
+import { deleteToken } from "../store/slices/login";
 
 const MainNavigation = (props) => {
   const dispatch = useDispatch();
   const [searchModalOpen, setSearchModalOpen] = useState(false)
-  const tittle = useSelector(state => state.DashBoardReducer.dashBoard)
 
   const logOutHandler = () => {
     localStorage.clear('TOKEN')
     localStorage.clear('ROLE')
-    dispatch({ type: Types.deleteToken })
+    dispatch( deleteToken() )
   };
 
   return ( 
