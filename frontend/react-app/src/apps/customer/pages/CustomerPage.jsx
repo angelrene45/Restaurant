@@ -14,9 +14,12 @@ export const CustomerPage = (props) => {
       dispatch(getFoods());
     }, [])
 
+    const prevPageListener = () => dispatch(getFoods(page-1));
+    const nextPageListener = () => dispatch(getFoods(page+1));
+
     return (
       <div className="flex h-screen overflow-hidden">
-  
+        
         {/* Sidebar */}
         {/* <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
   
@@ -68,15 +71,17 @@ export const CustomerPage = (props) => {
                           <FoodCart key={food.name} food={food}/>
                         ))
                       }
-                     
                     </div>
                   </div>
   
                   {/* Pagination */}
                   <div className="mt-6">
-                    <FoodPagination />
+                    <FoodPagination
+                      events={{prevPageListener, nextPageListener}}
+                      page={page}
+                      length={foods.length}
+                    />
                   </div>
-  
                 </div>
   
               </div>
@@ -88,37 +93,4 @@ export const CustomerPage = (props) => {
   
       </div>
     );
-
-    // return (
-    //   <div>  
-    //     <h1>Loading: { isLoading ? 'True': 'False' }</h1><br />
-
-    //     <ul>
-    //       {
-    //         foods.map(({name}) => (
-    //           <div key={name}>
-    //             <li>{name}</li>
-    //           </div>
-    //         ))
-    //       }
-    //     </ul>
-
-    //     <br />
-    //     <button
-    //       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    //       disabled={isLoading}
-    //       onClick={()=> dispatch(getFoods(page-2))}
-    //     >
-    //         Prev Page
-    //     </button>
-
-    //     <button
-    //       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    //       disabled={isLoading}
-    //       onClick={()=> dispatch(getFoods(page))}
-    //     >
-    //         Next Page
-    //     </button>
-    //   </div>
-    // )
 };
