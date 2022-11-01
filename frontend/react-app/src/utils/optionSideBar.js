@@ -8,7 +8,7 @@ export const linksJsonAdmin = [
           url:"/admin/food/categories"
         },
         {
-          name: "Dish",
+          name: "Dishes and drinks",
           url:"/admin/food/dishes"
         }
       ]

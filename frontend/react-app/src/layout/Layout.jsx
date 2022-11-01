@@ -15,7 +15,7 @@ const Layout = (props) => {
         <SideBar links={links} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
         <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         <MainNavigation password sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> 
-        <main className='fixed flex items-center justify-center' style={{  height: '100%', width: 'calc(100% - 10rem)'}}>{props.children}</main> 
+        <main>{props.children}</main> 
        </div>
       </div>
     </Fragment>
