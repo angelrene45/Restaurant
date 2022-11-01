@@ -5,3 +5,4 @@ from .crud_category import category
 from .crud_layout import layout
 from .crud_board import board
 from .crud_order import order
+from .crud_payment import payment
