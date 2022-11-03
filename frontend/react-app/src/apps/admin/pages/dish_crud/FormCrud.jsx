@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { getCategories } from "../../../../store/slices/categories";
+import { createFood } from "../../../../store/slices/food";
 
 function FormCrud() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function FormCrud() {
       id: categorie.id,
     }));
     setcategoriesObject(categoriesEntered);
+    
   };
 
   const addVariantHandle = () => {
@@ -70,6 +72,7 @@ function FormCrud() {
     const enteredToggle = toggleInputRef.current.value;
     const enteredUnits = []
     const enteredVariants = []
+    const formData = new FormData();
 
     const collectionUnits = Array.prototype.slice.call(document.getElementsByClassName("inputUnit"));
     const collectionPrice = Array.prototype.slice.call(document.getElementsByClassName("inputPrice"));
@@ -96,6 +99,23 @@ function FormCrud() {
             image: filename
         })
     };
+
+    let food_in = JSON.stringify({
+        name : enteredName,
+        description: enteredDescription,
+        variants: enteredVariants,
+        units: enteredUnits,
+        categories: categoriesObject,
+        discount: enteredDiscount,
+        is_active: enteredToggle === 'on' ? true : false
+    })
+    
+    formData.append('food_in', food_in);
+
+    collectionFile.forEach((element) => {
+        formData.append(`files`, element.files[0])
+    });
+    dispatch(createFood(formData))
   };
 
   return (
@@ -263,6 +283,7 @@ function FormCrud() {
                   <button
                     className="btn  bg-indigo-500 hover:bg-indigo-600 text-white mt-3"
                     onClick={() => addUnitHandle()}
+                    type="button"
                   >
                     <svg
                       className="w-4 h-4 fill-current opacity-50 shrink-0"
@@ -321,6 +342,7 @@ function FormCrud() {
                   <button
                     className="btn  bg-indigo-500 hover:bg-indigo-600 text-white mt-3"
                     onClick={() => addVariantHandle()}
+                    type="button"
                   >
                     <svg
                       className="w-4 h-4 fill-current opacity-50 shrink-0"
