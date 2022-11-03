@@ -30,12 +30,9 @@ export const store = configureStore({
         login: persistedReducerLogin,
         foods: foodSlice.reducer,
         dashInfo: dashInfoSlice.reducer,
-<<<<<<< HEAD
         categorie: categorieSlice.reducer,
-=======
         cart: persistedReducerCart
 
->>>>>>> MasterFront
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
