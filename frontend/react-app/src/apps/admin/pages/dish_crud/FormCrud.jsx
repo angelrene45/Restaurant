@@ -26,15 +26,12 @@ function FormCrud() {
   }, []);
 
   const selectInputHandle = (e) => {
-    console.log(e.target.selectedOptions);
     setcategoriesObject([]);
     const htmlToArray = Array.prototype.slice.call(e.target.selectedOptions);
-
     const categoriesEntered = htmlToArray.map((categorie) => ({
       id: categorie.id,
     }));
     setcategoriesObject(categoriesEntered);
-    console.log(categoriesObject);
   };
 
   const addVariantHandle = () => {
@@ -98,9 +95,7 @@ function FormCrud() {
             name: collectionName[i].value,
             image: filename
         })
-    }
-
-    console.log( enteredUnits, enteredVariants)
+    };
   };
 
   return (
