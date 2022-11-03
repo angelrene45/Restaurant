@@ -25,19 +25,11 @@ export const createFood = (formData) => {
         // execute call api 
         try {
             const { data, status, statusText, headers } = await backendApi.post(`/foods/`,formData,config);
-
-            if (status === 200){
-                Swal.fire(
-                    'Created succesfully',
-                    '',
-                    'success'
-                  )
-            }
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: data.detail,
-            })
+            Swal.fire(
+                'Created succesfully',
+                '',
+                'success'
+                )
 
         } catch(e) {
             const { data } = e.response
