@@ -1,14 +1,23 @@
+import { useState } from "react";
+
+import { FoodInfo } from "./FoodInfo"
+
 
 export const FoodCart = ({food}) => {
+
+  const [open, setOpen] = useState(false)
+
 
   const {name, description, variants, units, categories} = food
   const {name: nameVariant, image} = variants[0]
   const {unit, price} = units[0]
-  console.log(food)
 
   return (
-    <>
-      <div className="col-span-full md:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200 overflow-hidden">
+    <>     
+      {/* Modal with info */}
+      <FoodInfo open={open} setOpen={setOpen} food={food}/>
+
+      <div className="col-span-full md:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200 overflow-hidden" onClick={() => setOpen(true)}>
         <div className="flex flex-col h-full">
           {/* Image */}
           <div className="relative">
