@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { getCategories } from "../../../../store/slices/categories";
 import { createFood } from "../../../../store/slices/food";
 
-function FormCrud() {
+function FormCrud(props) {
   const dispatch = useDispatch();
   const [variants, setVariants] = useState([]);
   const [units, setUnits] = useState([]);
@@ -117,7 +117,7 @@ function FormCrud() {
     });
     dispatch(createFood(formData))
   };
-
+console.log(props.id)
   return (
     <form className="flex flex-col " onSubmit={submitHandle}>
       <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">

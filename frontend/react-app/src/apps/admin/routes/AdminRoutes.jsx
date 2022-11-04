@@ -8,7 +8,7 @@ import Layout from '../../../layout/Layout';
 import CategoriesCRUD from '../pages/CategoriesCrud';
 import Crud from '../pages/dish_crud/DishCrud';
 import { setLinks } from '../../../store/slices/dashInfo/dashSlice';
-import { getFoods } from '../../../store/slices/food';
+import { getFoods, deleteFood } from '../../../store/slices/food';
 import FormCrud from '../pages/dish_crud/FormCrud';
 
 export const AdminRoutes = () => {
@@ -23,7 +23,7 @@ export const AdminRoutes = () => {
       <Routes>
           <Route path="home" element={ <AdminPage /> } />
           <Route path="food/categories" element={ <CategoriesCRUD /> } />
-          <Route path="food/dishes" element={ <Crud getList={getFoods}/> } />
+          <Route path="food/dishes" element={ <Crud getList={getFoods} delete={deleteFood}/> } />
           <Route path="food/create_food" element={ <FormCrud /> } />
         
           <Route path='/*' element={ <Navigate to="/admin/home" /> } />

@@ -3,8 +3,7 @@ import TableItem from './TableItem';
 
 
 
-function Table({
-  itemsList}) {
+const Table = (props) => {
   return (
     <div className="bg-white shadow-lg rounded-sm border border-slate-200 relative">
       <header className="px-5 py-4">
@@ -36,12 +35,14 @@ function Table({
                 <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                   <div className="font-semibold text-left">Variants</div>
                 </th>
+                <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                </th>
               </tr>
             </thead>
             {/* Table body */}
             <tbody className="text-sm divide-y divide-slate-200">
               {
-                itemsList.map(item => {
+                props.itemsList.map(item => {
                   return (
                     <TableItem
                       key={item.id}
@@ -51,7 +52,8 @@ function Table({
                       discount={item.discount}
                       categories={item.categories}
                       is_active={item.is_active}
-                      variants={item.variants}                    
+                      variants={item.variants}         
+                      delete={props.delete}           
                     />
                   )
                 })

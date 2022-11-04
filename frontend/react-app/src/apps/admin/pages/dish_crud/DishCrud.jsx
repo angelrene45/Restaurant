@@ -47,7 +47,7 @@ const DishCrud = (props) => {
         </div>
 
         {/* Table */}
-        <Table itemsList={foods}/>
+        <Table itemsList={foods} delete={props.delete}/>
 
         {/* Pagination */}
         <div className="mt-8">

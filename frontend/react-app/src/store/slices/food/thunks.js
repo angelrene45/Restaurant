@@ -41,3 +41,33 @@ export const createFood = (formData) => {
         }
     }
 }
+export const deleteFood = (id) => {
+    return async (dispatch, getState) => {
+
+        const config = {
+            headers: { 
+              'Content-Type': 'multipart/form-data', 
+              'Accept': 'application/json'
+            }
+        };
+        
+        // execute call api 
+        try {
+            console.log(id)
+            //const { data, status, statusText, headers } = await backendApi.post(`/foods/`,formData,config);
+            Swal.fire(
+                'Created succesfully',
+                '',
+                'success'
+                )
+
+        } catch(e) {
+            const { data } = e.response
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: data.detail,
+            })
+        }
+    }
+}
