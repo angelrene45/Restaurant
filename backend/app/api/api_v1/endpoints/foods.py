@@ -85,15 +85,17 @@ def update_food_being_admin(
             status_code=400, detail="The Food doesn't exist"
         )
 
+    # Remove the images that user replace or remove 
+    current_images = {variant.image for variant in food.variants}
+    images_in = {variant.image for variant in food_in.variants}
+    images_remove = current_images.difference(images_in)
+    [delete_image_in_static_path(image) for image in images_remove]
+
     # upload images
     for file in files:
         # find variant linked with image file that has the same filename 
         variant = next((variant for variant in food_in.variants if variant.image == file.filename), None)
         if not variant: continue
-        # get current image url
-        variant_db = crud.food.get_variant_by_name(db, food_id=food.id, name=variant.name)
-        # delete the current image in variant
-        delete_image_in_static_path(variant_db.image)
         # store new image
         public_url = store_image_in_static_path(file) if file else None
         variant.image = public_url
