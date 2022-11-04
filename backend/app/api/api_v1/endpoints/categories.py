@@ -21,6 +21,18 @@ def read_categories_open(
     categories = crud.category.get_multi(db, skip=skip, limit=limit)
     return categories
 
+@router.get("/foods/open", response_model=List[schemas.CategoryWithFoods])
+def read_categories_with_foods_open(
+    db: Session = Depends(deps.get_db),
+    skip: int = 0,
+    limit: int = 100,
+) -> Any:
+    """
+    Retrieve categories.
+    """
+    categories = crud.category.get_multi(db, skip=skip, limit=limit)
+    return categories
+
 @router.get("/open/{category_id}", response_model=schemas.Category)
 def read_category_by_id_open(
     category_id: int,

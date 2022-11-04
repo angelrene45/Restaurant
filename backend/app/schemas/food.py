@@ -4,8 +4,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from app.schemas.category import Category
-
+from app.schemas.category import Category, CategoryBase
 
 schema_example = {
     "example": {
@@ -108,3 +107,12 @@ class Food(FoodInDBBase):
 # Additional properties stored in DB
 class FoodInDB(FoodInDBBase):
     pass
+
+
+# Request categories with foods (Using here because we want to avoid circular import error)
+class CategoryWithFoods(CategoryBase):
+    foods: List[Food]
+
+    class Config:
+        # is necessary when try to convert sql alchemy to pydantic model
+        orm_mode = True

@@ -11,7 +11,7 @@ class Food(Base):
     description = Column(Text, nullable=False)
     variants = relationship("Food_Variant", backref='food', cascade='all, delete-orphan')
     units = relationship("Food_Unit", backref='food', cascade='all, delete-orphan')
-    categories = relationship("Category", secondary="category_food")
+    categories = relationship("Category", secondary="category_food", back_populates="foods")
     discount = Column(Integer, nullable=True)
     is_active = Column(Boolean(), default=True)
     created_date = Column(DateTime, server_default=func.now())
