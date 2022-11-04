@@ -4,6 +4,22 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.tests.utils.utils import random_lower_string
 from app.tests.utils.category import create_random_category
+from app.tests.utils.food import create_random_food
+
+
+def test_get_categories_with_food_open(
+    client: TestClient, db: Session
+) -> None:
+    create_random_food(db)
+    create_random_food(db)
+    r = client.get(f"{settings.API_V1_STR}/categories/foods/open")
+    all_categories = r.json()
+    assert all_categories
+    assert len(all_categories) > 1
+    for category in all_categories:
+        assert "name" in category
+        assert "foods" in category
+        assert len(category["foods"]) > 0
 
 
 def test_get_categories_open(
