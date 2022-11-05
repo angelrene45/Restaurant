@@ -1,9 +1,9 @@
 # Tutorial
 
 # do migrations 
-docker-compose run backend alembic revision --autogenerate -m "New Migration"
-docker-compose run backend alembic upgrade head
-docker-compose run backend alembic downgrade -1
+docker-compose exec backend alembic revision --autogenerate -m "New Migration"
+docker-compose exec backend alembic upgrade head
+docker-compose exec backend alembic downgrade -1
 
 # run unittest
 docker-compose exec backend pytest

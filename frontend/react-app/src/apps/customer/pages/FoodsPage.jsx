@@ -1,25 +1,49 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getFoods } from "../../../store/slices/food";
+import { getCategoriesWithFoods } from "../../../store/slices/categories";
+import { FoodSearch } from "../layout/FoodSearch";
 import { FoodCart } from "../layout/FoodCart";
-import { FoodPagination } from "../layout/FoodPagination";
 import { OrderInfo } from "../layout/OrderInfo";
+import { Loading } from "../../../components/items/Spinner";
 
 
 export const FoodsPage = (props) => {
 
     const dispatch = useDispatch();
-    const {page, foods=[], isLoading} = useSelector(state => state.foods)
+    const {categoriesWithFoods=[], isLoading} = useSelector(state => state.categorie)
+    const {foods:foodsByTerm=[], isLoading: loadingSearch} = useSelector(state => state.foods)
     const {quantity} = useSelector((state) => state.cart)
     const [openCart, setOpenCart] = useState(false)
 
-    useEffect(() => {
-      dispatch(getFoods());
-    }, [])
+    const classSelected = "inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out"
+    const classUnSelected = "inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 hover:border-slate-300 shadow-sm bg-white text-slate-500 duration-150 ease-in-out"
+    const [selectedCategory, setSelectedCategory] = useState(0) // first category selected
+    const [foods, setFoods] = useState([]) // foods that show in cart
 
-    const prevPageListener = () => dispatch(getFoods(page-1));
-    const nextPageListener = () => dispatch(getFoods(page+1));
+    // get all categories with foods 
+    useEffect(() => {
+      dispatch(getCategoriesWithFoods());
+    }, [])
+    
+    // listen when categoriesWithFoods is changed (only execute once)
+    useEffect(() => {
+      if (categoriesWithFoods.length > 0){
+        // pre-select the fist category
+        setFoods(categoriesWithFoods[selectedCategory].foods)
+      } 
+    }, [categoriesWithFoods])
+
+    // listen when user try to search foods by term
+    useEffect(() => {
+      if (categoriesWithFoods.length > 0){
+        // change the foods with the search by term
+        setFoods(foodsByTerm)
+      } 
+    }, [foodsByTerm])
+    
+
+    if (isLoading) return <Loading/>
 
     return (
       <div className="flex h-screen overflow-hidden">
@@ -43,6 +67,9 @@ export const FoodsPage = (props) => {
                 <h1 className="text-2xl md:text-3xl text-slate-800 font-bold">Find the dishes for you ✨</h1>
   
               </div>
+
+              {/* Search form */}
+              <FoodSearch/>
 
               {/* Order Info */}
               <OrderInfo open={openCart} setOpen={setOpenCart}/>
@@ -73,39 +100,37 @@ export const FoodsPage = (props) => {
                 {/* Content */}
                 <div>
   
-                  {/* Filters */}
+                  {/* Categories */}
                   <div className="mb-5">
                     <ul className="flex flex-wrap -m-1">
-                      <li className="m-1">
-                        <button className="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out">View All</button>
-                      </li>
-                      <li className="m-1">
-                        <button className="inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 hover:border-slate-300 shadow-sm bg-white text-slate-500 duration-150 ease-in-out">Featured</button>
-                      </li>
+                      {
+                        categoriesWithFoods.map((category, index) => (
+                          <li key={index} className="m-1">
+                            <button 
+                              className={index === selectedCategory ? classSelected : classUnSelected}
+                              onClick={() => {setSelectedCategory(index), setFoods(category.foods)} }
+                              >{category.name}
+                            </button>
+                          </li>
+                        ))
+                      }
                     </ul>
                   </div>
   
-                  <div className="text-sm text-slate-500 italic mb-4">67.975 Items</div>
+                  <div className="text-sm text-slate-500 italic mb-4">{foods.length} Foods</div>
   
-                  {/* Cards 1 (Video Courses) */}
+                  {/* Cards 1 (Foods) */}
                   <div>
                     <div className="grid grid-cols-12 gap-6">
                       {
+                        // show the foods that user selected
                         foods.map((food) => (
-                          <FoodCart key={food.name} food={food}/>
-                        ))
+                            <FoodCart key={food.name} food={food}/>
+                          ))
                       }
                     </div>
                   </div>
-  
-                  {/* Pagination */}
-                  <div className="mt-6">
-                    <FoodPagination
-                      events={{prevPageListener, nextPageListener}}
-                      page={page}
-                      length={foods.length}
-                    />
-                  </div>
+                  
                 </div>
   
               </div>

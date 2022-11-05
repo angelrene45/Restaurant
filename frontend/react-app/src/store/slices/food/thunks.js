@@ -7,8 +7,18 @@ export const getFoods = (page = 0) => {
     return async (dispatch, getState) => {
         dispatch(startLoadingFoods());
         // execute call api 
-        const { data, status, statusText, headers } = await backendApi.get(`/foods/open?skip=${page*6}&limit=6`);
+        const { data, status, statusText, headers } = await backendApi.get(`/foods/open?skip=${page*100}&limit=100`);
         dispatch(setFoods({foods: data, page: page}));
+    }
+}
+
+export const getFoodsByTerm = (term = "", page=0) => {
+    if (page < 0) page = 0 // avoid error when page is negative
+    return async (dispatch, getState) => {
+        dispatch(startLoadingFoods());
+        // execute call api 
+        const { data, status, statusText, headers } = await backendApi.get(`/foods/open/search/${term}?skip=${page*100}&limit=100`);
+        dispatch(setFoods({foods: data, page: 0}));
     }
 }
 
