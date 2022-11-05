@@ -5,9 +5,6 @@ import TableItem from './TableItem';
 
 function Table({
   itemsList}) {
-
-
-
   return (
     <div className="bg-white shadow-lg rounded-sm border border-slate-200 relative">
       <header className="px-5 py-4">
@@ -49,7 +46,6 @@ function Table({
                     <TableItem
                       key={item.id}
                       id={item.id}
-                      /* image={customer.image} */
                       name={item.name}
                        description={item.description}
                       discount={item.discount}

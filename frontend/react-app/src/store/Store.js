@@ -11,6 +11,7 @@ import {
   REGISTER,
 } from 'redux-persist'
 
+import { categorieSlice } from './slices/categories'
 import { dashInfoSlice } from './slices/dashInfo'
 import { loginSlice } from './slices/login'
 import { foodSlice } from './slices/food'
@@ -29,6 +30,7 @@ export const store = configureStore({
         login: persistedReducerLogin,
         foods: foodSlice.reducer,
         dashInfo: dashInfoSlice.reducer,
+        categorie: categorieSlice.reducer,
         cart: persistedReducerCart
 
     },

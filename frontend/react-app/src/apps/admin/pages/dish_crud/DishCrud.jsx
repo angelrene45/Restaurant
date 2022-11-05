@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import DeleteButton from "../../../components/items/DeleteButton";
+import DeleteButton from "../../../../components/items/DeleteButton";
 import Table from './Table'
-import PaginationClassic from "../../../components/items/PaginationClassic";
-import FilterButton from "../../../components/items/DropdownFilter";
+import PaginationClassic from "../../../../components/items/PaginationClassic";
+import FilterButton from "../../../../components/items/DropdownFilter";
 
 const DishCrud = (props) => {
   
     const dispatch = useDispatch();
     const {page, foods=[], isLoading} = useSelector(state => state.foods);
+    const navigate = useNavigate();
 
     useEffect(() => {
       dispatch(props.getList());
@@ -37,7 +39,7 @@ const DishCrud = (props) => {
               <svg className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                 <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
               </svg>
-              <span className="hidden xs:block ml-2">Add Food</span>
+              <span className="hidden xs:block ml-2" onClick={() => navigate('/admin/food/create_food')}>Add Food</span>
             </button>
             
           </div>
