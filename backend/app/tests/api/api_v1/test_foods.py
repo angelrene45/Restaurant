@@ -277,3 +277,28 @@ def test_update_food_replace_image_being_admin(
     # check if was removed the original images
     for image in original_images:
         assert client.get(image).status_code == 404  
+
+
+def test_get_foods_by_term(
+    client: TestClient, db: Session
+) -> None:
+    food_in = FoodCreate(name = "shrimp cocktail",
+                        description = "Cocktail of shrimps",
+                        discount = 0,
+                        variants = [],
+                        units = [],
+                        is_active = True)
+    crud.food.create(db=db, obj_in=food_in, categories_db=[])
+    food_in = FoodCreate(name = "Garlic Shrimp Stir-Fry.",
+                        description = "Cooking Shrimp in a stir-fry",
+                        discount = 0,
+                        variants = [],
+                        units = [],
+                        is_active = True)
+    crud.food.create(db=db, obj_in=food_in, categories_db=[])
+
+    term = "shrimp"
+    r = client.get(f"{settings.API_V1_STR}/foods/open/search/{term}")
+    all_foods = r.json()
+    assert all_foods
+    assert len(all_foods) == 2

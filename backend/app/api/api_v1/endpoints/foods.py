@@ -40,6 +40,20 @@ def read_food_by_id_open(
     return food
 
 
+@router.get("/open/search/{term}", response_model=List[schemas.Food])
+def read_foods_by_term(
+    db: Session = Depends(deps.get_db),
+    term: str = "",
+    skip: int = 0,
+    limit: int = 100,
+) -> Any:
+    """
+    Retrieve foods by term.
+    """
+    foods = crud.food.get_by_term(db, term=term, skip=skip, limit=limit)
+    return foods
+
+
 @router.post("/", response_model=schemas.Food)
 def create_food_being_admin(
     *,
