@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { backendApi } from "../../../../api";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { getCategories } from "../../../../store/slices/categories";
-import { createFood } from "../../../../store/slices/food";
+import { createFood, getFood } from "../../../../store/slices/food";
 
 function FormCrud(props) {
   const dispatch = useDispatch();
@@ -14,17 +15,34 @@ function FormCrud(props) {
   const [idVariants, setIdVariants] = useState(1);
   const [idUnits, setIdUnits] = useState(1);
   const [toggle1, setToggle1] = useState(true);
+  const [foodState, setFoodState] = useState({});
+  const { id } = useParams();
 
   const { categories } = useSelector((state) => state.categorie);
+  const food = useSelector((state) => state.foods.food);
 
   const nameInputRef = useRef();
   const descriptionInputRef = useRef();
   const discountInputRef = useRef();
-  const toggleInputRef = useRef();
 
   useEffect(() => {
     dispatch(getCategories());
+
+    const getFoodFunc = async () => {
+      const { data, status, statusText, headers } = await backendApi.get(`/foods/open/${id}`);
+      setFoodState(data);
+      setUnits(data.units);
+      setVariants(data.variants)
+      setIdUnits(data.units.length)
+      setIdVariants(data.variants.length) 
+    }
+    
+    if (id) {
+      dispatch(getFood(id));
+      getFoodFunc().catch((e) => console.log(e))
+    }
   }, []);
+
 
   const selectInputHandle = (e) => {
     setcategoriesObject([]);
@@ -33,7 +51,6 @@ function FormCrud(props) {
       id: categorie.id,
     }));
     setcategoriesObject(categoriesEntered);
-    
   };
 
   const addVariantHandle = () => {
@@ -41,7 +58,7 @@ function FormCrud(props) {
     setVariants([
       ...variants,
       {
-        id: idVariants,
+        id: 'variant' + idVariants,
       },
     ]);
   };
@@ -57,11 +74,11 @@ function FormCrud(props) {
   };
 
   const deleteVariantstHandle = (id) => {
-    setVariants((current) => current.filter((variant) => variant.id !== id));
+    setVariants((current) => current.filter((variant) => variant.id || variant.name !== id));
   };
 
   const deleteUnitstHandle = (id) => {
-    setUnits((current) => current.filter((unit) => unit.id !== id));
+    setUnits((current) => current.filter((unit) => unit.id || unit.unit !== id));
   };
 
   const submitHandle = (e) => {
@@ -69,62 +86,77 @@ function FormCrud(props) {
     const enteredName = nameInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
     const enteredDiscount = discountInputRef.current.value;
-    const enteredToggle = toggleInputRef.current.value;
-    const enteredUnits = []
-    const enteredVariants = []
+    const enteredToggle = toggle1;
+    const enteredUnits = [];
+    const enteredVariants = [];
     const formData = new FormData();
 
-    const collectionUnits = Array.prototype.slice.call(document.getElementsByClassName("inputUnit"));
-    const collectionPrice = Array.prototype.slice.call(document.getElementsByClassName("inputPrice"));
-    
-    for ( let i = 0; i < collectionPrice.length; i++) {
-        enteredUnits.push({
-            unit: collectionUnits[i].value,
-            price: Number(collectionPrice[i].value)
-        })
-    }
-    
-    const collectionName = Array.prototype.slice.call(document.getElementsByClassName("inputName"));
-    const collectionFile = Array.prototype.slice.call(document.getElementsByClassName("inputFile"));
+    const collectionUnits = Array.prototype.slice.call(
+      document.getElementsByClassName("inputUnit")
+    );
+    const collectionPrice = Array.prototype.slice.call(
+      document.getElementsByClassName("inputPrice")
+    );
 
-    for ( let i = 0; i < collectionName.length; i++) {
-        let fileValue = collectionFile[i].value;
-        let startIndex = (fileValue.indexOf('\\') >= 0 ? fileValue.lastIndexOf('\\') : fileValue.lastIndexOf('/'));
-        let filename = fileValue.substring(startIndex);
-        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-            filename = filename.substring(1);
-        }
-        enteredVariants.push({
-            name: collectionName[i].value,
-            image: filename
-        })
-    };
+    for (let i = 0; i < collectionPrice.length; i++) {
+      enteredUnits.push({
+        unit: collectionUnits[i].value,
+        price: Number(collectionPrice[i].value),
+      });
+    }
+
+    const collectionName = Array.prototype.slice.call(
+      document.getElementsByClassName("inputName")
+    );
+    const collectionFile = Array.prototype.slice.call(
+      document.getElementsByClassName("inputFile")
+    );
+
+    for (let i = 0; i < collectionName.length; i++) {
+      let fileValue = collectionFile[i].value;
+      let startIndex =
+        fileValue.indexOf("\\") >= 0
+          ? fileValue.lastIndexOf("\\")
+          : fileValue.lastIndexOf("/");
+      let filename = fileValue.substring(startIndex);
+      if (filename.indexOf("\\") === 0 || filename.indexOf("/") === 0) {
+        filename = filename.substring(1);
+      }
+      enteredVariants.push({
+        name: collectionName[i].value,
+        image: filename,
+      });
+    }
 
     let food_in = JSON.stringify({
-        name : enteredName,
-        description: enteredDescription,
-        variants: enteredVariants,
-        units: enteredUnits,
-        categories: categoriesObject,
-        discount: enteredDiscount,
-        is_active: enteredToggle === 'on' ? true : false
-    })
-    
-    formData.append('food_in', food_in);
+      name: enteredName,
+      description: enteredDescription,
+      variants: enteredVariants,
+      units: enteredUnits,
+      categories: categoriesObject,
+      discount: enteredDiscount,
+      is_active: enteredToggle === "on" ? true : false,
+    });
+
+    formData.append("food_in", food_in);
 
     collectionFile.forEach((element) => {
-        formData.append(`files`, element.files[0])
+      formData.append(`files`, element.files[0]);
     });
-    dispatch(createFood(formData))
+    if (id) {
+      dispatch(createFood(formData));
+    } else {
+      dispatch(createFood(formData));
+    }
   };
-console.log(props.id)
+
   return (
     <form className="flex flex-col " onSubmit={submitHandle}>
       <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl text-slate-800 font-bold">
-            Create Food ✨
+          {id ? "Update" : "Create"} Food ✨
           </h1>
         </div>
 
@@ -145,6 +177,7 @@ console.log(props.id)
                     className="form-input w-full"
                     type="text"
                     ref={nameInputRef}
+                    defaultValue={foodState.name}
                   />
                 </div>
                 {/* Input description */}
@@ -160,6 +193,7 @@ console.log(props.id)
                     className="form-input w-full"
                     type="text"
                     ref={descriptionInputRef}
+                    defaultValue={foodState.description}
                   />
                 </div>
                 {/* Input discount */}
@@ -176,6 +210,7 @@ console.log(props.id)
                       className="form-input w-full pr-8"
                       type="number"
                       ref={discountInputRef}
+                      defaultValue={foodState.discount}
                     />
                     <div className="absolute inset-0 left-auto flex items-center pointer-events-none">
                       <span className="text-sm text-slate-400 font-medium px-3">
@@ -227,7 +262,6 @@ console.log(props.id)
                       className="sr-only"
                       checked={toggle1}
                       onChange={() => setToggle1(!toggle1)}
-                      ref={toggleInputRef}
                     />
                     <label className="bg-slate-400" htmlFor="switch-1">
                       <span
@@ -250,24 +284,26 @@ console.log(props.id)
                     Units
                   </label>
                   {units.map((unit) => (
-                    <div key={unit.id}>
+                    <div key={unit.id || unit.unit}>
                       <div className="flex mt-2">
                         <input
                           id="name"
                           className="form-input w-full mr-2 inputUnit"
                           type="text"
                           placeholder="Unit"
+                          defaultValue={unit.unit}
                         />
                         <input
                           id="name"
                           className="form-input w-full mr-2 inputPrice"
                           type="number"
                           placeholder="Price"
+                          defaultValue={unit.price}
                         />
 
                         <button
                           className="btn border-slate-200 hover:border-slate-300 text-rose-500"
-                          onClick={() => deleteUnitstHandle(unit.id)}
+                          onClick={() => deleteUnitstHandle(unit.id || unit.unit)}
                         >
                           <svg
                             className="w-4 h-4 fill-current shrink-0"
@@ -303,7 +339,7 @@ console.log(props.id)
                     Variants
                   </label>
                   {variants.map((variant) => (
-                    <div key={variant.id}>
+                    <div key={variant.name || variant.id}>
                       <label className="block">
                         <span className="sr-only">Choose photo</span>
                         <input
@@ -324,7 +360,7 @@ console.log(props.id)
                           />
                           <button
                             className="btn border-slate-200 hover:border-slate-300 text-rose-500"
-                            onClick={() => deleteVariantstHandle(variant.id)}
+                            onClick={() => deleteVariantstHandle(variant.id || variant.name)}
                           >
                             <svg
                               className="w-4 h-4 fill-current shrink-0"
@@ -363,7 +399,7 @@ console.log(props.id)
               className="btn-lg bg-emerald-500 hover:bg-emerald-600 text-white -order-1"
               type="submit"
             >
-              Success
+              {id ? "Update" : "Create"}
             </button>
           </div>
         </div>

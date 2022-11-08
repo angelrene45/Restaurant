@@ -24,7 +24,8 @@ export const AdminRoutes = () => {
           <Route path="home" element={ <AdminPage /> } />
           <Route path="food/categories" element={ <CategoriesCRUD /> } />
           <Route path="food/dishes" element={ <Crud getList={getFoods} delete={deleteFood}/> } />
-          <Route path="food/create_food" element={ <FormCrud /> } />
+          <Route path="food/create_food/" element={ <FormCrud /> } />
+          <Route path="food/create_food/:id" element={ <FormCrud /> } />
         
           <Route path='/*' element={ <Navigate to="/admin/home" /> } />
       </Routes>

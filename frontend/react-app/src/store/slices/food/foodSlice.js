@@ -5,7 +5,11 @@ export const foodSlice = createSlice({
   initialState: {
     page: 0,
     foods: [],
-    isLoading: false
+    isLoading: false,
+    food:{
+      units: [],
+      variants: [],
+    }
   },
   reducers: {
     startLoadingFoods: (state) => {
@@ -16,8 +20,11 @@ export const foodSlice = createSlice({
       state.page = action.payload.page;
       state.foods = action.payload.foods;
     },
+    setFood: (state, action) => {
+      state.food = action.payload.food;
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { startLoadingFoods, setFoods } = foodSlice.actions
+export const { startLoadingFoods, setFoods, setFood } = foodSlice.actions
