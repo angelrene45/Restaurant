@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { getCategories } from "../../../../store/slices/categories";
-import { createFood, getFood } from "../../../../store/slices/food";
+import { createFood, getFood, updateFood } from "../../../../store/slices/food";
 
 function FormCrud(props) {
   const dispatch = useDispatch();
@@ -29,20 +29,22 @@ function FormCrud(props) {
     dispatch(getCategories());
 
     const getFoodFunc = async () => {
-      const { data, status, statusText, headers } = await backendApi.get(`/foods/open/${id}`);
+      const { data, status, statusText, headers } = await backendApi.get(
+        `/foods/open/${id}`
+      );
       setFoodState(data);
       setUnits(data.units);
-      setVariants(data.variants)
-      setIdUnits(data.units.length)
-      setIdVariants(data.variants.length) 
-    }
-    
+      setVariants(data.variants);
+      setIdUnits(data.units.length);
+      setIdVariants(data.variants.length);
+      console.log(data);
+    };
+
     if (id) {
       dispatch(getFood(id));
-      getFoodFunc().catch((e) => console.log(e))
+      getFoodFunc().catch((e) => console.log(e));
     }
   }, []);
-
 
   const selectInputHandle = (e) => {
     setcategoriesObject([]);
@@ -58,7 +60,7 @@ function FormCrud(props) {
     setVariants([
       ...variants,
       {
-        id: 'variant' + idVariants,
+        id: "variant" + idVariants,
       },
     ]);
   };
@@ -74,11 +76,15 @@ function FormCrud(props) {
   };
 
   const deleteVariantstHandle = (id) => {
-    setVariants((current) => current.filter((variant) => variant.id || variant.name !== id));
+    setVariants((current) =>
+      current.filter((variant) => variant.id || variant.name !== id)
+    );
   };
 
   const deleteUnitstHandle = (id) => {
-    setUnits((current) => current.filter((unit) => unit.id || unit.unit !== id));
+    setUnits((current) =>
+      current.filter((unit) => unit.id || unit.unit !== id)
+    );
   };
 
   const submitHandle = (e) => {
@@ -111,22 +117,30 @@ function FormCrud(props) {
     const collectionFile = Array.prototype.slice.call(
       document.getElementsByClassName("inputFile")
     );
+    console.log(collectionFile);
+    console.log(variants);
 
     for (let i = 0; i < collectionName.length; i++) {
       let fileValue = collectionFile[i].value;
-      let startIndex =
-        fileValue.indexOf("\\") >= 0
-          ? fileValue.lastIndexOf("\\")
-          : fileValue.lastIndexOf("/");
-      let filename = fileValue.substring(startIndex);
-      if (filename.indexOf("\\") === 0 || filename.indexOf("/") === 0) {
-        filename = filename.substring(1);
+      let filename = "";
+      if (fileValue) {
+        let startIndex =
+          fileValue.indexOf("\\") >= 0
+            ? fileValue.lastIndexOf("\\")
+            : fileValue.lastIndexOf("/");
+        filename = fileValue.substring(startIndex);
+        if (filename.indexOf("\\") === 0 || filename.indexOf("/") === 0) {
+          filename = filename.substring(1);
+        }
+      } else {
+        filename = collectionFile[i].src;
       }
       enteredVariants.push({
         name: collectionName[i].value,
         image: filename,
       });
     }
+    console.log(enteredVariants);
 
     let food_in = JSON.stringify({
       name: enteredName,
@@ -141,10 +155,13 @@ function FormCrud(props) {
     formData.append("food_in", food_in);
 
     collectionFile.forEach((element) => {
-      formData.append(`files`, element.files[0]);
+      if (element.files) {
+        formData.append(`files`, element.files[0]);
+      }
     });
+
     if (id) {
-      dispatch(createFood(formData));
+      dispatch(updateFood(formData, id));
     } else {
       dispatch(createFood(formData));
     }
@@ -156,7 +173,7 @@ function FormCrud(props) {
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl text-slate-800 font-bold">
-          {id ? "Update" : "Create"} Food ✨
+            {id ? "Update" : "Create"} Food ✨
           </h1>
         </div>
 
@@ -299,11 +316,14 @@ function FormCrud(props) {
                           type="number"
                           placeholder="Price"
                           defaultValue={unit.price}
+                          step="0.01"
                         />
 
                         <button
                           className="btn border-slate-200 hover:border-slate-300 text-rose-500"
-                          onClick={() => deleteUnitstHandle(unit.id || unit.unit)}
+                          onClick={() =>
+                            deleteUnitstHandle(unit.id || unit.unit)
+                          }
                         >
                           <svg
                             className="w-4 h-4 fill-current shrink-0"
@@ -342,25 +362,37 @@ function FormCrud(props) {
                     <div key={variant.name || variant.id}>
                       <label className="block">
                         <span className="sr-only">Choose photo</span>
-                        <input
-                          type="file"
-                          className="block w-full text-sm text-slate-500
-                          file:mr-4 file:py-2 file:px-4
-                          file:rounded-full file:border-0
-                          file:text-sm file:font-semibold
-                          file:bg-violet-50 file:text-violet-700
-                          hover:file:bg-violet-100
-                          inputFile
-                          "
-                        />
+                        {variant.image ? (
+                          <>
+                            <img src={variant.image} className="inputFile mt-3" />
+                          </>
+                        ) : (
+                          <input
+                            type="file"
+                            required
+                            className="block w-full text-sm text-slate-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-full file:border-0
+                              file:text-sm file:font-semibold
+                              file:bg-violet-50 file:text-violet-700
+                              hover:file:bg-violet-100
+                              inputFile mt-3
+                              "
+                          />
+                        )}
                         <div className="flex">
                           <input
                             className="form-input w-full px-2 py-1 mt-2 inputName mr-2"
                             type="text"
+                            required
+                            defaultValue={variant.name || ""}
                           />
                           <button
                             className="btn border-slate-200 hover:border-slate-300 text-rose-500"
-                            onClick={() => deleteVariantstHandle(variant.id || variant.name)}
+                            type="button"
+                            onClick={() =>
+                              deleteVariantstHandle(variant.id || variant.name)
+                            }
                           >
                             <svg
                               className="w-4 h-4 fill-current shrink-0"

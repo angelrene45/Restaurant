@@ -7,7 +7,7 @@ export const getFoods = (page = 0) => {
     return async (dispatch, getState) => {
         dispatch(startLoadingFoods());
         // execute call api 
-        const { data, status, statusText, headers } = await backendApi.get(`/foods/open?skip=${page*6}&limit=6`);
+        const { data, status, statusText, headers } = await backendApi.get(`/foods/open`);
         dispatch(setFoods({foods: data, page: page}));
     }
 }
@@ -49,7 +49,7 @@ export const createFood = (formData) => {
         }
     }
 }
-export const updateFood = (id) => {
+export const updateFood = (formData, id) => {
     return async (dispatch, getState) => {
 
         const config = {
@@ -61,9 +61,9 @@ export const updateFood = (id) => {
         
         // execute call api 
         try {
-            const { data, status, statusText, headers } = await backendApi.post(`/foods/`,formData,config);
+            const { data, status, statusText, headers } = await backendApi.put(`/foods/${id}`, formData, config);
             Swal.fire(
-                'Created succesfully',
+                'Updated succesfully',
                 '',
                 'success'
                 )
