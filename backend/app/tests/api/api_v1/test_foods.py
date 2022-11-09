@@ -165,7 +165,7 @@ def test_get_existing_food_open(
 def test_update_food_being_admin(
     client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
-    # create food in databse
+    # create food in database
     food_created = create_random_food(db)
     food_id = food_created.id
     categories_db = [create_random_category(db) for _ in range(3)]
@@ -205,12 +205,19 @@ def test_update_food_replace_image_being_admin(
     client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     """
-        Upload image in food is only throught api
+        Upload image in food is only through api
     """
     # CREATE
-    orignal_image_bytes = create_random_image_in_memory()
-    files = [('files', ("original_image.png", orignal_image_bytes, 'image/png'))]
-    variants = [{"name":"variant 1", "image":"original_image.png"}]
+    original_image_bytes_1 = create_random_image_in_memory()
+    original_image_bytes_2 = create_random_image_in_memory()
+    files = [
+                ('files', ("variant_image_1.png", original_image_bytes_1, 'image/png')), 
+                ('files', ("variant_image_2.png", original_image_bytes_2, 'image/png'))
+            ]
+    variants = [
+            {"name":"variant 1", "image": "variant_image_1.png"},
+            {"name":"variant 2", "image": "variant_image_2.png"}
+        ]
     data_food = {
         "name": random_lower_string(),
         "description": random_lower_string() ,
@@ -224,18 +231,21 @@ def test_update_food_replace_image_being_admin(
     data_api = {
         "food_in" : data_json
     }
-    # create food throught api
+    # create food through api
     r = client.post(
         f"{settings.API_V1_STR}/foods/", headers=superuser_token_headers, data=data_api, files=files
     )
     food_created = r.json()
     food_id = food_created.get("id")
-    original_file = food_created.get("variants")[0].get("image")
-    # check exists original file
-    assert client.get(original_file).status_code == 200
-    
+    original_images = []
+    for variant in food_created.get("variants"):
+        # check exists original file
+        original_image = variant.get("image")
+        assert client.get(original_image).status_code == 200
+        original_images.append(original_image)
+
     # UPDATE
-    # create new image that replace the original
+    # create new image that replace the original from variant 1 and remove the variant 2
     new_image_bytes = create_random_image_in_memory()
     files = [('files', ("new_image.png", new_image_bytes, 'image/png'))]
     variants = [{"name":"variant 1", "image":"new_image.png"}]
@@ -252,7 +262,7 @@ def test_update_food_replace_image_being_admin(
     data_api = {
         "food_in" : data_json
     }
-    # update food throught api
+    # update food through api
     r = client.put(
         f"{settings.API_V1_STR}/foods/{food_id}", headers=superuser_token_headers, data=data_api, files=files
     )
@@ -260,8 +270,35 @@ def test_update_food_replace_image_being_admin(
     assert r.status_code == 200
     # get public url from new image
     food_updated = r.json()
-    new_file = food_updated.get("variants")[0].get("image")
     # check exist the updated image
-    assert client.get(new_file).status_code == 200
-    # check if was removed the original image
-    assert client.get(original_file).status_code == 404  
+    for variant in food_updated.get("variants"):
+        updated_image = variant.get("image")
+        assert client.get(updated_image).status_code == 200
+    # check if was removed the original images
+    for image in original_images:
+        assert client.get(image).status_code == 404  
+
+
+def test_get_foods_by_term(
+    client: TestClient, db: Session
+) -> None:
+    food_in = FoodCreate(name = "shrimp cocktail",
+                        description = "Cocktail of shrimps",
+                        discount = 0,
+                        variants = [],
+                        units = [],
+                        is_active = True)
+    crud.food.create(db=db, obj_in=food_in, categories_db=[])
+    food_in = FoodCreate(name = "Garlic Shrimp Stir-Fry.",
+                        description = "Cooking Shrimp in a stir-fry",
+                        discount = 0,
+                        variants = [],
+                        units = [],
+                        is_active = True)
+    crud.food.create(db=db, obj_in=food_in, categories_db=[])
+
+    term = "shrimp"
+    r = client.get(f"{settings.API_V1_STR}/foods/open/search/{term}")
+    all_foods = r.json()
+    assert all_foods
+    assert len(all_foods) == 2

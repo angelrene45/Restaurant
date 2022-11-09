@@ -3,6 +3,8 @@ import { backendApi } from "../../../../api";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 import { getCategories } from "../../../../store/slices/categories";
 import { createFood, getFood, updateFood } from "../../../../store/slices/food";
@@ -11,12 +13,13 @@ function FormCrud(props) {
   const dispatch = useDispatch();
   const [variants, setVariants] = useState([]);
   const [units, setUnits] = useState([]);
-  const [categoriesObject, setcategoriesObject] = useState([]);
+  const [categoriesState, setCategoriesState] = useState([]);
   const [idVariants, setIdVariants] = useState(1);
   const [idUnits, setIdUnits] = useState(1);
   const [toggle1, setToggle1] = useState(true);
   const [foodState, setFoodState] = useState({});
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { categories } = useSelector((state) => state.categorie);
   const food = useSelector((state) => state.foods.food);
@@ -35,9 +38,10 @@ function FormCrud(props) {
       setFoodState(data);
       setUnits(data.units);
       setVariants(data.variants);
+      setCategoriesState(data.categories);
       setIdUnits(data.units.length);
       setIdVariants(data.variants.length);
-      console.log(data);
+      setToggle1(data.is_active)
     };
 
     if (id) {
@@ -46,13 +50,12 @@ function FormCrud(props) {
     }
   }, []);
 
-  const selectInputHandle = (e) => {
-    setcategoriesObject([]);
-    const htmlToArray = Array.prototype.slice.call(e.target.selectedOptions);
-    const categoriesEntered = htmlToArray.map((categorie) => ({
-      id: categorie.id,
-    }));
-    setcategoriesObject(categoriesEntered);
+  const selectInputHandle = (categoriesSelected) => {
+    setCategoriesState(
+      categoriesSelected.map((categorie) => {
+        return { name: categorie.label, id: categorie.value };
+      })
+    );
   };
 
   const addVariantHandle = () => {
@@ -92,7 +95,6 @@ function FormCrud(props) {
     const enteredName = nameInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
     const enteredDiscount = discountInputRef.current.value;
-    const enteredToggle = toggle1;
     const enteredUnits = [];
     const enteredVariants = [];
     const formData = new FormData();
@@ -117,8 +119,6 @@ function FormCrud(props) {
     const collectionFile = Array.prototype.slice.call(
       document.getElementsByClassName("inputFile")
     );
-    console.log(collectionFile);
-    console.log(variants);
 
     for (let i = 0; i < collectionName.length; i++) {
       let fileValue = collectionFile[i].value;
@@ -140,16 +140,15 @@ function FormCrud(props) {
         image: filename,
       });
     }
-    console.log(enteredVariants);
 
     let food_in = JSON.stringify({
       name: enteredName,
       description: enteredDescription,
       variants: enteredVariants,
       units: enteredUnits,
-      categories: categoriesObject,
+      categories: categoriesState,
       discount: enteredDiscount,
-      is_active: enteredToggle === "on" ? true : false,
+      is_active: toggle1,
     });
 
     formData.append("food_in", food_in);
@@ -165,6 +164,7 @@ function FormCrud(props) {
     } else {
       dispatch(createFood(formData));
     }
+    navigate('/admin/food/dishes')
   };
 
   return (
@@ -195,6 +195,7 @@ function FormCrud(props) {
                     type="text"
                     ref={nameInputRef}
                     defaultValue={foodState.name}
+                    required
                   />
                 </div>
                 {/* Input description */}
@@ -211,6 +212,7 @@ function FormCrud(props) {
                     type="text"
                     ref={descriptionInputRef}
                     defaultValue={foodState.description}
+                    required
                   />
                 </div>
                 {/* Input discount */}
@@ -228,6 +230,7 @@ function FormCrud(props) {
                       type="number"
                       ref={discountInputRef}
                       defaultValue={foodState.discount}
+                      required
                     />
                     <div className="absolute inset-0 left-auto flex items-center pointer-events-none">
                       <span className="text-sm text-slate-400 font-medium px-3">
@@ -245,24 +248,21 @@ function FormCrud(props) {
                   >
                     Categorie
                   </label>
-                  <select
-                    id="categorie"
-                    multiple
-                    className="form-select"
-                    onChange={(event) => {
-                      selectInputHandle(event);
-                    }}
-                  >
-                    {categories.map((categorie) => (
-                      <option
-                        value={categorie.id}
-                        id={categorie.id}
-                        key={categorie.id}
-                      >
-                        {categorie.name}
-                      </option>
-                    ))}
-                  </select>
+                  {categoriesState.length > 0 && (
+                    <Select
+                      defaultValue={categoriesState.map((categorie) => {
+                        return { value: categorie.id, label: categorie.name };
+                      })}
+                      isMulti
+                      name="colors"
+                      options={categories.map((categorie) => {
+                        return { value: categorie.id, label: categorie.name };
+                      })}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      onChange={(choice) => selectInputHandle(choice)}
+                    />
+                  )}
                 </div>
                 {/* Is active */}
                 <div className="flex flex-col">
@@ -309,6 +309,7 @@ function FormCrud(props) {
                           type="text"
                           placeholder="Unit"
                           defaultValue={unit.unit}
+                          required
                         />
                         <input
                           id="name"
@@ -317,6 +318,7 @@ function FormCrud(props) {
                           placeholder="Price"
                           defaultValue={unit.price}
                           step="0.01"
+                          required
                         />
 
                         <button
@@ -364,7 +366,10 @@ function FormCrud(props) {
                         <span className="sr-only">Choose photo</span>
                         {variant.image ? (
                           <>
-                            <img src={variant.image} className="inputFile mt-3" />
+                            <img
+                              src={variant.image}
+                              className="inputFile mt-3"
+                            />
                           </>
                         ) : (
                           <input

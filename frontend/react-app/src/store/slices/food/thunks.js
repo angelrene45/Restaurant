@@ -20,6 +20,16 @@ export const getFood = (id) => {
     }
 }
 
+export const getFoodsByTerm = (term = "", page=0) => {
+    if (page < 0) page = 0 // avoid error when page is negative
+    return async (dispatch, getState) => {
+        dispatch(startLoadingFoods());
+        // execute call api 
+        const { data, status, statusText, headers } = await backendApi.get(`/foods/open/search/${term}?skip=${page*100}&limit=100`);
+        dispatch(setFoods({foods: data, page: 0}));
+    }
+}
+
 export const createFood = (formData) => {
     return async (dispatch, getState) => {
 
@@ -33,11 +43,13 @@ export const createFood = (formData) => {
         // execute call api 
         try {
             const { data, status, statusText, headers } = await backendApi.post(`/foods/`,formData,config);
-            Swal.fire(
-                'Created succesfully',
-                '',
-                'success'
-                )
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Created Succesfully',
+                showConfirmButton: false,
+                timer: 1500
+              })
 
         } catch(e) {
             const { data } = e.response
@@ -62,11 +74,13 @@ export const updateFood = (formData, id) => {
         // execute call api 
         try {
             const { data, status, statusText, headers } = await backendApi.put(`/foods/${id}`, formData, config);
-            Swal.fire(
-                'Updated succesfully',
-                '',
-                'success'
-                )
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Updated Succesfully',
+                showConfirmButton: false,
+                timer: 1500
+              })
 
         } catch(e) {
             const { data } = e.response

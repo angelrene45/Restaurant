@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union, List
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
@@ -15,6 +15,9 @@ class CRUDFood(CRUDBase[Food, FoodCreate, FoodUpdate]):
 
     def get_variant_by_name(self, db: Session, *, food_id: int, name: str) -> Optional[Food_Variant]:
         return db.query(Food_Variant).filter(Food_Variant.food_id == food_id and Food_Variant.name == name).first()
+
+    def get_by_term(self, db: Session, *, term: str, skip: int = 0, limit: int = 100) -> Optional[List[Food]]:
+        return db.query(Food).filter(Food.tsv.match(term)).offset(skip).limit(limit).all()
 
     def create(self, db: Session, *, obj_in: FoodCreate, categories_db: list[Category]) -> Food:
         """
