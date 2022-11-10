@@ -37,7 +37,7 @@ function FormCrud(props) {
       );
       setFoodState(data);
       setUnits(data.units);
-      setVariants(data.variants);
+      setVariants(data.variants.map(variant => {return { id: variant.name, name: variant.name, image: variant.image}}));
       setCategoriesState(data.categories);
       setIdUnits(data.units.length);
       setIdVariants(data.variants.length);
@@ -79,8 +79,9 @@ function FormCrud(props) {
   };
 
   const deleteVariantstHandle = (id) => {
+    const variantsId = variants.map((variant) => {return {id: variant.id || variant.name}})
     setVariants((current) =>
-      current.filter((variant) => variant.id || variant.name !== id)
+      current.filter((variant) => variant.id !== id)
     );
   };
 
@@ -110,6 +111,7 @@ function FormCrud(props) {
       enteredUnits.push({
         unit: collectionUnits[i].value,
         price: Number(collectionPrice[i].value),
+        is_active: true
       });
     }
 
@@ -138,6 +140,7 @@ function FormCrud(props) {
       enteredVariants.push({
         name: collectionName[i].value,
         image: filename,
+        is_active: true
       });
     }
 
@@ -396,7 +399,7 @@ function FormCrud(props) {
                             className="btn border-slate-200 hover:border-slate-300 text-rose-500"
                             type="button"
                             onClick={() =>
-                              deleteVariantstHandle(variant.id || variant.name)
+                              deleteVariantstHandle(variant.id)
                             }
                           >
                             <svg
