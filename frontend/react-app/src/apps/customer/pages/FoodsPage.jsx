@@ -1,48 +1,49 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { getCategoriesWithFoods } from "../../../store/slices/categories";
+import { useGetCategoriesWithFoodsQuery } from "../../../store/slices/categories";
+import { useLazyGetFoodsByTermQuery } from "../../../store/slices/food";
 import { FoodSearch } from "../layout/FoodSearch";
 import { FoodCart } from "../layout/FoodCart";
 import { OrderInfo } from "../layout/OrderInfo";
 import { Loading } from "../../../components/items/Spinner";
 
 
-export const FoodsPage = (props) => {
+export const FoodsPage = () => {
 
-    const dispatch = useDispatch();
-    const {categoriesWithFoods=[], isLoading} = useSelector(state => state.categorie)
-    const {foods:foodsByTerm=[], isLoading: loadingSearch} = useSelector(state => state.foods)
+    // get all categories with foods 
+    const {data: categoriesWithFoods=[], isLoading, error} = useGetCategoriesWithFoodsQuery()
+
+    // get foods when user search by term
+    const [getFoodsByTerm, {data: foodsByTerm=[], isFetching}] = useLazyGetFoodsByTermQuery()
+
+    // shopping cart state
     const {quantity} = useSelector((state) => state.cart)
     const [openCart, setOpenCart] = useState(false)
 
+    // selected category state
     const classSelected = "inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-transparent shadow-sm bg-indigo-500 text-white duration-150 ease-in-out"
     const classUnSelected = "inline-flex items-center justify-center text-sm font-medium leading-5 rounded-full px-3 py-1 border border-slate-200 hover:border-slate-300 shadow-sm bg-white text-slate-500 duration-150 ease-in-out"
     const [selectedCategory, setSelectedCategory] = useState(0) // first category selected
     const [foods, setFoods] = useState([]) // foods that show in cart
 
-    // get all categories with foods 
-    useEffect(() => {
-      dispatch(getCategoriesWithFoods());
-    }, [])
     
-    // listen when categoriesWithFoods is changed (only execute once)
+    // in first render select first category and show their foods
     useEffect(() => {
       if (categoriesWithFoods.length > 0){
-        // pre-select the fist category
+        // pre-select the first category
         setFoods(categoriesWithFoods[selectedCategory].foods)
       } 
     }, [categoriesWithFoods])
 
     // listen when user try to search foods by term
     useEffect(() => {
-      if (categoriesWithFoods.length > 0){
+      if (foodsByTerm.length > 0){
         // change the foods with the search by term
         setFoods(foodsByTerm)
       } 
     }, [foodsByTerm])
     
-
     if (isLoading) return <Loading/>
 
     return (
@@ -69,7 +70,7 @@ export const FoodsPage = (props) => {
               </div>
 
               {/* Search form */}
-              <FoodSearch/>
+              <FoodSearch getFoodsByTerm={getFoodsByTerm}/>
 
               {/* Order Info */}
               <OrderInfo open={openCart} setOpen={setOpenCart}/>
@@ -103,7 +104,7 @@ export const FoodsPage = (props) => {
                   {/* Categories */}
                   <div className="mb-5">
                     <ul className="flex flex-wrap -m-1">
-                      {
+                      { 
                         categoriesWithFoods.map((category, index) => (
                           <li key={index} className="m-1">
                             <button 
@@ -122,7 +123,10 @@ export const FoodsPage = (props) => {
                   {/* Cards 1 (Foods) */}
                   <div>
                     <div className="grid grid-cols-12 gap-6">
-                      {
+                      { (isFetching) 
+                        ? 
+                          <Loading/>
+                        :
                         // show the foods that user selected
                         foods.map((food) => (
                             <FoodCart key={food.name} food={food}/>

@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/query/react'
 import storage from 'redux-persist/lib/storage';
 import {
   persistStore,
@@ -14,32 +15,42 @@ import {
 import { categorieSlice } from './slices/categories'
 import { dashInfoSlice } from './slices/dashInfo'
 import { loginSlice } from './slices/login'
-import { foodSlice } from './slices/food'
+import { foodsApi, foodSlice } from './slices/food'
 import { cartSlice } from './slices/cart'
+import { categoriesApi } from './slices/categories';
 
 const persistConfig = {
     key: 'root',
     storage,
 }
 
-const persistedReducerLogin = persistReducer(persistConfig, loginSlice.reducer)
+const persistedReducerAuth = persistReducer(persistConfig, loginSlice.reducer)
 const persistedReducerCart = persistReducer(persistConfig, cartSlice.reducer)
 
 export const store = configureStore({
     reducer: {
-        login: persistedReducerLogin,
         foods: foodSlice.reducer,
         dashInfo: dashInfoSlice.reducer,
         categorie: categorieSlice.reducer,
-        cart: persistedReducerCart
 
+        // Persist Reducers (keep data when user refresh web browser)
+        login: persistedReducerAuth,
+        cart: persistedReducerCart,
+
+        // RTK Query reducer
+        [categoriesApi.reducerPath]: categoriesApi.reducer,
+        [foodsApi.reducerPath]: foodsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        })
+        }).concat(categoriesApi.middleware, foodsApi.middleware)
 })
 
 export const persistor = persistStore(store)
+
+// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
+// see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
+setupListeners(store.dispatch)

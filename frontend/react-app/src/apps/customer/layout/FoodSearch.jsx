@@ -1,12 +1,7 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
-
-import { getFoodsByTerm } from "../../../store/slices/food";
 
 
-export const FoodSearch = () => {
-
-    const dispatch = useDispatch();
+export const FoodSearch = ({getFoodsByTerm}) => {
 
     // listen search field 
     const searchHandler = (e) => {
@@ -14,7 +9,7 @@ export const FoodSearch = () => {
         // get input value 
         const term = e.target[0].value
         e.target[0].value = ""
-        if (term) dispatch(getFoodsByTerm(term));
+        if (term) getFoodsByTerm({term}, true) // true parameter is for use cache
     }
 
 
