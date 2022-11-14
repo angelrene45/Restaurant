@@ -1,6 +1,6 @@
-from typing import Generator, Optional, List
+from typing import Generator, Optional, List, Union
 
-from fastapi import Depends, HTTPException, status, UploadFile, File
+from fastapi import Depends, HTTPException, status, UploadFile, File, Query, WebSocket
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import ValidationError
@@ -8,9 +8,9 @@ from sqlalchemy.orm import Session
 
 from app import crud, models, schemas
 from app.core import security
-from app.crud import crud_user
 from app.db.session import SessionLocal
 from app.core.config import settings
+from app.models.user import RolUser
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
@@ -86,3 +86,29 @@ def file_image_food(
                 )
             file.file.seek(0)
     return files
+
+
+async def authorize_ws_token_data(
+    websocket: WebSocket,
+    token: Union[str, None] = Query(default=None)
+) -> bool:
+    if not token:
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="no token in params")
+        return False
+    try:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
+        token_data = schemas.TokenPayload(**payload)
+
+        # check if token is user system and the rol
+        if token_data.user_type == schemas.UserTypeEnum.user:
+            return True
+        
+        # here is invalid user or customer
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="Could not validate credentials")
+        return False
+        
+    except (jwt.JWTError, ValidationError):
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION, reason="Could not validate credentials")
+        return False

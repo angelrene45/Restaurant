@@ -41,9 +41,10 @@ def login_access_token(
         raise HTTPException(status_code=400, detail="Inactive user")
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     background_tasks.add_task(crud_object.update_lastlogin, db, db_obj=user)
+    user_rol = user.role if user_type == schemas.UserTypeEnum.user else ''
     return {
         "access_token": security.create_access_token(
-            user.id, user_type, expires_delta=access_token_expires
+            user.id, user_type, user_rol, expires_delta=access_token_expires
         ),
         "token_type": "bearer",
         "user_data": user,
