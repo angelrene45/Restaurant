@@ -45,3 +45,14 @@ def get(db: Session = Depends(deps.get_db)):
     # create super user if dont exists
     init_db(db)
     return {"msg":"Database initialized"}
+
+# Initialize async polling database connection
+from app.db.session import database_async
+
+@app.on_event("startup")
+async def startup():
+    await database_async.connect()
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database_async.disconnect()

@@ -1,3 +1,4 @@
+import json 
 from typing import Union 
 from fastapi import (
     APIRouter,
@@ -5,8 +6,11 @@ from fastapi import (
     WebSocket,
     WebSocketDisconnect
 )
-
+from sqlalchemy import select
+from pydantic import parse_obj_as
 from app.api.deps import authorize_ws_token_data
+from app import schemas, models
+from app.db.session import database_async
 
 
 class ConnectionManager:
@@ -31,8 +35,17 @@ class ConnectionManager:
         """
             Sent all current orders to active connections
         """
+        # prepare query async
+        query = select(models.Order)
+        result = await database_async.fetch_all(query=query)
+      
+        # parse order model to json and dict
+        orders = parse_obj_as(list[schemas.Order], result)
+        orders = [json.loads(order.json()) for order in orders]
+
+        # Notify all websockets clients new order arrives
         for connection in self.active_connections:
-            await connection.send_json(self.active_orders)
+            await connection.send_json(orders)
 
 
 manager = ConnectionManager()
@@ -42,8 +55,9 @@ router = APIRouter()
 @router.websocket("/read")
 async def read_orders(
     websocket: WebSocket, 
-    is_authorize: Union[str, None] = Depends(authorize_ws_token_data),
+    # is_authorize: Union[str, None] = Depends(authorize_ws_token_data),
 ):
+    # if not is_authorize: return 
     await manager.connect(websocket)
     await manager.send_personal_message("Connected", websocket)
     try:
@@ -54,4 +68,4 @@ async def read_orders(
             await manager.broadcast()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast(f"User Disconnect", websocket)
+        await manager.broadcast()
