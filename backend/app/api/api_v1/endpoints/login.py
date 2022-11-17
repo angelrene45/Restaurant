@@ -51,6 +51,35 @@ def login_access_token(
     }
 
 
+@router.post("/login/refresh-token", response_model=schemas.Token)
+def refresh_token(  
+    token: str = Body(...),
+    user_type: str = Body(default="user", enum=[value for value in schemas.UserTypeEnum]),
+    db: Session = Depends(deps.get_db), 
+) -> Any:
+    """
+    Refresh token
+    """
+    if not token:
+        raise HTTPException(status_code=400, detail="Token not sent")
+    is_valid, data_token = security.validate_access_token(token)
+    if not is_valid: 
+        raise HTTPException(status_code=400, detail="Token not valid")
+    crud_object = crud.user if user_type == schemas.UserTypeEnum.user else crud.customer
+    user = crud_object.get(db, id=data_token.sub)
+    if not user: 
+        raise HTTPException(status_code=400, detail=f"User doest exists from user type: {user_type}")
+    user_rol = user.role if user_type == schemas.UserTypeEnum.user else ''
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    return {
+        "access_token": security.create_access_token(
+            user.id, user_type, user_rol, expires_delta=access_token_expires
+        ),
+        "token_type": "bearer",
+        "user_data": user,
+    }
+
+
 @router.post("/login/test-token", response_model=schemas.User)
 def test_token(current_user: models.User = Depends(deps.get_current_user)) -> Any:
     """
