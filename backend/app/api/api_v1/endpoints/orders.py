@@ -38,6 +38,17 @@ def read_orders(
     return orders
 
 
+@router.get("/count")
+def read_total_orders(
+    db: Session = Depends(deps.get_db),
+    ) -> Any:
+    """
+    Retrieve total orders store in database
+    """
+    total_orders = crud.order.get_total_records(db)
+    return total_orders
+
+
 @router.get("/{order_id}", response_model=schemas.Order)
 def read_order_by_id(
     order_id: int,

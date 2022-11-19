@@ -23,6 +23,16 @@ def test_get_orders(
         assert "grant_total" in order
 
 
+def test_get_total_orders_on_db(
+    client: TestClient, db: Session,
+) -> None:
+    create_random_order(db)
+    create_random_order(db)
+    r = client.get(f"{settings.API_V1_STR}/orders/count")
+    count = r.json()
+    assert count > 0
+
+
 def test_get_existing_order(
     client: TestClient, db: Session,
 ) -> None:
