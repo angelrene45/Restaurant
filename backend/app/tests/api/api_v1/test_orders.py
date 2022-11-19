@@ -48,6 +48,7 @@ def test_create_order(
         "customer_id": customer.id,
         "board_id": board.id,
         "foods": foods,
+        "note": random_lower_string(),
         "status": select_random_order_status(),
         "subtotal": random_float(),
         "tax": random_float(),
@@ -62,7 +63,13 @@ def test_create_order(
     assert r.status_code == 200
     assert created_order
     assert created_order.get("grant_total") == data.get("grant_total")
+    assert created_order.get("note") == data.get("note")
     assert len(created_order.get("foods")) == 3
+
+    for food in created_order.get("foods"):
+        assert "variant" in food
+        assert "unit" in food
+        assert "quantity" in food
 
 
 def test_update_order(

@@ -15,10 +15,13 @@ schema_example = {
             {
                 "food_id": "<food_id>",
                 "name": "<name of food>",
+                "variant": "<variant food chosen by user>",
+                "unit": "<unit food chosen by user>",
                 "quantity": "<quantity of food>",
                 "price": "<price of variant that choose user>",
             }
         ],
+        "note": "<Order details by user>",
         "status": "<Constant of OrderStatus Schema>",
         "subtotal": "<sum of all prices>",
         "tax": "<tax>",
@@ -31,6 +34,8 @@ schema_example = {
 class OrderFood(BaseModel):
     food_id: Optional[int]
     name: Optional[str]
+    variant: Optional[str]
+    unit: Optional[str]
     quantity: Optional[int]
     price: Optional[float]
 
@@ -44,6 +49,7 @@ class OrderBase(BaseModel):
     customer_id: Optional[int] = None
     board_id: Optional[int] = None
     foods: Optional[List[OrderFood]] = []
+    note: Optional[str] = None
     status: Optional[StatusOrder] = None
     subtotal: Optional[float] = None
     tax: Optional[float] = None

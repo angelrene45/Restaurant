@@ -19,9 +19,9 @@ def select_random_order_status() -> str:
 def create_random_order_foods(db:Session, n=3, as_dict=False) -> models.Order_Food:
     foods_created = [create_random_food(db) for _ in range(n)]
     if as_dict:
-        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float()).dict() for food in foods_created]
+        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float(), variant=random_lower_string(), unit=random_lower_string()).dict() for food in foods_created]
     else:
-        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float()) for food in foods_created]
+        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float(), variant=random_lower_string(), unit=random_lower_string()) for food in foods_created]
 
 
 def create_random_order(db: Session, n_foods: int=3) -> models.Order:

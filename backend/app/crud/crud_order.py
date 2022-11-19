@@ -24,6 +24,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
             customer_id = obj_in.customer_id,
             board_id = obj_in.board_id,
             foods = foods,
+            note = obj_in.note,
             status = obj_in.status,
             subtotal= obj_in.subtotal,
             tax = obj_in.tax,
