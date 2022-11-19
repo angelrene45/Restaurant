@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 import greenTable from '../images/round-table.png'
 import greenSquare from '../images/dinning-table.png'
 import redTable from '../images/round-table-red.png'
@@ -6,10 +8,81 @@ import soda from '../images/soda-can.png'
 import cocina from '../images/sarten.png'
 import trash from '../images/eliminar.png'
 
+const initialBoards = {
+  1:"available", 
+  2:"available", 
+  3:"available", 
+}
+
 const TablesLayOut = () => {
 
-    return (
+  const [boards, setBoards] = useState(initialBoards);
+  const [webSocketReady, setWebSocketReady] = useState(false);
+  const [webSocket, setWebSocket] = useState(null);
+
+  // handle websocket events
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8000/ws/v1/boards/")
+
+    ws.onopen = (event) => {
+      setWebSocketReady(true);
+    };
+    
+    ws.onmessage = function (event) {
+      console.log("new socket message", event.data)
+      const {type, data} = JSON.parse(event.data)
+      if (type === 'broadcast') setBoards(data)
+    };
+
+    // set state 
+    setWebSocket(ws)
+
+    // clean up when user close the page
+    return () => {
+      ws.close();
+    }
+  }, []);
+
+  // when user click on board change the status 
+  const updateStatusBoard = (board_id) => {
+    let status = 'available'
+    // put different status from current data 
+    if (board_id in boards){
+      const current_status = boards[board_id]
+      if (current_status === "available") status = "not_available"
+    }
+
+    // sent event websocket and change table status
+    if (webSocket){
+      const msg = {
+        type: "update",
+        data: {board_id, status}
+      }
+      webSocket.send(JSON.stringify(msg));
+    } 
+  }
+
+  return (
     <div className='overflow-x-auto'>
+        {/* Example socket */}
+        {
+          Object.keys(boards).map(key => 
+            <div 
+              key={key} 
+              className='bg-gray' 
+              onClick={() => updateStatusBoard(key)}
+            >
+              {
+                (boards[key] === 'available') 
+                ? <img src={greenTable}></img>
+                : <img src={redTable}></img>
+              }
+              <h1>{boards[key]}</h1>
+            </div>
+          )
+        }
+        {/* Finish example socket */}
+      
       <div className="grid grid-rows-10 grid-cols-15 bg-gray-300 shadow-2xl rounded-lg mx-auto text-center mt-4 mb-4" style={{ height:'800px', width: '1500px'}}>
         <div className='bg-gray-400 grid grid-cols-2 col-span-4 row-span-1 col-start-1 row-start-2'>
           <div className='col-span-1 row-span-1 flex items-center justify-center'>
@@ -98,7 +171,7 @@ const TablesLayOut = () => {
           </div>
         </div>
 
-         
+        
 
         <div className='grid grid-rows-4 grid-cols-1 col-start-11 row-start-4 row-end-8 gap-7' >
           <div className='grid grid-rows-3 grid-cols-1 col-start-1 row-start-2 row-end-5 gap-3'>
