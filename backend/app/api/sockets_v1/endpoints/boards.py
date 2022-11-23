@@ -22,10 +22,10 @@ class BoardsConnectionManager:
                 {"type": "msg", "data": <message-body>}
 
             get: get all current boards status
-                {"type": "msg", "data": {"board_id": <id>, "status": <status>} }
+                {"type": "get", "data": {"board_id": <id>, "status": <status>} }
 
             update: when status board was changed ["available", "busy", "reserved", "not_available"]
-                {"type": "msg", "data": {"board_id": <id>, "status": <status>} }
+                {"type": "update", "data": {"board_id": <id>, "status": <status>} }
                 
 
         Events Frontend:
@@ -36,7 +36,11 @@ class BoardsConnectionManager:
     """
     def __init__(self):
         self.active_connections: list[WebSocket] = []
-        self.boards: dict = {}
+        self.boards: dict = {
+            "1":"available", 
+            "2":"available", 
+            "3":"available", 
+        }
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()

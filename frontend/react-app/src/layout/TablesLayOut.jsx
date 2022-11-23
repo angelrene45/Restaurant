@@ -8,15 +8,9 @@ import soda from '../images/soda-can.png'
 import cocina from '../images/sarten.png'
 import trash from '../images/eliminar.png'
 
-const initialBoards = {
-  1:"available", 
-  2:"available", 
-  3:"available", 
-}
-
 const TablesLayOut = () => {
 
-  const [boards, setBoards] = useState(initialBoards);
+  const [boards, setBoards] = useState({});
   const [webSocketReady, setWebSocketReady] = useState(false);
   const [webSocket, setWebSocket] = useState(null);
 
@@ -32,7 +26,7 @@ const TablesLayOut = () => {
       console.log("new socket message", event.data)
       const {type, data} = JSON.parse(event.data)
       if (type === 'broadcast') setBoards(data)
-    };
+    }
 
     // set state 
     setWebSocket(ws)
