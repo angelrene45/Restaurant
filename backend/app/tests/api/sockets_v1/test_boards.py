@@ -14,22 +14,24 @@ def test_ws_boards(
     # test web socket
     with client.websocket_connect(f"/ws/v1/boards/") as websocket:
         # get msg that client is connected
+        websocket.send_json({"type": "RequestAllBoards"})
         data = websocket.receive_json()
-        assert data == {"type": "msg", "data": "Connected"}
-        # get msg broadcast 
-        data = websocket.receive_json()
-        assert data == {"type": "broadcast", "data": {}}
+        assert data.get("type") == 'SendAllBoards'
+        assert len(data.get("data")) > 0
 
         # change status from board
-        websocket.send_json({"type": "update", "data": {"board_id": 1, "status": "available"} })
+        websocket.send_json({"type": "RequestUpdateBoard", "data": {"board_id": 1, "status": "available"} })
         # wait for new msg 
         data = websocket.receive_json()
         assert "type" in data
         assert "data" in data
-        assert data.get("type") == 'broadcast'
+        assert data.get("type") == 'SendAllBoards'
         assert len(data.get("data")) > 0
 
         # change status from another board
-        websocket.send_json({"type": "update", "data": {"board_id": 2, "status": "not_available"} })
+        websocket.send_json({"type": "RequestUpdateBoard", "data": {"board_id": 2, "status": "not_available"} })
         data = websocket.receive_json()
+        assert "type" in data
+        assert "data" in data
+        assert data.get("type") == 'SendAllBoards'
         assert len(data.get("data")) > 0

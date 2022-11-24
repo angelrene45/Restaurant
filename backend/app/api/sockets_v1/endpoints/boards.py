@@ -1,5 +1,7 @@
 import json 
 from typing import Union 
+
+import websockets
 from fastapi import (
     APIRouter,
     Depends,
@@ -17,22 +19,19 @@ class BoardsConnectionManager:
     """
         Handle Logic from Boards in Web Sockets 
 
-        Events Backend:
-            msg: when receive message from web socket
-                {"type": "msg", "data": <message-body>}
+        Boards Events:
+            SendMessage: when receive message from web socket
+                {"type": "SendMessage", "data": <message-body>}
 
-            get: get all current boards status
-                {"type": "get", "data": {"board_id": <id>, "status": <status>} }
+            RequestAllBoards: get all current boards status
+                {"type": "RequestAllBoards", "data": {"board_id": <id>, "status": <status>} }
 
-            update: when status board was changed ["available", "busy", "reserved", "not_available"]
-                {"type": "update", "data": {"board_id": <id>, "status": <status>} }
+            RequestUpdateBoard: when status board was changed ["available", "busy", "reserved", "not_available"]
+                {"type": "RequestUpdateBoard", "data": {"board_id": <id>, "status": <status>} }
                 
+            SendAllBoards: when receives dictionary of all boards with their status (Frontend Event)
+                {"type": "send_all_boards", "data": {"<board_id>": <status>} }
 
-        Events Frontend:
-            broadcast: when receives dictionary of board with their status 
-                {"type": "broadcast", "data": {"<board_id>": <status>} }
-
-        Json Structure:
     """
     def __init__(self):
         self.active_connections: list[WebSocket] = []
@@ -55,15 +54,23 @@ class BoardsConnectionManager:
         self.boards.update({board_id: status})
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_json({"type": "msg", "data": message})
+        """
+            Send simple message
+        """
+        await websocket.send_json({"type": "SendMessage", "data": message})
 
-    async def broadcast(self):
+    async def send_all_boards(self):
         """
             Send all current status from boards to active socket connections
         """
-        # Notify all websockets clients new order arrives
+        # Send to all websockets clients the boards status dictionary
         for connection in self.active_connections:
-            await connection.send_json({"type": "broadcast", "data": self.boards})
+            try:
+                await connection.send_json({"type": "SendAllBoards", "data": self.boards})
+            except Exception as e:
+                print(f"websocket error when try to send boards:\n {e}")
+                # connection error and close 
+                self.disconnect(connection)
 
 
 manager_boards = BoardsConnectionManager()
@@ -77,20 +84,17 @@ async def handle_boards(
 ):
     # if not is_authorize: return 
     await manager_boards.connect(websocket)
-    await manager_boards.send_personal_message("Connected", websocket)
-    await manager_boards.broadcast()
     print(f"Active connections: {len(manager_boards.active_connections)}")
     try:
         while True:
             # waiting for new messages arrives from sockets clients
             data = await websocket.receive_json()
             # check type of message
-            if data.get('type') == 'get':
-                await manager_boards.broadcast()
-            if data.get('type') == 'update':
+            if data.get('type') == 'RequestAllBoards':
+                await manager_boards.send_all_boards()
+            if data.get('type') == 'RequestUpdateBoard':
                 manager_boards.change_status_board(data.get("data", {}))
-                await manager_boards.broadcast()
+                await manager_boards.send_all_boards()
     except WebSocketDisconnect:
         manager_boards.disconnect(websocket)
-        await manager_boards.broadcast()
         print(f"Active connections: {len(manager_boards.active_connections)}")

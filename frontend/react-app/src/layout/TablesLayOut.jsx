@@ -16,16 +16,22 @@ const TablesLayOut = () => {
 
   // handle websocket events
   useEffect(() => {
+    // connect to web socket 
     const ws = new WebSocket("ws://localhost:8000/ws/v1/boards/")
-
-    ws.onopen = (event) => {
-      setWebSocketReady(true);
-    };
     
+    // event when websocket is opened
+    ws.onopen = (event) => {
+      setWebSocketReady(true)
+      // request get all boards
+      const msg = { type: "RequestAllBoards" }
+      ws.send(JSON.stringify(msg));
+    }
+    
+    // event to listen new message on real time
     ws.onmessage = function (event) {
       console.log("new socket message", event.data)
       const {type, data} = JSON.parse(event.data)
-      if (type === 'broadcast') setBoards(data)
+      if (type === 'SendAllBoards') setBoards(data)
     }
 
     // set state 
@@ -33,7 +39,8 @@ const TablesLayOut = () => {
 
     // clean up when user close the page
     return () => {
-      ws.close();
+      // uncomment this on production mode
+      // ws.close();
     }
   }, []);
 
@@ -49,7 +56,7 @@ const TablesLayOut = () => {
     // sent event websocket and change table status
     if (webSocket){
       const msg = {
-        type: "update",
+        type: "RequestUpdateBoard",
         data: {board_id, status}
       }
       webSocket.send(JSON.stringify(msg));
