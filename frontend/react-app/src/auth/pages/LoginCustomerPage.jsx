@@ -1,10 +1,34 @@
-import React from 'react';
+import { useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AuthImage from '../images/auth-image.jpg';
 import AuthDecoration from '../images/auth-decoration.png';
+import { getToken } from '../../store/slices/auth';
+import { navigateUser } from '../../utils';
 
 export const LoginCustomerPage = () => {
+
+  const {status} = useSelector(state => state.auth);
+
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+  const dispatch = useDispatch();
+
+  // this memo disable button when is checking credentials to backend 
+  const isAuthenticating = useMemo(() => status === 'checking', [status]);
+
+  // handle login 
+  const loginHandler = async (event) => {
+    event.preventDefault();
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value
+    dispatch( getToken(enteredEmail, enteredPassword, "customer") )
+  };
+
+  // if user is authenticated navigate to home 
+  if (status === 'authenticated') return navigateUser()
+
   return (
     <main className="bg-white">
 
@@ -42,22 +66,28 @@ export const LoginCustomerPage = () => {
             <div className="max-w-sm mx-auto px-4 py-8">
               <h1 className="text-3xl text-slate-800 font-bold mb-6">Welcome! ✨</h1>
               {/* Form */}
-              <form>
+              <form onSubmit={loginHandler}>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address</label>
-                    <input id="email" className="form-input w-full" type="email" />
+                    <input id="email" className="form-input w-full" type="email" ref={emailInputRef} />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
-                    <input id="password" className="form-input w-full" type="password" autoComplete="on" />
+                    <input id="password" className="form-input w-full" type="password" autoComplete="on" ref={passwordInputRef} />
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-6">
                   <div className="mr-1">
                     <Link className="text-sm underline hover:no-underline" to="/reset-password">Forgot Password?</Link>
                   </div>
-                  <Link className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" to="/">Sign In</Link>
+                  <button 
+                    disabled={isAuthenticating}
+                    className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" 
+                    type="submit"
+                  >
+                    Sign In
+                  </button>
                 </div>
               </form>
               {/* Footer */}

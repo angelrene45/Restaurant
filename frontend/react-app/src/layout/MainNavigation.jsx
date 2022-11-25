@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
 import UserMenu from '../Components/items/DropdownProfile'
-import { deleteToken } from "../store/slices/login";
+import { deleteToken } from "../store/slices/auth";
 
 const MainNavigation = (props) => {
   const dispatch = useDispatch();

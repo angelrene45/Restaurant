@@ -28,11 +28,11 @@ def create_customer_open(
             status_code=403,
             detail="Open customer registration is forbidden on this server",
         )
-    customer = crud.customer.get_by_email(db, email=customer_in.mobile)
+    customer = crud.customer.get_by_email(db, email=customer_in.email)
     if customer:
         raise HTTPException(
             status_code=400,
-            detail="The customer with this email already exists in the system",
+            detail="This customer email already exists in the system",
         )
     customer = crud.customer.create(db, obj_in=customer_in)
     if settings.EMAILS_ENABLED and customer_in.email:

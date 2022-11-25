@@ -8,7 +8,7 @@ export const customFetchBaseQuery = fetchBaseQuery({
     baseUrl: 'http://127.0.0.1:8000/api/v1/', 
     prepareHeaders: (headers, { getState }) => {
         // get token from loginSlice
-        const token = getState().login.authToken
+        const token = getState().auth.authToken
         if (token) {
             headers.set('Authorization', `Bearer ${token}`)
         }

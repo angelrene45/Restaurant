@@ -1,10 +1,38 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import AuthImage from '../images/auth-image.jpg';
 import AuthDecoration from '../images/auth-decoration.png';
+import { useCreateCustomerOpenMutation } from '../../store/slices/customers/api';
+import { getToken } from '../../store/slices/auth';
+import { navigateUser } from '../../utils';
+
+const MySwal = withReactContent(Swal);
 
 export const RegisterCustomerPage = () => {
+
+  const {status} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  
+  // mutation for call api (create customer)
+  const [createCustomerOpen,  {isLoading, error}] = useCreateCustomerOpenMutation();
+
+  // error on api cal for register customer
+  if (error){ 
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error.data.detail,
+    })
+  }
+
+  // if user is authenticated navigate to home 
+  if (status === 'authenticated') return navigateUser()
+  
   return (
     <main className="bg-white">
 
@@ -42,39 +70,85 @@ export const RegisterCustomerPage = () => {
             <div className="max-w-sm mx-auto px-4 py-8">
               <h1 className="text-3xl text-slate-800 font-bold mb-6">Create your Account ✨</h1>
               {/* Form */}
-              <form>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address <span className="text-rose-500">*</span></label>
-                    <input id="email" className="form-input w-full" type="email" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="name">Full Name <span className="text-rose-500">*</span></label>
-                    <input id="name" className="form-input w-full" type="text" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="role">Your Role <span className="text-rose-500">*</span></label>
-                    <select id="role" className="form-select w-full">
-                      <option>Designer</option>
-                      <option>Developer</option>
-                      <option>Accountant</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
-                    <input id="password" className="form-input w-full" type="password" autoComplete="on" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-6">
-                  <div className="mr-1">
-                    <label className="flex items-center">
-                      <input type="checkbox" className="form-checkbox" />
-                      <span className="text-sm ml-2">Email me about product news.</span>
-                    </label>
-                  </div>
-                  <Link className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" to="/">Sign Up</Link>
-                </div>
-              </form>
+              <Formik
+                initialValues={{
+                  email: '',
+                  firstName: '',
+                  lastName: '',
+                  password: '',
+                  passwordConfirm: '',
+                }}
+                onSubmit={async (values) => {
+                  const {data, error} = await createCustomerOpen(values);
+                  if (data){
+                    // here the sign up was success so on auto sign in 
+                    dispatch( getToken(values.email, values.password, "customer") )
+                  }
+                }}
+                validationSchema={
+                  Yup.object({
+                    email: Yup.string()
+                      .email('Invalid email address')
+                      .required('Required'),
+                    firstName: Yup.string()
+                      .max(20, 'Must be 20 characters or less')
+                      .required('Required'),
+                    lastName: Yup.string()
+                      .max(20, 'Must be 20 characters or less')
+                      .required('Required'),
+                    password: Yup.string()
+                      .required('Required'),
+                    passwordConfirm: Yup.string()
+                      .required('Required')
+                      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+                  })
+                }
+              >
+
+                {
+                  (formik) => (
+                    <Form>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address <span className="text-rose-500">*</span></label>
+                          <Field name="email" type="email" className="form-input w-full" />
+                          <ErrorMessage name="email" component="span" className="text-rose-500 text-sm"/>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="firstName">First Name <span className="text-rose-500">*</span></label>
+                          <Field name="firstName" type="text" className="form-input w-full" />
+                          <ErrorMessage name="firstName" component="span" className="text-rose-500 text-sm"/>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="lastName">Last Name</label>
+                          <Field name="lastName" type="text" className="form-input w-full" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="password">Password <span className="text-rose-500">*</span></label>
+                          <Field name="password" type="password" className="form-input w-full" />
+                          <ErrorMessage name="password" component="span" className="text-rose-500 text-sm"/>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="passwordConfirm">Confirm Password<span className="text-rose-500">*</span></label>
+                          <Field name="passwordConfirm" type="password" className="form-input w-full" />
+                          <ErrorMessage name="passwordConfirm" component="span" className="text-rose-500 text-sm"/>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between mt-6">
+                        <div className="mr-6"></div>
+                        <button 
+                          className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" 
+                          type="submit"
+                          disabled={isLoading}
+                        >
+                          Sign Up
+                        </button>
+                      </div>
+                    </Form>
+                  )
+                }
+              </Formik>
+              
               {/* Footer */}
               <div className="pt-5 mt-6 border-t border-slate-200">
                 <div className="text-sm">

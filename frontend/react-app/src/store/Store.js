@@ -14,39 +14,42 @@ import {
 
 import { categorieSlice } from './slices/categories'
 import { dashInfoSlice } from './slices/dashInfo'
-import { loginSlice } from './slices/login'
+import { authSlice } from './slices/auth'
 import { foodsApi, foodSlice } from './slices/food'
 import { cartSlice } from './slices/cart'
 import { categoriesApi } from './slices/categories';
+import { customerApi } from './slices/customers';
 
 const persistConfig = {
     key: 'root',
     storage,
 }
 
-const persistedReducerAuth = persistReducer(persistConfig, loginSlice.reducer)
+const persistedReducerAuth = persistReducer(persistConfig, authSlice.reducer)
 const persistedReducerCart = persistReducer(persistConfig, cartSlice.reducer)
 
 export const store = configureStore({
     reducer: {
+        // slices
         foods: foodSlice.reducer,
         dashInfo: dashInfoSlice.reducer,
         categorie: categorieSlice.reducer,
 
         // Persist Reducers (keep data when user refresh web browser)
-        login: persistedReducerAuth,
+        auth: persistedReducerAuth,
         cart: persistedReducerCart,
 
         // RTK Query reducer
         [categoriesApi.reducerPath]: categoriesApi.reducer,
         [foodsApi.reducerPath]: foodsApi.reducer,
+        [customerApi.reducerPath]: customerApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(categoriesApi.middleware, foodsApi.middleware)
+        }).concat(categoriesApi.middleware, foodsApi.middleware, customerApi.middleware)
 })
 
 export const persistor = persistStore(store)

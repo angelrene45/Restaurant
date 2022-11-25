@@ -5,33 +5,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 import loginImg from '../../images/login2.jpg';
 import { navigateUser } from '../../utils';
-import { getToken, setToken } from '../../store/slices/login';
+import { getToken, setToken } from '../../store/slices/auth';
 
 
-export const LoginPage = (props) => {
+export const LoginUserPage = (props) => {
     
     const [isLogin, setIsLogin] = useState(true);
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
     const dispatch = useDispatch();
 
-    const token = localStorage.getItem('TOKEN');
-    const role = localStorage.getItem('ROLE');
-
     // if user is already authenticated redirect to proper page 
-    const {authorization} = useSelector(state => state.login);
-    if (authorization) return navigateUser(role)
-
-    if (token !== null) {
-      dispatch(setToken({token, role }));
-    };
+    const {status} = useSelector(state => state.auth);
+    if (status === 'authenticated') return navigateUser()
 
     
     const loginHandler = async (event) => {
       event.preventDefault();
       const enteredEmail = emailInputRef.current.value;
       const enteredPassword = passwordInputRef.current.value
-      dispatch( getToken(enteredEmail, enteredPassword ) )
+      dispatch( getToken(enteredEmail, enteredPassword, "user") )
     };
 
   

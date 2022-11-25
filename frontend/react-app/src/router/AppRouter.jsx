@@ -13,10 +13,9 @@ export const AppRouter = () => {
 
     return (
         <Routes>   
-            <Route path='*' element={<PageNotFound />}/>
             <Route path='/auth/*' element={<AuthRoutes />}/>
-            {/* <Route path='/' element={<Navigate to='/auth/login'/>}/> */}
             <Route path='/' element={<Navigate to='/customer/'/>}/>
+            <Route path='*' element={<PageNotFound />}/>
 
             <Route path="/admin/*" element={
                 <AdminRoute>
@@ -35,6 +34,7 @@ export const AppRouter = () => {
                     <CustomerRoutes />
                 </CustomerRoute>
             } />
+            
         </Routes>
     )
 }

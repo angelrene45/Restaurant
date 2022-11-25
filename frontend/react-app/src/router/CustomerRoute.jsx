@@ -1,15 +1,15 @@
 import { useSelector } from 'react-redux'
-import { LoginPage } from '../auth/pages'
+import { LoginUserPage } from '../auth/pages'
 import { TypeUsers } from '../utils'
 
 
 export const CustomerRoute = ({ children }) => {
 
-    // const {authorization, role} = useSelector(state => state.LoginReducer)
+    // const {authorization, role} = useSelector(state => state.authReducer)
     
     // return (authorization && role === TypeUsers.Customer)
     //     ? children
-    //     : <LoginPage/>
+    //     : <LoginUserPage/>
     return children
    
 }
