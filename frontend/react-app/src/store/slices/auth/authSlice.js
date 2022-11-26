@@ -4,16 +4,19 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     status: 'not-authenticated', // 'checking', 'not-authenticated', 'authenticated'
-    authToken: ''
+    authToken: '', 
+    userData: {}, // json response from backend 
   },
   reducers: {
     setToken: (state, action) => {
       state.status = 'authenticated';
       state.authToken = action.payload.token;
+      state.userData = action.payload.userData;
     },
     deleteToken: (state) => {
       state.status = 'not-authenticated';
       state.authToken = '';
+      state.userData = {};
     },
     checkingCredentials: (state) => {
       state.status = 'checking';

@@ -10,11 +10,13 @@ import AuthDecoration from '../images/auth-decoration.png';
 import { useCreateCustomerOpenMutation } from '../../store/slices/customers/api';
 import { getToken } from '../../store/slices/auth';
 import { navigateUser } from '../../utils';
+import { SpinnerButton } from '../../components/items/Spinner';
 
 const MySwal = withReactContent(Swal);
 
 export const RegisterCustomerPage = () => {
 
+  // get redux state from authentication
   const {status} = useSelector(state => state.auth);
   const dispatch = useDispatch();
   
@@ -79,9 +81,18 @@ export const RegisterCustomerPage = () => {
                   passwordConfirm: '',
                 }}
                 onSubmit={async (values) => {
-                  const {data, error} = await createCustomerOpen(values);
+                  // prepare object to backend
+                  const apiData = {
+                    email: values.email,
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    password: values.password
+                  }
+                  // call api create customer open and await for response
+                  const {data, error} = await createCustomerOpen(apiData);
+                  // check if customer is created
                   if (data){
-                    // here the sign up was success so on auto sign in 
+                    // here the sign up was success so auto sign in 
                     dispatch( getToken(values.email, values.password, "customer") )
                   }
                 }}
@@ -136,13 +147,13 @@ export const RegisterCustomerPage = () => {
                       </div>
                       <div className="flex items-center justify-between mt-6">
                         <div className="mr-6"></div>
-                        <button 
-                          className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" 
+                        <SpinnerButton
+                          classNameEnable="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" 
+                          classNameDisabled="btn text-white ml-3 whitespace-nowrap text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" 
                           type="submit"
-                          disabled={isLoading}
-                        >
-                          Sign Up
-                        </button>
+                          isLoading={isLoading}
+                          value="Sign Up"
+                        />
                       </div>
                     </Form>
                   )

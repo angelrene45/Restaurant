@@ -1,30 +1,23 @@
 import { useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 import AuthImage from '../images/auth-image.jpg';
 import AuthDecoration from '../images/auth-decoration.png';
 import { getToken } from '../../store/slices/auth';
 import { navigateUser } from '../../utils';
+import { SpinnerButton } from '../../components/items/Spinner';
 
 export const LoginCustomerPage = () => {
 
   const {status} = useSelector(state => state.auth);
 
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
   const dispatch = useDispatch();
 
   // this memo disable button when is checking credentials to backend 
   const isAuthenticating = useMemo(() => status === 'checking', [status]);
-
-  // handle login 
-  const loginHandler = async (event) => {
-    event.preventDefault();
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value
-    dispatch( getToken(enteredEmail, enteredPassword, "customer") )
-  };
 
   // if user is authenticated navigate to home 
   if (status === 'authenticated') return navigateUser()
@@ -66,30 +59,55 @@ export const LoginCustomerPage = () => {
             <div className="max-w-sm mx-auto px-4 py-8">
               <h1 className="text-3xl text-slate-800 font-bold mb-6">Welcome! ✨</h1>
               {/* Form */}
-              <form onSubmit={loginHandler}>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address</label>
-                    <input id="email" className="form-input w-full" type="email" ref={emailInputRef} />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
-                    <input id="password" className="form-input w-full" type="password" autoComplete="on" ref={passwordInputRef} />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-6">
-                  <div className="mr-1">
-                    <Link className="text-sm underline hover:no-underline" to="/reset-password">Forgot Password?</Link>
-                  </div>
-                  <button 
-                    disabled={isAuthenticating}
-                    className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" 
-                    type="submit"
-                  >
-                    Sign In
-                  </button>
-                </div>
-              </form>
+              <Formik
+                initialValues={{
+                  email: '',
+                  password: '',
+                }}
+                onSubmit={ (values) => {
+                  dispatch( getToken(values.email, values.password, "customer") )
+                }}
+                validationSchema={
+                  Yup.object({
+                    email: Yup.string()
+                      .required('Required')
+                      .email('Invalid email address'),
+                    password: Yup.string()
+                      .required('Required')
+                  })
+                }
+              >
+
+                {
+                  (formik) => (
+                    <Form>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address <span className="text-rose-500">*</span></label>
+                          <Field name="email" type="email" className="form-input w-full" />
+                          <ErrorMessage name="email" component="span" className="text-rose-500 text-sm"/>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="password">Password <span className="text-rose-500">*</span></label>
+                          <Field name="password" type="password" className="form-input w-full" />
+                          <ErrorMessage name="password" component="span" className="text-rose-500 text-sm"/>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between mt-6">
+                        <div className="mr-6"></div>
+                        <SpinnerButton
+                          classNameEnable="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" 
+                          classNameDisabled="btn text-white ml-3 whitespace-nowrap text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" 
+                          type="submit"
+                          isLoading={isAuthenticating}
+                          value="Log In"
+                        />
+                      </div>
+                    </Form>
+                  )
+                }
+              </Formik>
               {/* Footer */}
               <div className="pt-5 mt-6 border-t border-slate-200">
                 <div className="text-sm">

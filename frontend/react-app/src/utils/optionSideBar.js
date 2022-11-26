@@ -1,64 +1,59 @@
-export const linksJsonAdmin = [
-
+export const linksJsonAdmin = {
+  login: "/auth/login/user",
+  links: [
     {
       topic: "Food",
       subTopics: [
         {
           name: "Categories",
-          url:"/admin/food/categories"
+          url: "/admin/food/categories"
         },
         {
           name: "Dishes and drinks",
-          url:"/admin/food/dishes"
+          url: "/admin/food/dishes"
         }
       ]
     }
-];
+  ]
+};
 
-export const linksJsonClie = [
+export const linksJsonCustomer = {
+  login: "/auth/login/customer",
+  links: [
     {
-      name: "Table Map",
-      url: "/"
-    },
-    {
-      name: "Red Meats",
-      url: "/r_meats"
-    },
-    {
-      name: "White Meats",
-      url: "/w_meats"
-    },
-    {
-      name: "Sea food",
-      url: "/seafood"
-    },
-    {
-      name: "Drinks without Alcohol ",
-      url: "/drinks_wo"
-    },
-    {
-      name: "Alcoholic Drinks ",
-      url: "/drinks_w"
+      topic: "Order",
+      subTopics: [
+        {
+          name: "Restaurant",
+          url: "/admin/food/categories"
+        },
+        {
+          name: "Pick up/Delivery",
+          url: "/admin/food/dishes"
+        }
+      ]
     }
-];
+  ]
+}
+
 
 export const linksJsonEmployees = [
-    {
-      name: "Inicio",
-      url: "/"
-    },
-    {
-      name: "Ventas",
-      url: "/ventas"
-    },
-    {
-      name: "Empleados",
-      url: "/empleados"
-    },
-    {
-      name: "Proveedores",
-      url: "/proveedores"
-    },
+  {
+    name: "Inicio",
+    url: "/"
+  },
+  {
+    name: "Ventas",
+    url: "/ventas"
+  },
+  {
+    name: "Empleados",
+    url: "/empleados"
+  },
+  {
+    name: "Proveedores",
+    url: "/proveedores"
+  },
 ];
 
 

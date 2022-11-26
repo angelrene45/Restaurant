@@ -12,10 +12,10 @@ import { getFoods, deleteFood } from '../../../store/slices/food';
 import FormCrud from '../pages/dish_crud/FormCrud';
 
 export const AdminRoutes = () => {
-  // get sidebar options
+  // set sidebar admin options
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch( setLinks( {links:linksJsonAdmin}));
+    dispatch(setLinks({links: linksJsonAdmin}));
   });
 
   return (
