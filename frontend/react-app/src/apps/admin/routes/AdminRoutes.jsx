@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { AdminPage } from '../pages';
 import { linksJsonAdmin } from '../../../utils'
 import Layout from '../../../layout/Layout';
-import CategoriesCRUD from '../pages/CategoriesCrud';
+import { CategoriesPage } from '../pages/categories_crud';
 import Crud from '../pages/dish_crud/DishCrud';
 import { setLinks } from '../../../store/slices/dashInfo/dashSlice';
 import { getFoods, deleteFood } from '../../../store/slices/food';
@@ -22,7 +22,7 @@ export const AdminRoutes = () => {
     <Layout>
       <Routes>
           <Route path="home" element={ <AdminPage /> } />
-          <Route path="food/categories" element={ <CategoriesCRUD /> } />
+          <Route path="food/categories" element={ <CategoriesPage /> } />
           <Route path="food/dishes" element={ <Crud getList={getFoods} delete={deleteFood}/> } />
           <Route path="food/create_food/" element={ <FormCrud /> } />
           <Route path="food/create_food/:id" element={ <FormCrud /> } />

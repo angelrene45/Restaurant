@@ -28,7 +28,7 @@ export const RegisterCustomerPage = () => {
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      text: error.data.detail,
+      text: error?.data?.detail,
     })
   }
 
