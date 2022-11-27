@@ -7,18 +7,21 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 import { SpinnerButton } from '../../../../components/items/Spinner';
-import { useUpdateCategoryMutation } from '../../../../store/slices/categories';
+import { useCreateCategoryMutation, useUpdateCategoryMutation } from '../../../../store/slices/categories';
 
 const MySwal = withReactContent(Swal);
 
-export const CategoryUpdateModal = ({ open, setOpen, categorySelected }) => {
-
-  // Mutation for make api call 
-  const [updateCategory,  {isLoading}] = useUpdateCategoryMutation()
+export const CategoryModal = ({ open, setOpen, categorySelected }) => {
 
   // get data from category selected 
-  const {id, name} = categorySelected
+  const {id=null, name=""} = categorySelected
 
+  // check if is Add or Update and set the variables
+  const [triggerMutation,  {isLoading}] =  id ? useUpdateCategoryMutation() : useCreateCategoryMutation()
+  const actionName =  id ? "Update" : "Add"
+  const actionNameSuccess =  id ? "updated" : "added"
+
+  
   // error on api cal for register customer
   const showError = (error) => {
     Swal.fire({
@@ -32,7 +35,7 @@ export const CategoryUpdateModal = ({ open, setOpen, categorySelected }) => {
   const showSuccess = () => {
     Swal.fire({
       icon: 'success',
-      title: 'Category has been updated',
+      title: `Category has been ${actionNameSuccess}`,
       showConfirmButton: false,
       timer: 1500
     })
@@ -68,7 +71,7 @@ export const CategoryUpdateModal = ({ open, setOpen, categorySelected }) => {
 
                   <div className="grid w-full grid-cols-1 items-start ">
                     <div className="">
-                      <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">Update Category</h2>
+                      <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{actionName} Category</h2>
 
                       <section aria-labelledby="options-heading" className="mt-10">
                         <h3 id="options-heading" className="sr-only">
@@ -87,7 +90,7 @@ export const CategoryUpdateModal = ({ open, setOpen, categorySelected }) => {
                               name: values.name
                             }
                             // make api request
-                            const {data, error} = await updateCategory(apiData)
+                            const {data, error} = await triggerMutation(apiData)
                             if (data) showSuccess()
                             else showError(error)
                           }}
@@ -117,7 +120,7 @@ export const CategoryUpdateModal = ({ open, setOpen, categorySelected }) => {
                                     classNameDisabled="btn text-white ml-3 whitespace-nowrap text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                     type="submit"
                                     isLoading={isLoading}
-                                    value="update"
+                                    value={actionName}
                                   />
                                 </div>
                               </Form>

@@ -1,12 +1,12 @@
 import { CategoriesTableItem } from './CategoriesTableItem';
 
 
-export const CategoriesTable = ({ categories=[], setOpen, setCategorySelected }) => {
+export const CategoriesTable = ({ categories=[], categoriesCount=0, setOpen, setCategorySelected }) => {
 
   return (
     <div className="bg-white shadow-lg rounded-sm border border-slate-200 relative">
       <header className="px-5 py-4">
-        <h2 className="font-semibold text-slate-800">All Categories<span className="text-slate-400 font-medium"> { categories.length }</span></h2>
+        <h2 className="font-semibold text-slate-800">All Categories<span className="text-slate-400 font-medium"> { categoriesCount }</span></h2>
       </header>
       <div>
 

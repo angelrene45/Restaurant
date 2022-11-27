@@ -1,25 +1,35 @@
 
 import { useState } from "react";
 
-import { useGetCategoriesQuery } from "../../../../store/slices/categories";
+import { useGetCategoriesCountQuery, useGetCategoriesQuery } from "../../../../store/slices/categories";
 import { Loading } from "../../../../components/items/Spinner";
-import { CategoryAddModal } from "./CategoryAddModal";
 import { CategoriesTable } from "./CategoriesTable"
-import { CategoryUpdateModal } from "./CategoryUpdateModal";
+import { CategoryModal } from "./CategoryModal";
+import { CategoriesPagination } from "./CategoriesPagination";
 
 
 export const CategoriesPage = () => {
-
-    const { data: categories = [], isFetching, error } = useGetCategoriesQuery()
-    const [openModalAdd, setOpenModalAdd] = useState(false)
-    const [openModalUpdate, setOpenModalUpdate] = useState(false)
+    // Variables 
+    const [openModal, setOpenModal] = useState(false)
     const [categorySelected, setCategorySelected] = useState({})
+    const [page, setPage] = useState(0)
+
+    // get categories by Page
+    const { data: categories = [], isFetching, error } = useGetCategoriesQuery(page)
+    // get count of all categories on DB 
+    const { data: categoriesCount = [], isFetching: isFetchingCount, error: errorCount } = useGetCategoriesCountQuery()
+
+    const handleClickAddCategory = () => {
+        // clear category selected and avoid modal update
+        setCategorySelected({})
+        // open modal
+        setOpenModal(true)
+    }
 
     return (
-        <>  
+        <>
             {/* Modal with for data for add or update category */}
-            <CategoryAddModal open={openModalAdd} setOpen={setOpenModalAdd} />
-            <CategoryUpdateModal open={openModalUpdate} setOpen={setOpenModalUpdate} categorySelected={categorySelected} />
+            <CategoryModal open={openModal} setOpen={setOpenModal} categorySelected={categorySelected} />
 
             <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
@@ -42,7 +52,7 @@ export const CategoriesPage = () => {
                         {/* <FilterButton align="right" /> */}
 
                         {/* Add customer button */}
-                        <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white" onClick={() => setOpenModalAdd(true)}>
+                        <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white" onClick={handleClickAddCategory}>
                             <svg className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                                 <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                             </svg>
@@ -54,11 +64,21 @@ export const CategoriesPage = () => {
                 </div>
 
                 {/* Table */}
-                <CategoriesTable 
+                <CategoriesTable
                     categories={categories}
-                    setOpen={setOpenModalUpdate} 
-                    setCategorySelected={setCategorySelected} 
+                    categoriesCount={categoriesCount}
+                    setOpen={setOpenModal}
+                    setCategorySelected={setCategorySelected}
                 />
+
+                {/* Pagination */}
+                <div className="mt-8">
+                    <CategoriesPagination 
+                        categoriesCount={categoriesCount}
+                        page={page}
+                        setPage={setPage}
+                    />
+                </div>
             </div>
         </>
     )

@@ -6,12 +6,16 @@ import { customFetchBaseQuery } from '../../customBaseQuery'
 export const categoriesApi = createApi({
   reducerPath: 'categoriesApi',
   baseQuery: customFetchBaseQuery,
-  tagTypes: ["Categories"],
+  tagTypes: ["Categories", "CategoriesCount"],
 
   endpoints: (builder) => ({
     getCategories: builder.query({
-      query: () => `/categories/open`,
+      query: (page=0) => `/categories/open?skip=${page*20}&limit=20`,
       providesTags: ["Categories"]
+    }),
+    getCategoriesCount: builder.query({
+      query: () => `/categories/count`,
+      providesTags: ["CategoriesCount"]
     }),
     getCategoriesWithFoods: builder.query({
       query: () => `/categories/foods/open`,
@@ -22,7 +26,7 @@ export const categoriesApi = createApi({
         method: 'post',
         body: newCategory
       }),
-      invalidatesTags: ["Categories"]
+      invalidatesTags: ["Categories", "CategoriesCount"]
     }),
     updateCategory: builder.mutation({
       query: (updateCategory) => ({
@@ -39,6 +43,7 @@ export const categoriesApi = createApi({
 // auto-generated based on the defined endpoints
 export const { 
   useGetCategoriesQuery,
+  useGetCategoriesCountQuery,
   useGetCategoriesWithFoodsQuery, 
   useCreateCategoryMutation, 
   useUpdateCategoryMutation
