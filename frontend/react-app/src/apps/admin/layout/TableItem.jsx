@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import moment from 'moment';
+
 
 const statusColor = (status) => {
   switch (status) {
@@ -45,13 +47,18 @@ export const TableItem = ({ item = {}, skipColumns = [], setOpen, setItemSelecte
                 className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap"
               >
                 <div className="text-left">
-                  { // print value
+                  { // boolean if user is active
                     key == "is_active" ?
                       <span className={statusColor(item[key].toString())}>
                         {item[key].toString()}
                       </span>
+                    // date with moment.js 
+                    : key == "last_login" && item[key] ?
+                      moment(item[key]).fromNow()
+                    // boolean
                     : typeof item[key] == "boolean" ?
                       item[key].toString()
+                    // Normal Value
                     :
                       item[key]
                   }

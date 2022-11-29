@@ -9,7 +9,7 @@ import { CrudPage } from "../../layout/CrudPage";
 import { UserModal } from "./UserModal";
 
 // columns names that shows on list table 
-const skipColumns = ["id"]
+const skipColumns = ["id", "mobile"]
 
 export const UserPage = () => {
 

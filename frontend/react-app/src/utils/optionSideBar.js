@@ -9,6 +9,10 @@ export const linksJsonAdmin = {
           url: "/admin/user/"
         },
         {
+          name: "Customers",
+          url: "/admin/customer/"
+        },
+        {
           name: "Categories",
           url: "/admin/food/categories"
         },

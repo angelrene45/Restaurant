@@ -11,6 +11,7 @@ import { getFoods, deleteFood } from '../../../store/slices/food';
 import { CategoryPage } from '../pages/category_crud';
 import FormCrud from '../pages/dish_crud/FormCrud';
 import { UserPage } from '../pages/user_crud';
+import { CustomerPage } from '../pages/customer_crud';
 
 export const AdminRoutes = () => {
   // set sidebar admin options
@@ -28,6 +29,7 @@ export const AdminRoutes = () => {
           <Route path="food/create_food/" element={ <FormCrud /> } />
           <Route path="food/create_food/:id" element={ <FormCrud /> } />
           <Route path="user/" element={ <UserPage /> } />
+          <Route path="customer/" element={ <CustomerPage /> } />
         
           <Route path='/*' element={ <Navigate to="/admin/home" /> } />
       </Routes>

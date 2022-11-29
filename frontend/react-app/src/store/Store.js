@@ -18,7 +18,7 @@ import { authSlice } from './slices/auth'
 import { foodsApi, foodSlice } from './slices/food'
 import { cartSlice } from './slices/cart'
 import { categoriesApi } from './slices/categories';
-import { customerApi } from './slices/customers';
+import { customersApi } from './slices/customers';
 import { usersApi } from './slices/users';
 
 const persistConfig = {
@@ -43,7 +43,7 @@ export const store = configureStore({
         // RTK Query reducer
         [categoriesApi.reducerPath]: categoriesApi.reducer,
         [foodsApi.reducerPath]: foodsApi.reducer,
-        [customerApi.reducerPath]: customerApi.reducer,
+        [customersApi.reducerPath]: customersApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -51,7 +51,7 @@ export const store = configureStore({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(categoriesApi.middleware, foodsApi.middleware, customerApi.middleware, usersApi.middleware)
+        }).concat(categoriesApi.middleware, foodsApi.middleware, customersApi.middleware, usersApi.middleware)
 })
 
 export const persistor = persistStore(store)

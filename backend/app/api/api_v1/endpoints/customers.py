@@ -79,6 +79,18 @@ def read_customers_being_admin(
     return customers
 
 
+@router.get("/count", response_model=int)
+def read_total_customers(
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_superuser),
+    ) -> Any:
+    """
+    Retrieve total customers store in database
+    """
+    total_customers = crud.customer.get_total_records(db)
+    return total_customers
+
+
 @router.get("/{customer_id}", response_model=schemas.User)
 def read_customer_by_id_being_admin(
     customer_id: int,
