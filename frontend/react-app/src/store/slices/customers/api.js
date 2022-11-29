@@ -7,7 +7,7 @@ export const customerApi = createApi({
     reducerPath: 'customerApi',
     baseQuery: customFetchBaseQuery,
     endpoints: (builder) => ({
-      CreateCustomerOpen: builder.mutation({
+      createCustomerOpen: builder.mutation({
         query: (newCustomer) => ({
          url: `/customers/open`,
          method: 'post',

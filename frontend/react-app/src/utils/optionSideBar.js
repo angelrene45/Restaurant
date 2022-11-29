@@ -2,8 +2,12 @@ export const linksJsonAdmin = {
   login: "/auth/login/user",
   links: [
     {
-      topic: "Food",
+      topic: "List",
       subTopics: [
+        {
+          name: "Users",
+          url: "/admin/user/"
+        },
         {
           name: "Categories",
           url: "/admin/food/categories"
@@ -11,15 +15,6 @@ export const linksJsonAdmin = {
         {
           name: "Dishes and drinks",
           url: "/admin/food/dishes"
-        }
-      ]
-    },
-    {
-      topic: "User",
-      subTopics: [
-        {
-          name: "List",
-          url: "/admin/user/"
         }
       ]
     }

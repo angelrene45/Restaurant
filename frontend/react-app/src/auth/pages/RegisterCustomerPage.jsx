@@ -123,12 +123,12 @@ export const RegisterCustomerPage = () => {
                         <div>
                           <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address <span className="text-rose-500">*</span></label>
                           <Field name="email" type="email" className="form-input w-full" />
-                          <ErrorMessage name="email" component="span" className="text-rose-500 text-sm"/>
+                          <ErrorMessage name="email" component="div" className="text-xs mt-1 text-rose-500"/>
                         </div>
                         <div>
                           <label className="block text-sm font-medium mb-1" htmlFor="firstName">First Name <span className="text-rose-500">*</span></label>
                           <Field name="firstName" type="text" className="form-input w-full" />
-                          <ErrorMessage name="firstName" component="span" className="text-rose-500 text-sm"/>
+                          <ErrorMessage name="firstName" component="div" className="text-xs mt-1 text-rose-500"/>
                         </div>
                         <div>
                           <label className="block text-sm font-medium mb-1" htmlFor="lastName">Last Name</label>
@@ -137,12 +137,12 @@ export const RegisterCustomerPage = () => {
                         <div>
                           <label className="block text-sm font-medium mb-1" htmlFor="password">Password <span className="text-rose-500">*</span></label>
                           <Field name="password" type="password" className="form-input w-full" />
-                          <ErrorMessage name="password" component="span" className="text-rose-500 text-sm"/>
+                          <ErrorMessage name="password" component="div" className="text-xs mt-1 text-rose-500"/>
                         </div>
                         <div>
                           <label className="block text-sm font-medium mb-1" htmlFor="passwordConfirm">Confirm Password<span className="text-rose-500">*</span></label>
                           <Field name="passwordConfirm" type="password" className="form-input w-full" />
-                          <ErrorMessage name="passwordConfirm" component="span" className="text-rose-500 text-sm"/>
+                          <ErrorMessage name="passwordConfirm" component="div" className="text-xs mt-1 text-rose-500"/>
                         </div>
                       </div>
                       <div className="flex items-center justify-between mt-6">
