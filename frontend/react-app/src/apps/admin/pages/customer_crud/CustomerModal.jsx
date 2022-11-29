@@ -26,16 +26,8 @@ export const CustomerModal = ({
     first_name = "",
     last_name = "",
     password = "",
-    is_active = false,
-    addresses = [
-      {
-        street: "",
-        city: "",
-        state: "",
-        country: "",
-        postal_code: ""
-      }
-    ]
+    is_active = true,
+    addresses = []
   } = itemSelected
 
   // replace null value for empty string (avoid error with initValues formik with null)
@@ -210,66 +202,66 @@ export const CustomerModal = ({
                                   </div>
                                 </div>
 
-                                <span className='py-4'></span>
-
                                 {/* Addresses */}
-                                <div>
-                                  <label className="block text-sm font-medium mb-1" htmlFor="role">Addresses</label>
+                                <div className='py-4'>
+                                  <label className="text-sm font-medium mb-1" htmlFor="role">Addresses</label>
                                   <FieldArray name="addresses">
                                     {({ insert, remove, push }) => (
-                                      <div className='bg-slate-200'>
+                                      <div className=''>
                                         {formik.values.addresses.length > 0 &&
                                           formik.values.addresses.map((address, index) => (
-                                            <div className="py-4 grid gap-5 md:grid-cols-2 lg:grid-cols-3" key={index}>
+                                            <div className="bg-slate-100 mt-4" key={index}>
+                                              <label className="text-sm font-bold mb-1" htmlFor="role">Address {index + 1}</label>
+                                              <div className="py-4 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                                                {/* street */}
+                                                <div>
+                                                  <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.street`}>Street</label>
+                                                  <Field name={`addresses.${index}.street`} type="text" className="form-input w-full" placeholder="8 My Street" />
+                                                  <ErrorMessage name={`addresses.${index}.street`} component="div" className="text-xs mt-1 text-rose-500" />
+                                                </div>
 
-                                              {/* street */}
-                                              <div>
-                                                <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.street`}>Street</label>
-                                                <Field name={`addresses.${index}.street`} type="text" className="form-input w-full" placeholder="8 My Street"/>
-                                                <ErrorMessage name={`addresses.${index}.street`} component="div" className="text-xs mt-1 text-rose-500" />
-                                              </div>
+                                                {/* city */}
+                                                <div>
+                                                  <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.city`}>City</label>
+                                                  <Field name={`addresses.${index}.city`} type="text" className="form-input w-full" placeholder="New York" />
+                                                  <ErrorMessage name={`addresses.${index}.city`} component="div" className="text-xs mt-1 text-rose-500" />
+                                                </div>
 
-                                              {/* city */}
-                                              <div>
-                                                <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.city`}>City</label>
-                                                <Field name={`addresses.${index}.city`} type="text" className="form-input w-full" placeholder="New York"/>
-                                                <ErrorMessage name={`addresses.${index}.city`} component="div" className="text-xs mt-1 text-rose-500" />
-                                              </div>
+                                                {/* state */}
+                                                <div>
+                                                  <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.state`}>State</label>
+                                                  <Field name={`addresses.${index}.state`} type="text" className="form-input w-full" placeholder="NY" />
+                                                  <ErrorMessage name={`addresses.${index}.state`} component="div" className="text-xs mt-1 text-rose-500" />
+                                                </div>
 
-                                              {/* state */}
-                                              <div>
-                                                <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.state`}>State</label>
-                                                <Field name={`addresses.${index}.state`} type="text" className="form-input w-full" placeholder="NY" />
-                                                <ErrorMessage name={`addresses.${index}.state`} component="div" className="text-xs mt-1 text-rose-500" />
-                                              </div>
+                                                {/* country */}
+                                                <div>
+                                                  <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.country`}>Country</label>
+                                                  <Field name={`addresses.${index}.country`} type="text" className="form-input w-full" placeholder="USA" />
+                                                  <ErrorMessage name={`addresses.${index}.country`} component="div" className="text-xs mt-1 text-rose-500" />
+                                                </div>
 
-                                              {/* country */}
-                                              <div>
-                                                <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.country`}>Country</label>
-                                                <Field name={`addresses.${index}.country`} type="text" className="form-input w-full" placeholder="USA" />
-                                                <ErrorMessage name={`addresses.${index}.country`} component="div" className="text-xs mt-1 text-rose-500" />
-                                              </div>
+                                                {/* postal_code */}
+                                                <div>
+                                                  <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.postal_code`}>Postal Code</label>
+                                                  <Field name={`addresses.${index}.postal_code`} type="text" className="form-input w-full" placeholder="10014" />
+                                                  <ErrorMessage name={`addresses.${index}.postal_code`} component="div" className="text-xs mt-1 text-rose-500" />
+                                                </div>
 
-                                              {/* postal_code */}
-                                              <div>
-                                                <label className="block text-sm font-medium mb-1" htmlFor={`addresses.${index}.postal_code`}>Postal Code</label>
-                                                <Field name={`addresses.${index}.postal_code`} type="text" className="form-input w-full" placeholder="10014"/>
-                                                <ErrorMessage name={`addresses.${index}.postal_code`} component="div" className="text-xs mt-1 text-rose-500" />
-                                              </div>
-
-                                              {/* Remove Address */}
-                                              <div>
-                                                <label className="block text-sm font-medium mb-1">Action</label>
-                                                <button 
-                                                  type="button"
-                                                  className="btn border-slate-200 hover:border-slate-300 text-rose-500 bg-slate-50"
-                                                  onClick={() => remove(index)}
-                                                >
-                                                  <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16">
-                                                    <path d="M5 7h2v6H5V7zm4 0h2v6H9V7zm3-6v2h4v2h-1v10c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1V5H0V3h4V1c0-.6.4-1 1-1h6c.6 0 1 .4 1 1zM6 2v1h4V2H6zm7 3H3v9h10V5z" />
-                                                  </svg>
-                                                  <span className="ml-2">Delete</span>
-                                                </button>
+                                                {/* Remove Address */}
+                                                <div>
+                                                  <label className="block text-sm font-medium mb-1">Action</label>
+                                                  <button
+                                                    type="button"
+                                                    className="btn border-slate-200 hover:border-slate-300 text-rose-500 bg-slate-50"
+                                                    onClick={() => remove(index)}
+                                                  >
+                                                    <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16">
+                                                      <path d="M5 7h2v6H5V7zm4 0h2v6H9V7zm3-6v2h4v2h-1v10c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1V5H0V3h4V1c0-.6.4-1 1-1h6c.6 0 1 .4 1 1zM6 2v1h4V2H6zm7 3H3v9h10V5z" />
+                                                    </svg>
+                                                    <span className="ml-2">Delete</span>
+                                                  </button>
+                                                </div>
                                               </div>
                                             </div>
                                           ))}
