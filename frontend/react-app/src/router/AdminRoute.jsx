@@ -9,7 +9,7 @@ export const AdminRoute = ({ children }) => {
     const {status} = useSelector(state => state.auth)
     const {user_type, user_rol} = getClaimsToken(); // get claims
     
-    return (status === 'authenticated' && user_type === 'user' && user_rol === TypeUsers.Admin)
+    return (status === 'authenticated' && user_type === 'user' && TypeUsers.Admin.includes(user_rol))
         ? children
         : <LoginUserPage/>
 }

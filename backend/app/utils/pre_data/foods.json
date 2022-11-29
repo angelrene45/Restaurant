@@ -23,7 +23,7 @@
     {
         "name": "Molcajete del Dios Huichol",
         "description": "Molcajete filled with crab legs, mussels, shrimp, octopus, scallops and clams seasoned with our spicy spices and garlic",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://i.pinimg.com/originals/2e/61/85/2e6185ef73e2152cc50234d3d0598ea7.jpg"}],
         "units": [{"unit":"normal", "price": 30.99}],
         "categories": ["Platillos"],
         "discount": 0,
@@ -32,7 +32,7 @@
     {
         "name": "Patas de Jaiba",
         "description": "Crab legs seazoned",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://i.pinimg.com/originals/77/10/8f/77108f899294ab9dfbae1f8c33e2bead.jpg"}],
         "units": [{"unit":"normal", "price": 20.99}],
         "categories": ["Appetizer"],
         "discount": 0,
@@ -41,7 +41,7 @@
     {
         "name": "Salmon Zarandeado",
         "description": "Salmon cooked on the grill with our special sweet and spicy sauce.",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://cheforopeza.com.mx/wp-content/uploads/2017/11/salmon-zarandeado-sitio.jpg"}],
         "units": [{"unit":"normal", "price": 20.99}],
         "categories": ["Platillos"],
         "discount": 0,
@@ -50,7 +50,7 @@
     {
         "name": "Tostada Mixta",
         "description": "Mixed shrimp and pulp of crab",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://www.recetasnestle.com.mx/sites/default/files/srh_recipes/a502d93b399f324d488a57e28bf76097.jpg"}],
         "units": [{"unit":"normal", "price": 9.00}],
         "categories": ["Tostadas", "Mesa Fria"],
         "discount": 0,
@@ -59,7 +59,7 @@
     {
         "name": "Camarones Zarandeados",
         "description": "Shrimp cooked on the grill with our special sweet and special sauce.",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://camaroneros.info/wp-content/uploads/camarones-zarandeados-jalisco.-.jpg"}],
         "units": [{"unit":"normal", "price": 19.99}],
         "categories": ["Platillos", "Camarones"],
         "discount": 0,
@@ -68,7 +68,7 @@
      {
         "name": "Camarones a la Kora",
         "description": "Shrimp prepared your way",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://www.recetasdecamaron.com/wp-content/uploads/2019/03/Receta-Camarones-a-la-CORA-Estilo-NAYARIT.jpg"}],
         "units": [{"unit":"normal", "price": 19.99}],
         "categories": ["Camarones", "Platillos"],
         "discount": 0,
@@ -77,7 +77,7 @@
     {
         "name": "7 Mares",
         "description": "Soup with crab and shrimp.",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/339363e5db5c99456ed848b010ccbd05/Derivates/1b6ffda54bd38a17ad84acbb107cae328ca716a7.jpg"}],
         "units": [{"unit":"normal", "price": 22.99}],
         "categories": ["Caldos"],
         "discount": 0,
@@ -86,7 +86,7 @@
     {
         "name": "Alambre de Pollo",
         "description": "Cut chicken breast cooked with bacon, bell peppers, mushrooms and onions topped with cheese.",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"}],
         "units": [{"unit":"normal", "price": 17.99}],
         "categories": ["Platillos", "Pollo"],
         "discount": 0,
@@ -95,7 +95,7 @@
     {
         "name": "Tacos de pescado (3)",
         "description": "Fish tacos",
-        "variants": [{"name": "orginal", "image": ""}],
+        "variants": [{"name": "orginal", "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"}],
         "units": [{"unit":"normal", "price": 13.99}],
         "categories": ["Platillos", "Starters"],
         "discount": 0,

@@ -29,7 +29,7 @@ export const getToken = (username, password, user_type="user") => {
         try {
             const {data, status, statusText} = await backendApi.post(`/login/access-token`, params, config);
             localStorage.setItem('TOKEN', data.access_token);
-            dispatch(setToken({token: data.access_token, userData: data.user_data}));
+            dispatch(setToken({token: data.access_token, userData: data.user_data, userType: user_type}));
 
         } catch(e){
             const { data } = e.response

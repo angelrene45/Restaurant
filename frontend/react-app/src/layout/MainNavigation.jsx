@@ -4,11 +4,15 @@ import { useState } from "react";
 
 import UserMenu from '../Components/items/DropdownProfile'
 import { deleteToken } from "../store/slices/auth";
-import finalPropsSelectorFactory from "react-redux/es/connect/selectorFactory";
+import { OrderInfo } from "../apps/customer/layout/OrderInfo";
+import { TypeUsers } from "../utils";
 
 const MainNavigation = (props) => {
   const dispatch = useDispatch();
-  const [searchModalOpen, setSearchModalOpen] = useState(false)
+  const [openCart, setOpenCart] = useState(false)
+
+  // Get user details from redux
+  const { userType } = useSelector(state => state.auth);
 
   const logOutHandler = () => {
     localStorage.clear('TOKEN')
@@ -44,6 +48,12 @@ const MainNavigation = (props) => {
           <div className="flex items-center space-x-3">
             {/* <Notifications align="right" /> */}
             {/* <Help align="right" /> */}
+            {/* Order Info */}
+            { 
+              // user customer or guest, show the orders details on header
+              TypeUsers.Customer.includes(userType) &&
+              <OrderInfo open={openCart} setOpen={setOpenCart} />
+            }
             {/*  Divider */}
             <hr className="w-px h-6 bg-slate-200 mx-3" />
             <UserMenu align="right" logInUrl={props.links.login} logOut={logOutHandler} />

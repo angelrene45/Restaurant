@@ -17,7 +17,7 @@ export const linksJsonAdmin = {
           url: "/admin/food/categories"
         },
         {
-          name: "Dishes and drinks",
+          name: "Foods",
           url: "/admin/food/dishes"
         }
       ]
@@ -43,7 +43,6 @@ export const linksJsonCustomer = {
     }
   ]
 }
-
 
 export const linksJsonEmployees = {
   login: "/auth/login/user",

@@ -9,7 +9,7 @@ export const navigateUser = () => {
     const {user_type, user_rol} = token_decoded; // get claims
 
     // function that check the role and navigate the user to proper home page
-    if (user_type === 'user' && user_rol === TypeUsers.Admin){ return <Navigate to="/admin"/> }
+    if (user_type === 'user' && TypeUsers.Admin.includes(user_rol)){ return <Navigate to="/admin"/> }
     else if (user_type === 'user' && TypeUsers.Employee.includes(user_rol)) { return <Navigate to="/employee"/> }
     else { return <Navigate to="/customer"/> }
 }

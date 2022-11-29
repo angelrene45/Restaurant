@@ -186,9 +186,6 @@ const SideBar = (props) => {
               ))}
             </ul>
           </div>
-
-
-
         </div>
 
         {/* Expand / collapse button */}
