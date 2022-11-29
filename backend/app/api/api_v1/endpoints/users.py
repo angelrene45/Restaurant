@@ -95,6 +95,17 @@ def read_users_being_admin(
     users = crud.user.get_multi(db, skip=skip, limit=limit)
     return users
 
+@router.get("/count", response_model=int)
+def read_total_categories(
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_superuser),
+    ) -> Any:
+    """
+    Retrieve total categories store in database
+    """
+    total_users = crud.user.get_total_records(db)
+    return total_users
+
 
 @router.post("/", response_model=schemas.User)
 def create_user_being_admin(

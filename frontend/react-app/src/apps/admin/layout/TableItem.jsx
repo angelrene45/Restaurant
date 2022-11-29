@@ -2,9 +2,20 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 
+const statusColor = (status) => {
+  switch (status) {
+    case 'true':
+      return 'inline-flex font-medium rounded-full text-center px-2.5 py-0.5 bg-emerald-100 text-emerald-600';
+    case 'false':
+      return 'inline-flex font-medium rounded-full text-center px-2.5 py-0.5 bg-amber-100 text-amber-600';
+    default:
+      return 'inline-flex font-medium rounded-full text-center px-2.5 py-0.5 bg-slate-100 text-slate-500';
+  }
+};
 
-export const CategoriesTableItem = ({  category, setOpen, setCategorySelected }) => {
-  const {id, name} = category
+
+export const TableItem = ({ item = {}, skipColumns = [], setOpen, setItemSelected }) => {
+  const { id } = item
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,18 +24,44 @@ export const CategoriesTableItem = ({  category, setOpen, setCategorySelected })
     dispatch(props.delete(id));
   };
 
-  const handleUpdate = () =>{
+  const handleUpdate = () => {
     // set id selected
-    setCategorySelected(category)
+    setItemSelected(item)
     // open modal update
     setOpen(true)
   }
 
   return (
     <tr key={id}>
-      <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div className="text-left">{name}</div>
-      </td>
+      {/* Items Values */}
+
+      {
+        Object.keys(item).map((key, index) => {
+          // check if user skip this column name and ignore
+          if (!skipColumns.includes(key))
+            return (
+              <td
+                key={key}
+                className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap"
+              >
+                <div className="text-left">
+                  { // print value
+                    key == "is_active" ?
+                      <span className={statusColor(item[key].toString())}>
+                        {item[key].toString()}
+                      </span>
+                    : typeof item[key] == "boolean" ?
+                      item[key].toString()
+                    :
+                      item[key]
+                  }
+                </div>
+              </td>
+            )
+        })
+      }
+
+      {/* Actions Icons */}
       <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
         <div className="text-right">
 

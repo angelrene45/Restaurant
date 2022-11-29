@@ -1,6 +1,9 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi } from '@reduxjs/toolkit/query/react'
+import { getEnvVariables } from '../../../utils'
 import { customFetchBaseQuery } from '../../customBaseQuery'
+
+const { MAX_RECORDS_PAGE } = getEnvVariables()
 
 // Define a service using a base URL and expected endpoints
 export const categoriesApi = createApi({
@@ -10,7 +13,7 @@ export const categoriesApi = createApi({
 
   endpoints: (builder) => ({
     getCategories: builder.query({
-      query: (page=0) => `/categories/open?skip=${page*20}&limit=20`,
+      query: (page=0) => `/categories/open?skip=${page*MAX_RECORDS_PAGE}&limit=${MAX_RECORDS_PAGE}`,
       providesTags: ["Categories"]
     }),
     getCategoriesCount: builder.query({

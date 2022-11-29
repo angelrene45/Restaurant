@@ -13,6 +13,15 @@ export const linksJsonAdmin = {
           url: "/admin/food/dishes"
         }
       ]
+    },
+    {
+      topic: "User",
+      subTopics: [
+        {
+          name: "List",
+          url: "/admin/user/"
+        }
+      ]
     }
   ]
 };
@@ -37,23 +46,21 @@ export const linksJsonCustomer = {
 }
 
 
-export const linksJsonEmployees = [
-  {
-    name: "Inicio",
-    url: "/"
-  },
-  {
-    name: "Ventas",
-    url: "/ventas"
-  },
-  {
-    name: "Empleados",
-    url: "/empleados"
-  },
-  {
-    name: "Proveedores",
-    url: "/proveedores"
-  },
-];
-
-
+export const linksJsonEmployees = {
+  login: "/auth/login/user",
+  links: [
+    {
+      topic: "Cook",
+      subTopics: [
+        {
+          name: "Orders",
+          url: "/employee/orders"
+        },
+        {
+          name: "Drinks",
+          url: "/employee/drinks"
+        }
+      ]
+    }
+  ]
+}

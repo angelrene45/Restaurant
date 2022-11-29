@@ -19,6 +19,7 @@ import { foodsApi, foodSlice } from './slices/food'
 import { cartSlice } from './slices/cart'
 import { categoriesApi } from './slices/categories';
 import { customerApi } from './slices/customers';
+import { usersApi } from './slices/users';
 
 const persistConfig = {
     key: 'root',
@@ -43,13 +44,14 @@ export const store = configureStore({
         [categoriesApi.reducerPath]: categoriesApi.reducer,
         [foodsApi.reducerPath]: foodsApi.reducer,
         [customerApi.reducerPath]: customerApi.reducer,
+        [usersApi.reducerPath]: usersApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        }).concat(categoriesApi.middleware, foodsApi.middleware, customerApi.middleware)
+        }).concat(categoriesApi.middleware, foodsApi.middleware, customerApi.middleware, usersApi.middleware)
 })
 
 export const persistor = persistStore(store)

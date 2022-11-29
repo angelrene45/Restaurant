@@ -7,21 +7,25 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 import { SpinnerButton } from '../../../../components/items/Spinner';
-import { useCreateCategoryMutation, useUpdateCategoryMutation } from '../../../../store/slices/categories';
 
 const MySwal = withReactContent(Swal);
 
-export const CategoryModal = ({ open, setOpen, categorySelected }) => {
+export const CategoryModal = ({
+  open,
+  setOpen,
+  itemSelected,
+  useCreateMutation,
+  useUpdateMutation
+}) => {
 
   // get data from category selected 
-  const {id=null, name=""} = categorySelected
+  const { id = null, name = "" } = itemSelected
 
   // check if is Add or Update and set the variables
-  const [triggerMutation,  {isLoading}] =  id ? useUpdateCategoryMutation() : useCreateCategoryMutation()
-  const actionName =  id ? "Update" : "Add"
-  const actionNameSuccess =  id ? "updated" : "added"
+  const [triggerMutation, { isLoading }] = id ? useUpdateMutation() : useCreateMutation()
+  const actionName = id ? "Update" : "Add"
+  const actionNameSuccess = id ? "updated" : "added"
 
-  
   // error on api cal for register customer
   const showError = (error) => {
     Swal.fire({
@@ -70,7 +74,7 @@ export const CategoryModal = ({ open, setOpen, categorySelected }) => {
                   </button>
 
                   <div className="grid w-full grid-cols-1 items-start ">
-                    <div className="">
+                    <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
                       <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{actionName} Category</h2>
 
                       <section aria-labelledby="options-heading" className="mt-10">
@@ -83,14 +87,14 @@ export const CategoryModal = ({ open, setOpen, categorySelected }) => {
                           initialValues={{
                             name: name,
                           }}
-                          onSubmit={ async (values) => {
+                          onSubmit={async (values) => {
                             // prepare json request for backend
                             const apiData = {
                               id: id,
                               name: values.name
                             }
                             // make api request
-                            const {data, error} = await triggerMutation(apiData)
+                            const { data, error } = await triggerMutation(apiData)
                             if (data) showSuccess()
                             else showError(error)
                           }}
@@ -105,11 +109,11 @@ export const CategoryModal = ({ open, setOpen, categorySelected }) => {
                           {
                             (formik) => (
                               <Form>
-                                <div className="">
+                                <div className="grid gap-5 md:grid-cols-1">
                                   <div>
                                     <label className="block text-sm font-medium mb-1" htmlFor="email">Name <span className="text-rose-500">*</span></label>
                                     <Field name="name" type="text" className="form-input w-full" />
-                                    <ErrorMessage name="name" component="span" className="text-rose-500 text-sm" />
+                                    <ErrorMessage name="name" component="div" className="text-xs mt-1 text-rose-500" />
                                   </div>
 
                                 </div>
