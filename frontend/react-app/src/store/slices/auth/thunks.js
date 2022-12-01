@@ -27,13 +27,23 @@ export const getToken = (username, password, user_type="user") => {
 
         // execute call api 
         try {
+            // authenticate user or customer
             const {data, status, statusText} = await backendApi.post(`/login/access-token`, params, config);
             localStorage.setItem('TOKEN', data.access_token);
-            dispatch(setToken({token: data.access_token, userData: data.user_data, userType: user_type}));
+
+            // get user or customer data (all personal info like addresses, mobile, etc)
+            let api_data = ''
+            if (user_type === 'user') api_data = '/users/me'
+            if (user_type === 'customer') api_data = '/customers/me'
+            const response = await backendApi.get(api_data);
+            const dataUser = response.data
+            
+            // insert all info from current user or customer
+            dispatch(setToken({token: data.access_token, userData: dataUser, userType: user_type}));
 
         } catch(e){
             const { data } = e.response
-            Swal.fire({
+            MySwal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: data.detail,

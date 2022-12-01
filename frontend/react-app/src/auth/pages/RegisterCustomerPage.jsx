@@ -25,7 +25,7 @@ export const RegisterCustomerPage = () => {
 
   // error on api cal for register customer
   if (error){ 
-    Swal.fire({
+    MySwal.fire({
       icon: 'error',
       title: 'Oops...',
       text: error?.data?.detail,

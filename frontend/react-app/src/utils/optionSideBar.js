@@ -29,15 +29,19 @@ export const linksJsonCustomer = {
   login: "/auth/login/customer",
   links: [
     {
-      topic: "Order",
+      topic: "Home",
       subTopics: [
         {
-          name: "Restaurant",
-          url: "/admin/food/categories"
+          name: "Home",
+          url: "/customer/"
         },
         {
-          name: "Pick up/Delivery",
-          url: "/admin/food/dishes"
+          name: "Foods",
+          url: "/customer/foods"
+        },
+        {
+          name: "Cart Review",
+          url: "/customer/cart-review"
         }
       ]
     }

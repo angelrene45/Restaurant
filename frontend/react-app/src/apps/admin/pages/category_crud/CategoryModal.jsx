@@ -28,7 +28,7 @@ export const CategoryModal = ({
 
   // error on api cal for register customer
   const showError = (error) => {
-    Swal.fire({
+    MySwal.fire({
       icon: 'error',
       title: 'Oops...',
       text: error?.data?.detail,
@@ -37,7 +37,7 @@ export const CategoryModal = ({
 
   // function for show success to user 
   const showSuccess = () => {
-    Swal.fire({
+    MySwal.fire({
       icon: 'success',
       title: `Category has been ${actionNameSuccess}`,
       showConfirmButton: false,

@@ -1,2 +1,5 @@
 export * from './FoodsPage'
 export * from './CustomerHomePage'
+export * from './CartReviewPage'
+export * from './CartConfirmPage'
+export * from './CartPaymentPage'

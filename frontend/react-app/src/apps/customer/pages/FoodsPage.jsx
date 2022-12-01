@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useGetCategoriesWithFoodsQuery } from "../../../store/slices/categories";
 import { useLazyGetFoodsByTermQuery } from "../../../store/slices/food";
 import { FoodSearch } from "../layout/FoodSearch";
-import { FoodCart } from "../layout/FoodCart";
+import { FoodCard } from "../layout/FoodCard";
 import { Loading } from "../../../components/items/Spinner";
 
 
@@ -91,7 +91,7 @@ export const FoodsPage = () => {
                 :
                 // show the foods that user selected
                 foods.map((food) => (
-                  <FoodCart key={food.name} food={food} />
+                  <FoodCard key={food.name} food={food} />
                 ))
               }
             </div>

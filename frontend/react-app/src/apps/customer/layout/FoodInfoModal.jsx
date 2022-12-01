@@ -10,7 +10,7 @@ function classNames(...classes) {
 }
 
 
-export const FoodInfo = ({open, setOpen, food}) => {
+export const FoodInfoModal = ({open, setOpen, food}) => {
 
   const {variants, units} = food
 
@@ -48,7 +48,7 @@ export const FoodInfo = ({open, setOpen, food}) => {
       // add order to cart
       dispatch(
         addToCart({
-        id: food.id, name: food.name, variant: variant, unit: unit, image, price, quantity
+        food_id: food.id, name: food.name, variant: variant, unit: unit, image, price, quantity, description: food.description
       }))
       // close modal
       setOpen(false)

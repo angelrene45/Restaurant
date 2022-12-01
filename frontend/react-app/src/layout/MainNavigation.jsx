@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import UserMenu from '../Components/items/DropdownProfile'
 import { deleteToken } from "../store/slices/auth";
-import { OrderInfo } from "../apps/customer/layout/OrderInfo";
+import { CartInfoModal } from "../apps/customer/layout/CartInfoModal";
 import { TypeUsers } from "../utils";
 
 const MainNavigation = (props) => {
@@ -52,7 +52,7 @@ const MainNavigation = (props) => {
             { 
               // user customer or guest, show the orders details on header
               TypeUsers.Customer.includes(userType) &&
-              <OrderInfo open={openCart} setOpen={setOpenCart} />
+              <CartInfoModal open={openCart} setOpen={setOpenCart} />
             }
             {/*  Divider */}
             <hr className="w-px h-6 bg-slate-200 mx-3" />

@@ -5,7 +5,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { setLinks } from '../../../store/slices/dashInfo/dashSlice';
 import { linksJsonCustomer } from '../../../utils'
 import Layout from '../../../layout/Layout';
-import { CustomerHomePage, FoodsPage } from '../pages';
+import { CustomerHomePage, FoodsPage, CartReviewPage, CartPaymentPage, CartConfirmPage } from '../pages';
 
 
 export const CustomerRoutes = () => {
@@ -20,8 +20,11 @@ export const CustomerRoutes = () => {
       <Routes>
         <Route path='/' element={<CustomerHomePage />} />
         <Route path="/foods" element={<FoodsPage />} />
+        <Route path="/cart-review" element={<CartReviewPage />} />
+        <Route path="/cart-payment" element={<CartPaymentPage />} />
+        <Route path="/cart-confirm" element={<CartConfirmPage />} />
 
-        <Route path='/*' element={<Navigate to="/customer/foods" />} />
+        <Route path='/*' element={<Navigate to="/" />} />
       </Routes>
     </Layout>
   )

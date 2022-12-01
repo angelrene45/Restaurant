@@ -49,7 +49,7 @@ export const UserModal = ({
         msgError += `${element?.msg} `
       });
 
-      Swal.fire({
+      MySwal.fire({
         icon: 'error',
         title: 'Oops...',
         text: msgError,
@@ -58,7 +58,7 @@ export const UserModal = ({
 
     // only one error message 
     else{
-      Swal.fire({
+      MySwal.fire({
         icon: 'error',
         title: 'Oops...',
         text: error?.data?.detail,
@@ -69,7 +69,7 @@ export const UserModal = ({
 
   // function for show success to user 
   const showSuccess = () => {
-    Swal.fire({
+    MySwal.fire({
       icon: 'success',
       title: `User has been ${actionNameSuccess}`,
       showConfirmButton: false,
