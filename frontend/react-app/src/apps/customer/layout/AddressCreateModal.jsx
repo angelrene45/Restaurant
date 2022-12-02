@@ -77,7 +77,7 @@ export const AddressCreateModal = () => {
   }
 
   const validateAddress = (formData) => {
-    const existAddress = userData.addresses.find(
+    const existAddress = userData.addresses?.find(
       address =>
         address.street.toLowerCase() === formData.street.toLowerCase() &&
         address.city.toLowerCase() === formData.city.toLowerCase() &&
