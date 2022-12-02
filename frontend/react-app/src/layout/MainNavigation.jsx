@@ -15,7 +15,7 @@ const MainNavigation = (props) => {
   const { userType } = useSelector(state => state.auth);
 
   const logOutHandler = () => {
-    localStorage.clear('TOKEN')
+    localStorage.removeItem('TOKEN')
     dispatch(deleteToken())
   };
 

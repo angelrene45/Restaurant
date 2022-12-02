@@ -23,9 +23,17 @@ export const authSlice = createSlice({
     },
     checkingCredentials: (state) => {
       state.status = 'checking';
+    },
+    setUserData: (state, action) => {
+      state.userData = action.payload.userData;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setToken, deleteToken, checkingCredentials } = authSlice.actions
+export const { 
+  setToken, 
+  deleteToken,
+  checkingCredentials, 
+  setUserData 
+} = authSlice.actions

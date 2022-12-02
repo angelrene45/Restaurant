@@ -1,115 +1,24 @@
 import { Fragment, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+
 
 import { clearCart, decrementQuantity, incrementQuantity, removeItem } from '../../../store/slices/cart'
 import { useCreateOrderMutation } from '../../../store/slices/orders'
-import { SpinnerButton } from '../../../components/items/Spinner'
 
-const MySwal = withReactContent(Swal);
 
 export const CartInfoModal = ({ open, setOpen }) => {
 
-  // mutation for create order
-  const [createOrder, { isLoading }] = useCreateOrderMutation()
-
   // get cart from redux store
   const { cart, quantity, subtotal, tax, discount, grant_total } = useSelector((state) => state.cart)
-  const { status, userData, userType } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
 
   // navigate hook
   const navigate = useNavigate();
 
-  // button when user click on make order
-  const submitOrderCart = async (formData) => {
-
-    // validate cart contains values
-    if (cart.length === 0) {
-      showError("Add foods to cart")
-      return
-    }
-
-    // check order type that choose user
-    switch (formData.order_type) {
-      case 'restaurant':
-        console.log('restaurant')
-        await typeRestaurant(formData)
-        break;
-
-      case 'pick_up':
-        navigate("/customer/cart-review");
-        setOpen(false)
-        break;
-
-      case 'shipment':
-        navigate("/customer/cart-review");
-        setOpen(false)
-        break;
-
-      default:
-        showError(`Order Type ${formData.order_type} not supported`)
-    }
-
-  }
-
-  // Logic for Order Type Restaurant
-  const typeRestaurant = async (formData) => {
-    // retrieve customer_id if user is authenticated
-    const customer_id = userData ? userData?.id : null
-
-    // build Json Data for backend
-    const apiData = {
-      user_id: null,
-      customer_id: customer_id,
-      board_id: null,
-      foods: cart,
-      note: formData.value,
-      status: "new",
-      subtotal,
-      tax,
-      discount,
-      grant_total
-    }
-
-    // call api for create order
-    const { data, error } = await createOrder(apiData)
-
-    // new order inserted
-    if (!error && data) {
-      // show success message 
-      showSuccess()
-      // clear cart 
-      dispatch(clearCart())
-    }
-    // error in order
-    else {
-      showError(error?.data?.detail)
-    }
-  }
-
-  // error on api call
-  const showError = (msg) => {
-    MySwal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: msg,
-    })
-  }
-
-  // function for show success on api call
-  const showSuccess = () => {
-    MySwal.fire({
-      icon: 'success',
-      title: `Order has been created`,
-      showConfirmButton: false,
-      timer: 1500
-    })
+  const clickContinueOrder = () => {
+    navigate("/customer/cart-review");
+    setOpen(false)
   }
 
   return (
@@ -245,71 +154,13 @@ export const CartInfoModal = ({ open, setOpen }) => {
                         </li>
                       </div>
 
-                      {/* Form */}
-                      <Formik
-                        initialValues={{
-                          order_type: '',
-                          note: '',
-                          table_code: ''
-                        }}
-                        onSubmit={submitOrderCart}
-                        validationSchema={
-                          Yup.object({
-                            order_type: Yup.string()
-                              .required("Required"),
-                            table_code: Yup.string().when('order_type', {
-                              is: (order_type) => order_type === "restaurant", // this validation only with restaurant option selected
-                              then: Yup.string().required('Field is required').length(4),
-                              otherwise: Yup.string()
-                            }),
-                            note: Yup.string(),
-                          })
-                        }
+                      <button
+                        onClick={clickContinueOrder}
+                        type="button"
+                        className="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white"
                       >
-                        {
-                          (formik) => (
-                            <Form>
-                              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 py-4">
-                                {/* Order Type */}
-                                <div>
-                                  <label className="block text-slate-800 font-semibold mb-4" htmlFor="order_type">Order Type</label>
-                                  <Field name="order_type" as="select" className="form-select w-full">
-                                    <option value="">Pick Something</option>
-                                    <option value="restaurant">On Restaurant</option>
-                                    <option value="pick_up">Pick up</option>
-                                    <option value="shipment">Shipment</option>
-                                  </Field>
-                                  <ErrorMessage name="order_type" component="div" className="text-xs mt-1 text-rose-500" />
-                                </div>
-                                {/* Code Table */}
-                                {
-                                  (formik.values.order_type === 'restaurant') && // show Field if order_type is restaurant
-                                  <div>
-                                    <label className="block text-slate-800 font-semibold mb-4" htmlFor="table_code">Table Code</label>
-                                    <Field name="table_code" type="number" className="form-input w-full" placeholder="Code that the hostess gave you" />
-                                    <ErrorMessage name="table_code" component="div" className="text-xs mt-1 text-rose-500" />
-                                  </div>
-                                }
-                                {/* Order Note */}
-                                <div className='col-span-2'>
-                                  <label className="block text-slate-800 font-semibold mb-4" htmlFor="note">Order Note</label>
-                                  <Field name="note" type="text" as="textarea" className="form-input w-full" placeholder="This note will be seen by the cooks, you can specify the details of your order" />
-                                  <ErrorMessage name="note" component="div" className="text-xs mt-1 text-rose-500" />
-                                </div>
-                              </div>
-                              <div className="flex items-center justify-between mt-6">
-                                <SpinnerButton
-                                  classNameEnable="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white"
-                                  classNameDisabled="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                  type="submit"
-                                  isLoading={isLoading}
-                                  value="Continue Order"
-                                />
-                              </div>
-                            </Form>
-                          )
-                        }
-                      </Formik>
+                        Continue Order
+                        </button>
                     </div>
                   </div>
                 </Dialog.Panel>

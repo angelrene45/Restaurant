@@ -3,11 +3,12 @@ import { useSelector } from "react-redux"
 import { AddressCreateModal } from "../layout/AddressCreateModal"
 import { CartItems } from "../layout/CartItems"
 import { AddressesCustomer } from "../layout/AddressesCustomer"
+import { Link } from "react-router-dom"
 
 
 export const CartPaymentPage = () => {
 
-  const { cart, quantity, subtotal, tax, discount, grant_total } = useSelector((state) => state.cart)
+  const { subtotal, grant_total, order_type } = useSelector((state) => state.cart);
 
   return (
     <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -30,14 +31,36 @@ export const CartPaymentPage = () => {
                   </div>
                 </div>
 
-                {/* Shipping Address */}
-                <header>
-                  <h1 className="text-2xl md:text-3xl text-slate-800 font-bold">Shipping Address</h1>
-                </header>
+                {/* Pick Up or Delivery */}
 
-                {/* Add new Address */}
-                <AddressCreateModal/>
-                <AddressesCustomer/>
+                {(order_type === 'shipment')
+                  ?
+                  <>
+                    {/* Shipping Address */}
+                    <header>
+                      <h1 className="text-2xl md:text-3xl text-slate-800 font-bold">Shipping Address</h1>
+                    </header>
+
+                    {/* Buttons for add and select Address */}
+                    <AddressCreateModal />
+                    <AddressesCustomer />
+                  </>
+                  :
+                  <>
+                    {/* Pick Up */}
+                    <header>
+                      <h1 className="text-2xl md:text-3xl text-slate-800 font-bold">Pick Up At Restaurant</h1>
+                    </header>
+                    {/* Cart items */}
+                    <CartItems readMode={true} />
+                  </>
+
+                }
+
+                {/* Button Back to Payment Review */}
+                <div className="mt-6">
+                  <Link to="/customer/cart-review" className="text-sm font-medium text-indigo-500 hover:text-indigo-600">&lt;- Back To Cart Review</Link>
+                </div>
 
               </div>
 
@@ -131,8 +154,6 @@ export const CartPaymentPage = () => {
 
         </div>
       </main>
-
     </div>
-
   )
 }

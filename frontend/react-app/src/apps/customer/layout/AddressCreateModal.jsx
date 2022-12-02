@@ -1,39 +1,100 @@
 import { Fragment, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-import { clearCart, decrementQuantity, incrementQuantity, removeItem } from '../../../store/slices/cart'
-import { useCreateOrderMutation } from '../../../store/slices/orders'
 import { SpinnerButton } from '../../../components/items/Spinner'
+import { useUpdateCustomerMeMutation } from '../../../store/slices/customers/api';
+import { setUserData } from '../../../store/slices/auth/authSlice';
 
 const MySwal = withReactContent(Swal);
 
 export const AddressCreateModal = () => {
 
-  const actionName = "Add"
+  const { status, userData } = useSelector((state) => state.auth);
+
+  const [updateCustomerMe, { isLoading }] = useUpdateCustomerMeMutation();
 
   const initialValues = {
     street: "",
     city: "",
     state: "",
     country: "",
-    postal_code: ""
+    postal_code: "",
+    update_account: true
   }
-
-  // state for open modal 
   const [open, setOpen] = useState(false)
-
   const dispatch = useDispatch()
 
-  // button when user click on make order
+  // button when customer click on make order
   const submitForm = async (formData, { resetForm }) => {
-    console.log(formData)
+    // check if address not repeat with current addresses
+    const existAddress = validateAddress(formData)
+    // address already exists
+    if (existAddress) {
+      showMessage("The address already exists in your account")
+      return
+    }
+
+    // Add new address to customer account
+    if (status === 'authenticated' & formData.update_account) {
+
+      // get current user address
+      const addresses = [...userData.addresses, formData]
+
+      // new user data 
+      const newUserData = { ...userData, addresses }
+
+      // update user data from Api 
+      const { data, error } = await updateCustomerMe(newUserData)
+
+      // success update
+      if (data) {
+        // update redux state with new user data and auto re-rendering from AddressesCustomer component
+        dispatch(setUserData({ userData: data }))
+        setOpen(false)
+      } else {
+        showMessage(error.error?.data?.detail)
+      }
+    }
+    // Customer or Guest only want to use this address once
+    else {
+      // clone current data 
+      let data = { ...userData }
+      // scenario for customer authenticated and checkbox false
+      if (data.addresses) data.addresses = [...data.addresses, formData]
+      // scenario for guest and checkbox false
+      else data.addresses = [formData]
+      // update redux state and auto re-rendering from AddressesCustomer component 
+      dispatch(setUserData({ userData: data }))
+      setOpen(false)
+    }
+    // clear data in form
     resetForm()
+  }
+
+  const validateAddress = (formData) => {
+    const existAddress = userData.addresses.find(
+      address =>
+        address.street.toLowerCase() === formData.street.toLowerCase() &&
+        address.city.toLowerCase() === formData.city.toLowerCase() &&
+        address.state.toLowerCase() === formData.state.toLowerCase() &&
+        address.country.toLowerCase() === formData.country.toLowerCase() &&
+        address.postal_code.toLowerCase() === formData.postal_code.toLowerCase()
+    )
+    return existAddress ? true : false
+  }
+
+  const showMessage = (msg) => {
+    MySwal.fire({
+      icon: 'info',
+      title: '',
+      text: msg,
+      showConfirmButton: true,
+    })
   }
 
   return (
@@ -79,7 +140,7 @@ export const AddressCreateModal = () => {
 
                     <div className="grid w-full grid-cols-1 items-start">
                       <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-                        <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{actionName} Address</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">Add Address</h2>
 
                         <section aria-labelledby="options-heading" className="mt-10">
                           <h3 id="options-heading" className="sr-only">
@@ -88,7 +149,7 @@ export const AddressCreateModal = () => {
 
                           {/* Form */}
                           <Formik
-                            initialValues={{...initialValues}}
+                            initialValues={{ ...initialValues }}
                             onSubmit={submitForm}
                             validationSchema={
                               Yup.object({
@@ -97,6 +158,8 @@ export const AddressCreateModal = () => {
                                 state: Yup.string().required('Required'),
                                 country: Yup.string().required('Required'),
                                 postal_code: Yup.string().required('Required').min(5, 'Must be exactly 5 digits').max(5, 'Must be exactly 5 digits'),
+                                update_account: Yup.boolean().oneOf([true, false]),
+
                               })
                             }
                           >
@@ -139,6 +202,17 @@ export const AddressCreateModal = () => {
                                       <Field name='postal_code' type="text" className="form-input w-full" placeholder="10014" />
                                       <ErrorMessage name='postal_code' component="div" className="text-xs mt-1 text-rose-500" />
                                     </div>
+
+                                    {/* Update Account */}
+                                    {(status === 'authenticated') &&
+                                      // if customer is authenticated show this checkbox
+                                      <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="update_account">Update Account</label>
+                                        <Field name="update_account" type="checkbox" className="form-checkbox" title="This Address will be inserted into your account" />
+                                        <ErrorMessage name="update_account" component="div" className="text-xs mt-1 text-rose-500" />
+                                      </div>
+                                    }
+
                                   </div>
 
                                   {/* Button Submit */}
@@ -148,8 +222,8 @@ export const AddressCreateModal = () => {
                                       classNameEnable="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap"
                                       classNameDisabled="btn text-white ml-3 whitespace-nowrap text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                       type="submit"
-                                      isLoading={false}
-                                      value={actionName}
+                                      isLoading={isLoading}
+                                      value="Add"
                                     />
                                   </div>
                                 </Form>

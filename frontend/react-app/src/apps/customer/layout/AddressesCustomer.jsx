@@ -40,9 +40,6 @@ export const AddressesCustomer = () => {
                         <div className="text-gray-700 text-base">{address.state}</div>
                         <div className="text-gray-700 text-base">{address.country}</div>
                     </div>
-                    <div className="px-2 pb-2">
-                        <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white mt-1">Use this address</button>
-                    </div>
                 </div>
             ))}
         </div>
