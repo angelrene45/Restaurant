@@ -16,6 +16,9 @@ export const CartInfoModal = ({ open, setOpen }) => {
   // navigate hook
   const navigate = useNavigate();
 
+  // dispatch
+  const dispatch = useDispatch();
+
   const clickContinueOrder = () => {
     navigate("/customer/cart-review");
     setOpen(false)

@@ -1,14 +1,35 @@
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 import { AddressCreateModal } from "../layout/AddressCreateModal"
 import { CartItems } from "../layout/CartItems"
 import { AddressesCustomer } from "../layout/AddressesCustomer"
-import { Link } from "react-router-dom"
+import { SpinnerButton } from "../../../components/items/Spinner";
+import { displayMessage } from "../../../utils/swalMsg";
 
 
 export const CartPaymentPage = () => {
 
-  const { subtotal, grant_total, order_type } = useSelector((state) => state.cart);
+  const { subtotal, grant_total, order_type, address } = useSelector((state) => state.cart);
+
+  const initialValues = {
+    card_nr: '1234123412341234',
+    card_expiry: '10/27',
+    card_cvc: '250',
+    card_name: 'Generic Name',
+  }
+
+  const handleSubmitPayment = (values) => {
+
+    if (order_type === 'shipment' && address) {
+      console.log(`Sent to ${address}`)
+    } else {
+      displayMessage("Please add or select an address")
+    }
+
+  }
 
   return (
     <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -94,58 +115,71 @@ export const CartPaymentPage = () => {
                     <div>
                       <div className="text-slate-800 font-semibold mb-4">Payment Details</div>
                       <div className="space-y-4">
-                        {/* Card Number */}
-                        <div>
-                          <label className="block text-sm font-medium mb-1" htmlFor="card-nr">Card Number <span className="text-rose-500">*</span></label>
-                          <input id="card-nr" className="form-input w-full" type="text" placeholder="1234 1234 1234 1234" />
-                        </div>
-                        {/* Expiry and CVC */}
-                        <div className="flex space-x-4">
-                          <div className="flex-1">
-                            <label className="block text-sm font-medium mb-1" htmlFor="card-expiry">Expiry Date <span className="text-rose-500">*</span></label>
-                            <input id="card-expiry" className="form-input w-full" type="text" placeholder="MM/YY" />
-                          </div>
-                          <div className="flex-1">
-                            <label className="block text-sm font-medium mb-1" htmlFor="card-cvc">CVC <span className="text-rose-500">*</span></label>
-                            <input id="card-cvc" className="form-input w-full" type="text" placeholder="CVC" />
-                          </div>
-                        </div>
-                        {/* Name on Card */}
-                        <div>
-                          <label className="block text-sm font-medium mb-1" htmlFor="card-name">Name on Card <span className="text-rose-500">*</span></label>
-                          <input id="card-name" className="form-input w-full" type="text" placeholder="John Doe" />
-                        </div>
+                        <Formik
+                          initialValues={{ ...initialValues }}
+                          onSubmit={handleSubmitPayment}
+                          validationSchema={
+                            Yup.object({
+                              card_nr: Yup.string()
+                                .max(16)
+                                .required("Required"),
+                              card_expiry: Yup.string()
+                                .required("Required"),
+                              card_cvc: Yup.string()
+                                .min(3)
+                                .max(4)
+                                .required("Required"),
+                              card_name: Yup.string()
+                                .required("Required"),
+                            })
+                          }
+                        >
+                          {
+                            (formik) => (
+                              <Form>
+                                {/* Card Number */}
+                                <div>
+                                  <label className="block text-sm font-medium mb-1" htmlFor="card_nr">Card Number <span className="text-rose-500">*</span></label>
+                                  <Field name="card_nr" className="form-input w-full" type="number" placeholder="1234 1234 1234 1234" />
+                                  <ErrorMessage name="card_nr" component="div" className="text-xs mt-1 text-rose-500" />
+                                </div>
+                                {/* Expiry and CVC */}
+                                <div className="flex space-x-4">
+                                  <div className="flex-1">
+                                    <label className="block text-sm font-medium mb-1" htmlFor="card_expiry">Expiry Date <span className="text-rose-500">*</span></label>
+                                    <Field name="card_expiry" className="form-input w-full" type="text" placeholder="MM/YY" />
+                                    <ErrorMessage name="card_expiry" component="div" className="text-xs mt-1 text-rose-500" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <label className="block text-sm font-medium mb-1" htmlFor="card_cvc">CVC <span className="text-rose-500">*</span></label>
+                                    <Field name="card_cvc" className="form-input w-full" type="number" placeholder="CVC" />
+                                    <ErrorMessage name="card_cvc" component="div" className="text-xs mt-1 text-rose-500" />
+                                  </div>
+                                </div>
+                                {/* Name on Card */}
+                                <div>
+                                  <label className="block text-sm font-medium mb-1" htmlFor="card_name">Name on Card <span className="text-rose-500">*</span></label>
+                                  <Field name="card_name" className="form-input w-full" type="text" placeholder="John Doe" />
+                                  <ErrorMessage name="card_name" component="div" className="text-xs mt-1 text-rose-500" />
+                                </div>
+                                <div className="mt-6">
+                                  <div className="mb-4">
+                                    <SpinnerButton
+                                      classNameEnable="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white"
+                                      classNameDisabled="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                      type="submit"
+                                      isLoading={false}
+                                      value={`Pay - $${grant_total}`}
+                                    />
+                                  </div>
+                                  <div className="text-xs text-slate-500 italic text-center">You'll be charged ${grant_total}, including $48 for VAT in Italy</div>
+                                </div>
+                              </Form>
+                            )
+                          }
+                        </Formik>
                       </div>
                     </div>
-
-                    {/* Additional Details */}
-                    <div>
-                      <div className="text-slate-800 font-semibold mb-4">Additional Details</div>
-                      <div className="space-y-4">
-                        {/* Email */}
-                        <div>
-                          <label className="block text-sm font-medium mb-1" htmlFor="card-email">Email <span className="text-rose-500">*</span></label>
-                          <input id="card-email" className="form-input w-full" type="email" placeholder="john@company.com" />
-                        </div>
-                        {/* Country */}
-                        <div>
-                          <label className="block text-sm font-medium mb-1" htmlFor="card-country">Country <span className="text-rose-500">*</span></label>
-                          <select id="card-country" className="form-select w-full">
-                            <option>Italy</option>
-                            <option>USA</option>
-                            <option>United Kingdom</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-6">
-                      <div className="mb-4">
-                        <button className="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">Pay ${grant_total}</button>
-                      </div>
-                      <div className="text-xs text-slate-500 italic text-center">You'll be charged ${grant_total}, including $48 for VAT in Italy</div>
-                    </div>
-
                   </div>
                 </div>
               </div>
