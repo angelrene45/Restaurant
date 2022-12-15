@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app import crud, models
 from app.schemas.order import OrderCreate, OrderFood
-from app.models.order import StatusOrder
+from app.models.order import StatusOrder, TypesOrder
 from app.tests.utils.utils import random_boolean, random_float, random_lower_string, random_integer
 from app.tests.utils.user import create_random_user
 from app.tests.utils.customer import create_random_customer
@@ -13,6 +13,11 @@ from app.tests.utils.food import create_random_food
 
 def select_random_order_status() -> str:
     status = [e.value for e in StatusOrder]
+    return random.choice(status)
+
+
+def select_random_type_order() -> str:
+    status = [e.value for e in TypesOrder]
     return random.choice(status)
 
 
@@ -37,6 +42,8 @@ def create_random_order(db: Session, n_foods: int=3) -> models.Order:
                         board_id = board.id,
                         foods = foods,
                         status = select_random_order_status(),
+                        order_type = select_random_type_order(),
+                        address = random_lower_string(),
                         subtotal= random_float(),
                         tax = random_float(),
                         total = random_float(),

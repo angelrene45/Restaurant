@@ -4,7 +4,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from app.models.order import StatusOrder
+from app.models.order import StatusOrder, TypesOrder
 
 schema_example = {
     "example": {       
@@ -21,6 +21,8 @@ schema_example = {
                 "price": "<price of variant that choose user>",
             }
         ],
+        "order_type": "<order type for enum values>",
+        "address": "<address when order type is shipment>",
         "note": "<Order details by user>",
         "status": "<Constant of OrderStatus Schema>",
         "subtotal": "<sum of all prices>",
@@ -49,6 +51,8 @@ class OrderBase(BaseModel):
     customer_id: Optional[int] = None
     board_id: Optional[int] = None
     foods: Optional[List[OrderFood]] = []
+    order_type: Optional[TypesOrder] = None
+    address: Optional[str] = None
     note: Optional[str] = None
     status: Optional[StatusOrder] = None
     subtotal: Optional[float] = None

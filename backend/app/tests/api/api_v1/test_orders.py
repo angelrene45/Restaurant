@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.tests.utils.order import create_random_order, create_random_order_foods, select_random_order_status
+from app.tests.utils.order import create_random_order, create_random_order_foods, select_random_order_status, select_random_type_order
 from app.tests.utils.user import create_random_user
 from app.tests.utils.customer import create_random_customer
 from app.tests.utils.board import create_random_board
@@ -60,6 +60,8 @@ def test_create_order(
         "foods": foods,
         "note": random_lower_string(),
         "status": select_random_order_status(),
+        "order_type": select_random_type_order(),
+        "address": random_lower_string(),
         "subtotal": random_float(),
         "tax": random_float(),
         "total": random_float(),
