@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -8,11 +8,21 @@ import { CartItems } from "../layout/CartItems"
 import { AddressesCustomer } from "../layout/AddressesCustomer"
 import { SpinnerButton } from "../../../components/items/Spinner";
 import { displayMessage } from "../../../utils/swalMsg";
+import { useCreateOrderMutation } from "../../../store/slices/orders";
+import { clearCart } from "../../../store/slices/cart";
 
 
 export const CartPaymentPage = () => {
 
-  const { subtotal, grant_total, order_type, address } = useSelector((state) => state.cart);
+  // redux state 
+  const { cart, quantity, subtotal, tax, discount, grant_total, order_type, note, address } = useSelector((state) => state.cart);
+  const { status, userData, userType } = useSelector((state) => state.auth);
+
+  // mutation for create order
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const initialValues = {
     card_nr: '1234123412341234',
@@ -21,15 +31,62 @@ export const CartPaymentPage = () => {
     card_name: 'Generic Name',
   }
 
-  const handleSubmitPayment = (values) => {
+  const handleSubmitPayment = async (formData, { resetForm }) => {
 
-    if (order_type === 'shipment' && address) {
-      console.log(`Sent to ${address}`)
-    } else {
+    // validate customer add address on shipment type
+    if (order_type === 'shipment' && !address) {
       displayMessage("Please add or select an address")
+      return
+    }
+    // call payment api 
+
+    // call order api
+    const statusOrder = await prepareOrder();
+    if (statusOrder) {
+      await resetForm();
+      navigate("/customer/cart-confirm");
     }
 
   }
+
+  const prepareOrder = async () => {
+    // retrieve customer_id if user is authenticated
+    const customer_id = userData ? userData?.id : null
+
+    // build Json Data for backend
+    const apiData = {
+      user_id: null,
+      customer_id: customer_id,
+      board_id: null,
+      foods: cart,
+      note: note,
+      status: "new",
+      order_type,
+      address,
+      subtotal,
+      tax,
+      discount,
+      grant_total
+    }
+
+    // call api for create order
+    const { data, error } = await createOrder(apiData)
+
+    // new order inserted
+    if (!error && data) {
+      // show success message 
+      displayMessage("Order has been created", "info", { showConfirmButton: false, timer: 1500 })
+      // clear cart 
+      dispatch(clearCart())
+      return true
+    }
+    // error in order
+    else {
+      displayMessage(error?.data?.detail, "error")
+      return false
+    }
+  }
+
 
   return (
     <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -168,7 +225,7 @@ export const CartPaymentPage = () => {
                                       classNameEnable="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white"
                                       classNameDisabled="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                       type="submit"
-                                      isLoading={false}
+                                      isLoading={isLoading}
                                       value={`Pay - $${grant_total}`}
                                     />
                                   </div>

@@ -64,7 +64,9 @@ class OrderBase(BaseModel):
 
 # Properties to receive via API on creation
 class OrderCreate(OrderBase):
-    foods: Optional[List[OrderFood]] = []
+    foods: List[OrderFood]
+    order_type: TypesOrder
+    status: StatusOrder
 
     class Config:
         schema_extra = schema_example

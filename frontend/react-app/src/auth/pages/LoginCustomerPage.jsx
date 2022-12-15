@@ -124,6 +124,11 @@ export const LoginCustomerPage = () => {
                     </span>
                   </div>
                 </div>
+
+                {/* Navigate to Home Page */}
+                <div className="mt-6">
+                  <Link to="/customer/" className="text-sm font-medium text-indigo-500 hover:text-indigo-600">&lt;- Back To Home</Link>
+                </div>
               </div>
             </div>
 

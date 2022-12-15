@@ -9,6 +9,7 @@ import { CartItems } from "../layout/CartItems"
 import { SpinnerButton } from '../../../components/items/Spinner'
 import { useCreateOrderMutation } from "../../../store/slices/orders";
 import { addOrderType, addOrderNote, clearCart } from "../../../store/slices/cart";
+import { displayMessage } from "../../../utils/swalMsg";
 
 
 const MySwal = withReactContent(Swal);
@@ -30,21 +31,22 @@ export const CartReviewPage = () => {
   const navigate = useNavigate()
 
   // button when user click on make order
-  const submitOrderCart = async (formData) => {
+  const submitOrderCart = async (formData, { resetForm }) => {
 
-    dispatch(addOrderType({order_type: formData.order_type}))
-    dispatch(addOrderNote({note: formData.note}))
+    dispatch(addOrderType({ order_type: formData.order_type }))
+    dispatch(addOrderNote({ note: formData.note }))
 
     // validate cart contains values
     if (cart.length === 0) {
-      showError("Add foods to cart")
+      displayMessage("Add foods to cart", "error")
       return
     }
 
     // check order type that choose user
     switch (formData.order_type) {
       case 'restaurant':
-        await typeRestaurant(formData)
+        const statusOrder = await prepareOrder(formData);
+        if (statusOrder) await resetForm();
         break;
 
       case 'pick_up':
@@ -56,13 +58,13 @@ export const CartReviewPage = () => {
         break;
 
       default:
-        showError(`Order Type ${formData.order_type} not supported`)
+        displayMessage(`Order Type ${formData.order_type} not supported`, "error")
     }
 
   }
 
-  // Logic for Order Type Restaurant
-  const typeRestaurant = async (formData) => {
+  // Logic for Make Order On Restaurant
+  const prepareOrder = async (formData) => {
     // retrieve customer_id if user is authenticated
     const customer_id = userData ? userData?.id : null
 
@@ -74,6 +76,7 @@ export const CartReviewPage = () => {
       foods: cart,
       note: formData.value,
       status: "new",
+      order_type,
       subtotal,
       tax,
       discount,
@@ -86,33 +89,16 @@ export const CartReviewPage = () => {
     // new order inserted
     if (!error && data) {
       // show success message 
-      showSuccess()
+      displayMessage("Order has been created", "info", { showConfirmButton: false, timer: 1500 })
       // clear cart 
       dispatch(clearCart())
+      return true
     }
     // error in order
     else {
-      showError(error?.data?.detail)
+      displayMessage(error?.data?.detail, "error")
+      return false
     }
-  }
-
-  // error on api call
-  const showError = (msg) => {
-    MySwal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: msg,
-    })
-  }
-
-  // function for show success on api call
-  const showSuccess = () => {
-    MySwal.fire({
-      icon: 'success',
-      title: `Order has been created`,
-      showConfirmButton: false,
-      timer: 1500
-    })
   }
 
   return (
@@ -234,7 +220,7 @@ export const CartReviewPage = () => {
                       </Form>
                     )
                   }
-                </Formik>      
+                </Formik>
               </div>
             </div>
 
