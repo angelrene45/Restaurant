@@ -1,10 +1,40 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import AuthImage from '../images/auth-image.jpg';
 import AuthDecoration from '../images/auth-decoration.png';
+import { useCreateCustomerOpenMutation } from '../../store/slices/customers/api';
+import { getToken } from '../../store/slices/auth';
+import { navigateUser } from '../../utils';
+import { SpinnerButton } from '../../components/items/Spinner';
+
+const MySwal = withReactContent(Swal);
 
 export const RegisterCustomerPage = () => {
+
+  // get redux state from authentication
+  const {status} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  
+  // mutation for call api (create customer)
+  const [createCustomerOpen,  {isLoading, error}] = useCreateCustomerOpenMutation();
+
+  // error on api cal for register customer
+  if (error){ 
+    MySwal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error?.data?.detail,
+    })
+  }
+
+  // if user is authenticated navigate to home 
+  if (status === 'authenticated') return navigateUser()
+  
   return (
     <main className="bg-white">
 
@@ -42,39 +72,94 @@ export const RegisterCustomerPage = () => {
             <div className="max-w-sm mx-auto px-4 py-8">
               <h1 className="text-3xl text-slate-800 font-bold mb-6">Create your Account ✨</h1>
               {/* Form */}
-              <form>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address <span className="text-rose-500">*</span></label>
-                    <input id="email" className="form-input w-full" type="email" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="name">Full Name <span className="text-rose-500">*</span></label>
-                    <input id="name" className="form-input w-full" type="text" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="role">Your Role <span className="text-rose-500">*</span></label>
-                    <select id="role" className="form-select w-full">
-                      <option>Designer</option>
-                      <option>Developer</option>
-                      <option>Accountant</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="password">Password</label>
-                    <input id="password" className="form-input w-full" type="password" autoComplete="on" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-6">
-                  <div className="mr-1">
-                    <label className="flex items-center">
-                      <input type="checkbox" className="form-checkbox" />
-                      <span className="text-sm ml-2">Email me about product news.</span>
-                    </label>
-                  </div>
-                  <Link className="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" to="/">Sign Up</Link>
-                </div>
-              </form>
+              <Formik
+                initialValues={{
+                  email: '',
+                  firstName: '',
+                  lastName: '',
+                  password: '',
+                  passwordConfirm: '',
+                }}
+                onSubmit={async (values) => {
+                  // prepare object to backend
+                  const apiData = {
+                    email: values.email,
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    password: values.password
+                  }
+                  // call api create customer open and await for response
+                  const {data, error} = await createCustomerOpen(apiData);
+                  // check if customer is created
+                  if (data){
+                    // here the sign up was success so auto sign in 
+                    dispatch( getToken(values.email, values.password, "customer") )
+                  }
+                }}
+                validationSchema={
+                  Yup.object({
+                    email: Yup.string()
+                      .email('Invalid email address')
+                      .required('Required'),
+                    firstName: Yup.string()
+                      .max(20, 'Must be 20 characters or less')
+                      .required('Required'),
+                    lastName: Yup.string()
+                      .max(20, 'Must be 20 characters or less')
+                      .required('Required'),
+                    password: Yup.string()
+                      .required('Required'),
+                    passwordConfirm: Yup.string()
+                      .required('Required')
+                      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+                  })
+                }
+              >
+
+                {
+                  (formik) => (
+                    <Form>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="email">Email Address <span className="text-rose-500">*</span></label>
+                          <Field name="email" type="email" className="form-input w-full" />
+                          <ErrorMessage name="email" component="div" className="text-xs mt-1 text-rose-500"/>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="firstName">First Name <span className="text-rose-500">*</span></label>
+                          <Field name="firstName" type="text" className="form-input w-full" />
+                          <ErrorMessage name="firstName" component="div" className="text-xs mt-1 text-rose-500"/>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="lastName">Last Name</label>
+                          <Field name="lastName" type="text" className="form-input w-full" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="password">Password <span className="text-rose-500">*</span></label>
+                          <Field name="password" type="password" className="form-input w-full" />
+                          <ErrorMessage name="password" component="div" className="text-xs mt-1 text-rose-500"/>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1" htmlFor="passwordConfirm">Confirm Password<span className="text-rose-500">*</span></label>
+                          <Field name="passwordConfirm" type="password" className="form-input w-full" />
+                          <ErrorMessage name="passwordConfirm" component="div" className="text-xs mt-1 text-rose-500"/>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between mt-6">
+                        <div className="mr-6"></div>
+                        <SpinnerButton
+                          classNameEnable="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap" 
+                          classNameDisabled="btn text-white ml-3 whitespace-nowrap text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" 
+                          type="submit"
+                          isLoading={isLoading}
+                          value="Sign Up"
+                        />
+                      </div>
+                    </Form>
+                  )
+                }
+              </Formik>
+              
               {/* Footer */}
               <div className="pt-5 mt-6 border-t border-slate-200">
                 <div className="text-sm">

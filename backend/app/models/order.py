@@ -17,6 +17,11 @@ class StatusOrder(str, Enum):
     cancel: str = "cancel"
     failed: str = "failed"
 
+class TypesOrder(str, Enum):
+    restaurant: str = "restaurant"
+    pick_up: str = "pick_up"
+    shipment: str = "shipment"
+
 
 class Order(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -25,6 +30,9 @@ class Order(Base):
     board_id = Column(Integer, ForeignKey("board.id"), index=True, nullable=True)
     foods = relationship("Order_Food", backref='order', cascade='all, delete-orphan')
     status = Column(ENUM(StatusOrder), default=StatusOrder.new)
+    order_type = Column(ENUM(TypesOrder), nullable=False)
+    address= Column(Text)
+    note = Column(Text)
     subtotal = Column(Numeric(10, 2))
     tax = Column(Numeric(10, 2))
     total = Column(Numeric(10, 2))
@@ -37,6 +45,8 @@ class Order(Base):
 class Order_Food(Base):
     order_id = Column(Integer, ForeignKey("order.id"), primary_key=True, index=True, nullable=False)
     food_id = Column(Integer, ForeignKey("food.id"), primary_key=True, index=True, nullable=False)
+    variant = Column(String, primary_key=True, index=True, nullable=False)
     name = Column(String)
+    unit = Column(String)
     quantity = Column(Integer)
     price = Column(Numeric(10, 2))

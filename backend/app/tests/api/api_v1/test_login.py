@@ -3,9 +3,9 @@ from typing import Dict
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
+from app import crud, schemas
 from app.core.config import settings
 from app.schemas import CustomerCreate
-from app import crud
 from app.tests.utils.utils import random_email, random_lower_string
 
 
@@ -46,3 +46,19 @@ def test_use_access_token(
     result = r.json()
     assert r.status_code == 200
     assert "email" in result
+
+def test_refresh_access_token(
+    client: TestClient, superuser_token_headers: Dict[str, str]
+) -> None:
+    token = superuser_token_headers.get('Authorization')
+    token = token.replace("Bearer ", "")
+    json = {
+        "token": token, 
+        "user_type": schemas.UserTypeEnum.user.value
+    }
+    r = client.post(
+        f"{settings.API_V1_STR}/login/refresh-token", json=json
+    )
+    result = r.json()
+    assert r.status_code == 200
+    assert "access_token" in result

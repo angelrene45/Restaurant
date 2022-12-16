@@ -1,64 +1,75 @@
-export const linksJsonAdmin = [
-
+export const linksJsonAdmin = {
+  login: "/auth/login/user",
+  links: [
     {
-      topic: "Food",
+      topic: "List",
       subTopics: [
         {
-          name: "Categories",
-          url:"/admin/food/categories"
+          name: "Users",
+          url: "/admin/user/"
         },
         {
-          name: "Dishes and drinks",
-          url:"/admin/food/dishes"
+          name: "Customers",
+          url: "/admin/customer/"
+        },
+        {
+          name: "Categories",
+          url: "/admin/food/categories"
+        },
+        {
+          name: "Foods",
+          url: "/admin/food/dishes"
         }
       ]
     }
-];
+  ]
+};
 
-export const linksJsonClie = [
+
+export const linksJsonEmployees = {
+  login: "/auth/login/user",
+  links: [
     {
-      name: "Table Map",
-      url: "/"
-    },
-    {
-      name: "Red Meats",
-      url: "/r_meats"
-    },
-    {
-      name: "White Meats",
-      url: "/w_meats"
-    },
-    {
-      name: "Sea food",
-      url: "/seafood"
-    },
-    {
-      name: "Drinks without Alcohol ",
-      url: "/drinks_wo"
-    },
-    {
-      name: "Alcoholic Drinks ",
-      url: "/drinks_w"
+      topic: "Cook",
+      subTopics: [
+        {
+          name: "Orders",
+          url: "/employee/orders"
+        },
+        {
+          name: "Drinks",
+          url: "/employee/drinks"
+        }
+      ]
     }
-];
-
-export const linksJsonEmployees = [
-    {
-      name: "Inicio",
-      url: "/"
-    },
-    {
-      name: "Ventas",
-      url: "/ventas"
-    },
-    {
-      name: "Empleados",
-      url: "/empleados"
-    },
-    {
-      name: "Proveedores",
-      url: "/proveedores"
-    },
-];
+  ]
+}
 
 
+export const linksJsonCustomer = {
+  login: "/auth/login/customer",
+  links: [
+    {
+      topic: "Home",
+      subTopics: [
+        {
+          name: "Foods",
+          url: "/customer/foods"
+        },
+        {
+          name: "Cart Review",
+          url: "/customer/cart-review"
+        }
+      ]
+    }, 
+    {
+      topic: "Order",
+      subTopics: [
+        {
+          name: "Search",
+          url: "/customer/order/search"
+        }
+      ]
+    }
+  ]
+}

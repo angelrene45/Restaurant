@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.tests.utils.order import create_random_order, create_random_order_foods, select_random_order_status
+from app.tests.utils.order import create_random_order, create_random_order_foods, select_random_order_status, select_random_type_order
 from app.tests.utils.user import create_random_user
 from app.tests.utils.customer import create_random_customer
 from app.tests.utils.board import create_random_board
@@ -21,6 +21,16 @@ def test_get_orders(
     assert len(all_orders) > 1
     for order in all_orders:
         assert "grant_total" in order
+
+
+def test_get_total_orders_on_db(
+    client: TestClient, db: Session,
+) -> None:
+    create_random_order(db)
+    create_random_order(db)
+    r = client.get(f"{settings.API_V1_STR}/orders/count")
+    count = r.json()
+    assert count > 0
 
 
 def test_get_existing_order(
@@ -48,7 +58,10 @@ def test_create_order(
         "customer_id": customer.id,
         "board_id": board.id,
         "foods": foods,
+        "note": random_lower_string(),
         "status": select_random_order_status(),
+        "order_type": select_random_type_order(),
+        "address": random_lower_string(),
         "subtotal": random_float(),
         "tax": random_float(),
         "total": random_float(),
@@ -62,7 +75,13 @@ def test_create_order(
     assert r.status_code == 200
     assert created_order
     assert created_order.get("grant_total") == data.get("grant_total")
+    assert created_order.get("note") == data.get("note")
     assert len(created_order.get("foods")) == 3
+
+    for food in created_order.get("foods"):
+        assert "variant" in food
+        assert "unit" in food
+        assert "quantity" in food
 
 
 def test_update_order(
@@ -70,6 +89,7 @@ def test_update_order(
 ) -> None:
     order_created = create_random_order(db)
     order_id = order_created.id
+    grant_total_first = order_created.grant_total
 
     data = {
         "status": select_random_order_status(),
@@ -86,6 +106,6 @@ def test_update_order(
     order_updated = r.json()
     assert r.status_code == 200
     assert order_updated
-    assert order_created.grant_total != order_updated.get("grant_total")
+    assert float(grant_total_first) != float(order_updated.get("grant_total"))
     assert order_updated.get("grant_total") == data.get("grant_total")
     assert len(order_updated.get("foods")) == 1

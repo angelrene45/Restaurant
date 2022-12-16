@@ -119,3 +119,42 @@ def test_update_with_bad_layout_boards(
         f"{settings.API_V1_STR}/boards/{board_id}", headers=normal_user_token_headers, json=data,
     )
     assert r.status_code == 400
+
+
+def test_create_boards_multi(
+    client: TestClient, normal_user_token_headers: dict, db: Session
+) -> None:
+    layout = create_random_layout(db)
+    data = [ { "name": random_lower_string(), "layout_id": layout.id,  "capacity": random_integer(), "can_smoke": random_boolean() } for _ in range(4)]
+    r = client.post(
+        f"{settings.API_V1_STR}/boards/multi/", headers=normal_user_token_headers, json=data,
+    )
+    created_list = r.json()
+    assert r.status_code == 200
+    assert len(created_list) == len(data)
+    for created_board in created_list:
+        assert created_board
+        assert "name" in created_board
+        assert "capacity" in created_board
+        assert "can_smoke" in created_board
+        assert "static/test" in created_board.get("qr") # check if exists qr code image
+
+
+def test_update_boards_multi(
+    client: TestClient, normal_user_token_headers: dict, db: Session
+) -> None:
+    layout = create_random_layout(db)
+    board_created_list = [create_random_board(db) for _ in range(4)]
+    data = [{ "id": board.id, "name": random_lower_string(), "layout_id": layout.id,  "capacity": random_integer(), "can_smoke": random_boolean() } for board in board_created_list]
+    r = client.put(
+        f"{settings.API_V1_STR}/boards/multi/", headers=normal_user_token_headers, json=data,
+    )
+    updated_list = r.json()
+    assert r.status_code == 200
+    assert len(updated_list) == len(data)
+    for board in updated_list:
+        assert board
+        assert "name" in board
+        assert "capacity" in board
+        assert "can_smoke" in board
+

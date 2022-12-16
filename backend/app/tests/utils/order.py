@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app import crud, models
 from app.schemas.order import OrderCreate, OrderFood
-from app.models.order import StatusOrder
+from app.models.order import StatusOrder, TypesOrder
 from app.tests.utils.utils import random_boolean, random_float, random_lower_string, random_integer
 from app.tests.utils.user import create_random_user
 from app.tests.utils.customer import create_random_customer
@@ -16,12 +16,17 @@ def select_random_order_status() -> str:
     return random.choice(status)
 
 
+def select_random_type_order() -> str:
+    status = [e.value for e in TypesOrder]
+    return random.choice(status)
+
+
 def create_random_order_foods(db:Session, n=3, as_dict=False) -> models.Order_Food:
     foods_created = [create_random_food(db) for _ in range(n)]
     if as_dict:
-        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float()).dict() for food in foods_created]
+        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float(), variant=random_lower_string(), unit=random_lower_string()).dict() for food in foods_created]
     else:
-        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float()) for food in foods_created]
+        return [OrderFood(food_id=food.id, name=food.name, quantity=random_integer(), price=random_float(), variant=random_lower_string(), unit=random_lower_string()) for food in foods_created]
 
 
 def create_random_order(db: Session, n_foods: int=3) -> models.Order:
@@ -37,6 +42,8 @@ def create_random_order(db: Session, n_foods: int=3) -> models.Order:
                         board_id = board.id,
                         foods = foods,
                         status = select_random_order_status(),
+                        order_type = select_random_type_order(),
+                        address = random_lower_string(),
                         subtotal= random_float(),
                         tax = random_float(),
                         total = random_float(),

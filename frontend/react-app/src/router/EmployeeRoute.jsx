@@ -1,14 +1,15 @@
 import { useSelector } from 'react-redux'
 
-import { LoginPage } from '../auth/pages'
-import { TypeUsers } from "../utils"
+import { LoginUserPage } from '../auth/pages'
+import { getClaimsToken, TypeUsers } from "../utils"
 
 
 export const EmployeeRoute = ({ children }) => {
     
-    const {authorization, role} = useSelector(state => state.LoginReducer)
+    const {status} = useSelector(state => state.auth)
+    const {user_type, user_rol} = getClaimsToken(); // get claims
     
-    return (authorization && TypeUsers.Employee.includes(role))
+    return (status === 'authenticated' && user_type === 'user' && TypeUsers.Employee.includes(user_rol))
         ? children
-        : <LoginPage/>
+        : <LoginUserPage/>
 }

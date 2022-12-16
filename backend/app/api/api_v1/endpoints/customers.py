@@ -28,11 +28,11 @@ def create_customer_open(
             status_code=403,
             detail="Open customer registration is forbidden on this server",
         )
-    customer = crud.customer.get_by_email(db, email=customer_in.mobile)
+    customer = crud.customer.get_by_email(db, email=customer_in.email)
     if customer:
         raise HTTPException(
             status_code=400,
-            detail="The customer with this email already exists in the system",
+            detail="This customer email already exists in the system",
         )
     customer = crud.customer.create(db, obj_in=customer_in)
     if settings.EMAILS_ENABLED and customer_in.email:
@@ -77,6 +77,18 @@ def read_customers_being_admin(
     """
     customers = crud.customer.get_multi(db, skip=skip, limit=limit)
     return customers
+
+
+@router.get("/count", response_model=int)
+def read_total_customers(
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_superuser),
+    ) -> Any:
+    """
+    Retrieve total customers store in database
+    """
+    total_customers = crud.customer.get_total_records(db)
+    return total_customers
 
 
 @router.get("/{customer_id}", response_model=schemas.User)

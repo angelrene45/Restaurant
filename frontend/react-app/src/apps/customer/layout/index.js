@@ -1,2 +1,2 @@
-export * from './FoodCart'
+export * from './FoodCard'
 export * from './FoodPagination'

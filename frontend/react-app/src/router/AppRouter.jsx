@@ -1,22 +1,23 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 
+import { HomePageDemo } from '../pages/HomePageDemo';
 import { PageNotFound } from '../pages/PageNotFound'
 import { AuthRoutes } from '../auth/routes/AuthRoutes';
-import { AdminRoutes } from '../apps/admin/routes/AdminRoutes';
-import { CustomerRoutes } from '../apps/customer/routes/CustomerRoutes';
 import { AdminRoute } from './AdminRoute';
 import { CustomerRoute } from './CustomerRoute';
 import { EmployeeRoute } from './EmployeeRoute';
+import { AdminRoutes } from '../apps/admin/routes/AdminRoutes';
 import { EmployeeRoutes } from '../apps/employee/routes/EmployeeRoutes';
+import { CustomerRoutes } from '../apps/customer/routes/CustomerRoutes';
 
 export const AppRouter = () => {
 
     return (
         <Routes>   
-            <Route path='*' element={<PageNotFound />}/>
             <Route path='/auth/*' element={<AuthRoutes />}/>
-            {/* <Route path='/' element={<Navigate to='/auth/login'/>}/> */}
-            <Route path='/' element={<Navigate to='/customer/'/>}/>
+            {/* <Route path='/' element={<Navigate to='/customer/'/>}/> */}
+            <Route path='/' element={<HomePageDemo/>}/>
+            <Route path='*' element={<PageNotFound />}/>
 
             <Route path="/admin/*" element={
                 <AdminRoute>
@@ -35,6 +36,7 @@ export const AppRouter = () => {
                     <CustomerRoutes />
                 </CustomerRoute>
             } />
+            
         </Routes>
     )
 }

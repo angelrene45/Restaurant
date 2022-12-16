@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 export const dashInfoSlice = createSlice({
   name: 'dashInfo',
   initialState: {
-    links: []
+    links: {
+      login: '',
+      links: []
+    }
   },
   reducers: {
     setLinks: (state, action) => {

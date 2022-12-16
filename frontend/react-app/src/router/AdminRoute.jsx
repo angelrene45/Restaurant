@@ -1,14 +1,15 @@
 import { useSelector }from 'react-redux';
 
-import { LoginPage } from '../auth/pages'
-import { TypeUsers } from '../utils';
+import { LoginUserPage } from '../auth/pages'
+import { getClaimsToken, TypeUsers } from '../utils';
 
 
 export const AdminRoute = ({ children }) => {
 
-    const {authorization, role} = useSelector(state => state.login)
+    const {status} = useSelector(state => state.auth)
+    const {user_type, user_rol} = getClaimsToken(); // get claims
     
-    return (authorization && role === TypeUsers.Admin)
+    return (status === 'authenticated' && user_type === 'user' && TypeUsers.Admin.includes(user_rol))
         ? children
-        : <LoginPage/>
+        : <LoginUserPage/>
 }

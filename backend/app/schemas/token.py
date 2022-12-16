@@ -16,6 +16,7 @@ class Token(BaseModel):
 class TokenPayload(BaseModel):
     sub: Optional[int] = None
     user_type: Optional[str] = None
+    user_rol: Optional[str] = None
 
 
 class ResetPasswordPayload(BaseModel):

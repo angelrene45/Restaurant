@@ -1,4 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query/react';
 import storage from 'redux-persist/lib/storage';
 import {
   persistStore,
@@ -9,37 +10,59 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist'
+} from 'redux-persist';
 
-import { categorieSlice } from './slices/categories'
-import { dashInfoSlice } from './slices/dashInfo'
-import { loginSlice } from './slices/login'
-import { foodSlice } from './slices/food'
-import { cartSlice } from './slices/cart'
+import { categorieSlice } from './slices/categories';
+import { dashInfoSlice } from './slices/dashInfo';
+import { authSlice } from './slices/auth';
+import { foodsApi, foodSlice } from './slices/food'
+import { categoriesApi } from './slices/categories';
+import { customersApi } from './slices/customers';
+import { usersApi } from './slices/users';
+import { cartSlice } from './slices/cart';
+import { ordersApi } from './slices/orders';
 
 const persistConfig = {
     key: 'root',
     storage,
 }
 
-const persistedReducerLogin = persistReducer(persistConfig, loginSlice.reducer)
+const persistedReducerAuth = persistReducer(persistConfig, authSlice.reducer)
 const persistedReducerCart = persistReducer(persistConfig, cartSlice.reducer)
 
 export const store = configureStore({
     reducer: {
-        login: persistedReducerLogin,
+        // slices with redux sync state
         foods: foodSlice.reducer,
         dashInfo: dashInfoSlice.reducer,
         categorie: categorieSlice.reducer,
-        cart: persistedReducerCart
 
+        // Persist Reducers (keep data when user refresh web browser)
+        auth: persistedReducerAuth,
+        cart: persistedReducerCart,
+
+        // RTK Query reducer (Api Backend)
+        [categoriesApi.reducerPath]: categoriesApi.reducer,
+        [foodsApi.reducerPath]: foodsApi.reducer,
+        [customersApi.reducerPath]: customersApi.reducer,
+        [usersApi.reducerPath]: usersApi.reducer,
+        [ordersApi.reducerPath]: ordersApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
             },
-        })
+        }).concat(
+            categoriesApi.middleware, 
+            foodsApi.middleware, 
+            customersApi.middleware, 
+            usersApi.middleware,
+            ordersApi.middleware)
 })
 
 export const persistor = persistStore(store)
+
+// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
+// see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
+setupListeners(store.dispatch)

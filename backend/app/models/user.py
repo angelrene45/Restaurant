@@ -18,7 +18,7 @@ class User(Base):
     first_name = Column(String, index=True)
     last_name = Column(String, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
-    mobile = Column(String, unique=True, index=True)
+    mobile = Column(String)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean(), default=True)
     role = Column(ENUM(RolUser), default=RolUser.employee)

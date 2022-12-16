@@ -21,6 +21,17 @@ def read_categories_open(
     categories = crud.category.get_multi(db, skip=skip, limit=limit)
     return categories
 
+@router.get("/count", response_model=int)
+def read_total_categories(
+    db: Session = Depends(deps.get_db),
+    ) -> Any:
+    """
+    Retrieve total categories store in database
+    """
+    total_categories = crud.category.get_total_records(db)
+    return total_categories
+
+
 @router.get("/foods/open", response_model=List[schemas.CategoryWithFoods])
 def read_categories_with_foods_open(
     db: Session = Depends(deps.get_db),
@@ -78,6 +89,12 @@ def update_category_being_admin(
     """
     Update a category.
     """
+    category = crud.category.get_by_name(db, name=category_in.name)
+    if category:
+        raise HTTPException(
+            status_code=400,
+            detail="The category name already exists in the system",
+        )
     category = crud.category.get(db, id=category_id)
     if not category:
         raise HTTPException(

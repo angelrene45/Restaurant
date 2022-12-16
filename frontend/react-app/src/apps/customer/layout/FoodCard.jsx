@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import { FoodInfo } from "./FoodInfo"
+import { FoodInfoModal } from "./FoodInfoModal"
 
 
-export const FoodCart = ({food}) => {
+export const FoodCard = ({food}) => {
 
   const [open, setOpen] = useState(false)
 
@@ -15,7 +15,7 @@ export const FoodCart = ({food}) => {
   return (
     <>     
       {/* Modal with info */}
-      <FoodInfo open={open} setOpen={setOpen} food={food}/>
+      <FoodInfoModal open={open} setOpen={setOpen} food={food}/>
 
       <div className="col-span-full md:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200 overflow-hidden" onClick={() => setOpen(true)}>
         <div className="flex flex-col h-full">
