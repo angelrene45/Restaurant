@@ -18,7 +18,7 @@ class BoardCreate(BoardBase):
 
 
 class BoardUpdate(BoardBase):
-    pass
+    id: Optional[int] = None
 
 
 class BoardInDBBase(BoardBase):

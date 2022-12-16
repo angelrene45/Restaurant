@@ -89,6 +89,7 @@ def test_update_order(
 ) -> None:
     order_created = create_random_order(db)
     order_id = order_created.id
+    grant_total_first = order_created.grant_total
 
     data = {
         "status": select_random_order_status(),
@@ -105,6 +106,6 @@ def test_update_order(
     order_updated = r.json()
     assert r.status_code == 200
     assert order_updated
-    assert order_created.grant_total != order_updated.get("grant_total")
+    assert float(grant_total_first) != float(order_updated.get("grant_total"))
     assert order_updated.get("grant_total") == data.get("grant_total")
     assert len(order_updated.get("foods")) == 1
