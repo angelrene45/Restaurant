@@ -65,6 +65,7 @@ const TablesLayOut = () => {
 
   return (
     <div className='overflow-x-auto'>
+<<<<<<< Updated upstream
         {/* Example socket */}
         {
           Object.keys(boards).map(key => 
@@ -85,6 +86,9 @@ const TablesLayOut = () => {
         {/* Finish example socket */}
       
       <div className="grid grid-rows-10 grid-cols-15 bg-gray-300 shadow-2xl rounded-lg mx-auto text-center mt-4 mb-4" style={{ height:'800px', width: '1500px'}}>
+=======
+      <div className="grid grid-rows-10 grid-cols-15 bg-gray-300 shadow-2xl rounded-lg mx-auto  mt-4 mb-4" style={{ height:'800px', width: '1500px'}}>
+>>>>>>> Stashed changes
         <div className='bg-gray-400 grid grid-cols-2 col-span-4 row-span-1 col-start-1 row-start-2'>
           <div className='col-span-1 row-span-1 flex items-center justify-center'>
             <img src={bar} style={{ width: "30px"}} alt=''></img> 

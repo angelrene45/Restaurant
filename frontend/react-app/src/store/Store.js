@@ -12,6 +12,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 
+<<<<<<< Updated upstream
 import { categorieSlice } from './slices/categories';
 import { dashInfoSlice } from './slices/dashInfo';
 import { authSlice } from './slices/auth';
@@ -21,6 +22,14 @@ import { customersApi } from './slices/customers';
 import { usersApi } from './slices/users';
 import { cartSlice } from './slices/cart';
 import { ordersApi } from './slices/orders';
+=======
+import { categorieSlice } from './slices/categories'
+import { dashInfoSlice } from './slices/dashInfo'
+import { loginSlice } from './slices/login'
+import { foodSlice } from './slices/food'
+import { cartSlice } from './slices/cart'
+import { boardSlice } from './slices/boards'
+>>>>>>> Stashed changes
 
 const persistConfig = {
     key: 'root',
@@ -36,6 +45,11 @@ export const store = configureStore({
         foods: foodSlice.reducer,
         dashInfo: dashInfoSlice.reducer,
         categorie: categorieSlice.reducer,
+<<<<<<< Updated upstream
+=======
+        cart: persistedReducerCart,
+        board: boardSlice.reducer
+>>>>>>> Stashed changes
 
         // Persist Reducers (keep data when user refresh web browser)
         auth: persistedReducerAuth,

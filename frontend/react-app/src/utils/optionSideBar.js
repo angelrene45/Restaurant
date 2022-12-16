@@ -21,9 +21,25 @@ export const linksJsonAdmin = {
           url: "/admin/food/dishes"
         }
       ]
-    }
-  ]
-};
+    },
+    {
+      topic: "Tables",
+      subTopics: [
+        {
+          name: "Create a table",
+          url:"/admin/tables/create_table"
+        },
+        {
+          name: "Edit tables layout",
+          url:"/admin/tables/create_table"
+        },
+        {
+          name: "All tables",
+          url:"/admin/tables/dishes"
+        }
+      ]
+    },
+]};
 
 
 export const linksJsonEmployees = {
