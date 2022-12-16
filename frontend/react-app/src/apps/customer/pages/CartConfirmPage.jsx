@@ -27,7 +27,8 @@ export const CartConfirmPage = () => {
               </div>
               <header className="mb-6">
                 {/* Title */}
-                <h1 className="text-2xl md:text-3xl text-slate-800 font-bold mb-2">Thank you for your order ✨</h1>
+                <h1 className="text-2xl md:text-3xl text-slate-800 font-bold mb-2">Thank you for your order</h1>
+                <p className="font-bold">Order n.º{order_id}</p>
                 <p>You will soon receive a confirmation email with details of your order.</p>
               </header>
 

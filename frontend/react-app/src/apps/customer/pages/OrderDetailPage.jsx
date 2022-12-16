@@ -50,7 +50,7 @@ export const OrderDetailPage = () => {
                             <span className="text-2xl md:text-3xl text-slate-800 font-bold mr-2">
                                 Order n.º {id}
                             </span>
-                            
+
                             <span className={statusColor(status)}>
                                 {status}
                             </span>
@@ -64,20 +64,21 @@ export const OrderDetailPage = () => {
                         {/* Right: Actions */}
                         <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
 
-                            {/* Add Edit Order button */}
-                            <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                                <svg className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                                </svg>
-                                <span className="ml-2">Edit Order</span>
-                            </button>
-
+                            {/* Add Edit Order button (only on restaurant type) */}
+                            { order_type === 'restaurant' &&
+                                <button className="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                                    <svg className="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                                        <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                                    </svg>
+                                    <span className="ml-2">Edit Order</span>
+                                </button>
+                            }
                         </div>
 
                     </div>
 
                     {/* Details order */}
-                    <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-3">
                         <div>
                             <div>
                                 <span className="text-slate-800 font-bold">Address Shipment</span>
