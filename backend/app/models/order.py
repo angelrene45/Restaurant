@@ -45,8 +45,8 @@ class Order(Base):
 class Order_Food(Base):
     order_id = Column(Integer, ForeignKey("order.id"), primary_key=True, index=True, nullable=False)
     food_id = Column(Integer, ForeignKey("food.id"), primary_key=True, index=True, nullable=False)
+    variant = Column(String, primary_key=True, index=True, nullable=False)
     name = Column(String)
-    variant = Column(String)
     unit = Column(String)
     quantity = Column(Integer)
     price = Column(Numeric(10, 2))
