@@ -36,19 +36,11 @@ export const AdminRoutes = () => {
           <Route path="home" element={ <AdminPage /> } />
           <Route path="food/categories" element={ <CategoryPage /> } />
           <Route path="food/dishes" element={ <Crud getList={getFoods} delete={deleteFood}/> } />
-<<<<<<< Updated upstream
           <Route path="food/create_food/" element={ <FormCrud /> } />
           <Route path="food/create_food/:id" element={ <FormCrud /> } />
           <Route path="user/" element={ <UserPage /> } />
           <Route path="customer/" element={ <CustomerPage /> } />
-=======
-          <Route path="food/create_food/" element={ <FormDish /> } />
-          <Route path="food/create_categorie/" element={ <FormCategories /> } />
-          <Route path="food/create_food/:id" element={ <FormDish /> } />
           <Route path="tables/create_table/" element={ <FormTables /> } />
-
->>>>>>> Stashed changes
-        
           <Route path='/*' element={ <Navigate to="/admin/home" /> } />
       </Routes>
     </Layout>

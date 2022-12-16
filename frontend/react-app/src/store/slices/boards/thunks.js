@@ -11,7 +11,7 @@ export const getBoards = (page = 0) => {
     }
 }
 
-export const getCategoriesWithFoods = (page = 0) => {
+export const postBoards = (page = 0) => {
     return async (dispatch, getState) => {
         dispatch(startLoadingCategories());
         // execute call api 
