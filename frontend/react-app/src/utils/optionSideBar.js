@@ -25,28 +25,6 @@ export const linksJsonAdmin = {
   ]
 };
 
-export const linksJsonCustomer = {
-  login: "/auth/login/customer",
-  links: [
-    {
-      topic: "Home",
-      subTopics: [
-        {
-          name: "Home",
-          url: "/customer/"
-        },
-        {
-          name: "Foods",
-          url: "/customer/foods"
-        },
-        {
-          name: "Cart Review",
-          url: "/customer/cart-review"
-        }
-      ]
-    }
-  ]
-}
 
 export const linksJsonEmployees = {
   login: "/auth/login/user",
@@ -61,6 +39,35 @@ export const linksJsonEmployees = {
         {
           name: "Drinks",
           url: "/employee/drinks"
+        }
+      ]
+    }
+  ]
+}
+
+
+export const linksJsonCustomer = {
+  login: "/auth/login/customer",
+  links: [
+    {
+      topic: "Home",
+      subTopics: [
+        {
+          name: "Foods",
+          url: "/customer/foods"
+        },
+        {
+          name: "Cart Review",
+          url: "/customer/cart-review"
+        }
+      ]
+    }, 
+    {
+      topic: "Order",
+      subTopics: [
+        {
+          name: "Search",
+          url: "/customer/order/search"
         }
       ]
     }

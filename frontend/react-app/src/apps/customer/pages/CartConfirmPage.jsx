@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 
 export const CartConfirmPage = () => {
+
+  // Get the order_id param from the URL.
+  let { order_id } = useParams();
+
   return (
     <div>
       <div className="lg:relative lg:flex">
@@ -29,7 +33,7 @@ export const CartConfirmPage = () => {
 
               {/* Button Link to Status Order */}
               <div className="mt-6">
-                <Link to="/customer/" className="text-sm font-medium text-indigo-500 hover:text-indigo-600">Go to status order -&gt;</Link>
+                <Link to={`/customer/order/${order_id}`} className="text-sm font-medium text-indigo-500 hover:text-indigo-600">Go to status order -&gt;</Link>
               </div>
             </div>
           </div>

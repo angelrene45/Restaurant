@@ -41,10 +41,10 @@ export const CartPaymentPage = () => {
     // call payment api 
 
     // call order api
-    const statusOrder = await prepareOrder();
-    if (statusOrder) {
+    const order_id = await prepareOrder();
+    if (order_id) {
       await resetForm();
-      navigate("/customer/cart-confirm");
+      navigate(`/customer/cart-confirm/${order_id}`);
     }
 
   }
@@ -70,7 +70,7 @@ export const CartPaymentPage = () => {
     }
 
     // call api for create order
-    const { data, error } = await createOrder(apiData)
+    const { data, error } = await createOrder(apiData);
 
     // new order inserted
     if (!error && data) {
@@ -78,12 +78,14 @@ export const CartPaymentPage = () => {
       displayMessage("Order has been created", "info", { showConfirmButton: false, timer: 1500 })
       // clear cart 
       dispatch(clearCart())
-      return true
+      // get id order
+      const { id } = data
+      return id
     }
     // error in order
     else {
       displayMessage(error?.data?.detail, "error")
-      return false
+      return ''
     }
   }
 
