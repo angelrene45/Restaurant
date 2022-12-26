@@ -72,40 +72,6 @@ def create_board(
     return board
 
 
-@router.post("/multi/", response_model=List[schemas.Board])
-def create_board_multiple(
-    *,
-    db: Session = Depends(deps.get_db),
-    board_in_list: List[schemas.BoardCreate],
-    current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
-    """
-    Create multiples boards.
-    """
-    list_created = []
-    for board_in in board_in_list:
-        board = crud.board.get_by_name(db, name=board_in.name)
-        if board:
-            raise HTTPException(
-                status_code=400,
-                detail="The board name already exists in the system",
-            )
-        layout = crud.layout.get(db, id=board_in.layout_id)
-        if not layout:
-            raise HTTPException(
-                status_code=400,
-                detail="The Layout does not exist in the system",
-            )
-        board = crud.board.create(db, obj_in=board_in)
-        # Generate Qr with id
-        qr = generate_qr_board(id=board.id)
-        board_in.qr = qr
-        # update qr image url
-        board = crud.board.update(db, db_obj=board, obj_in=board_in)
-        list_created.append(board)
-    return list_created
-
-
 @router.put("/{board_id}", response_model=schemas.Board)
 def update_board(
     *,
@@ -138,22 +104,51 @@ def update_board(
     return board_updated
 
 
-@router.put("/multi/", response_model=List[schemas.Board])
-def update_board_multiple(
+@router.post("/multi/", response_model=List[schemas.Board])
+def crud_board_multiple(
     *,
     db: Session = Depends(deps.get_db),
     board_in_list: List[schemas.BoardUpdate],
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
-    Update multiples boards.
+    Create, Update and Delete multiples boards.
+        Create: List without id 
+        Update: List with id 
+        Delete: Remove the id is not in current database
     """
+    # return variable
+    list_boards = []
+    # filter boards
+    boards_create = [board for board in board_in_list if not getattr(board, "id")]
+    boards_update = [board for board in board_in_list if getattr(board, "id")]
     # remove boards that aren't in the list 
-    crud.board.delete_not_in_list(db, board_in_list=board_in_list)
+    crud.board.delete_not_in_list(db, board_in_list=boards_update)
+
+    # create boards
+    for board_in in boards_create:
+        board = crud.board.get_by_name(db, name=board_in.name)
+        if board:
+            raise HTTPException(
+                status_code=400,
+                detail="The board name already exists in the system",
+            )
+        layout = crud.layout.get(db, id=board_in.layout_id)
+        if not layout:
+            raise HTTPException(
+                status_code=400,
+                detail=f"The Layout does not exist in the system {board_in.layout_id}",
+            )
+        board = crud.board.create(db, obj_in=board_in)
+        # Generate Qr with id
+        qr = generate_qr_board(id=board.id)
+        board_in.qr = qr
+        # update qr image url
+        board = crud.board.update(db, db_obj=board, obj_in=board_in)
+        list_boards.append(board)
 
     # update boards
-    list_updated = []
-    for board_in in board_in_list:
+    for board_in in boards_update:
         board = crud.board.get_by_name(db, name=board_in.name)
         if board:
             raise HTTPException(
@@ -172,5 +167,5 @@ def update_board_multiple(
                 detail=f"The Layout does not exist in the system {board_in.layout_id}",
             )
         board_updated = crud.board.update(db, db_obj=board, obj_in=board_in)
-        list_updated.append(board_updated)
-    return list_updated
+        list_boards.append(board_updated)
+    return list_boards
