@@ -6,10 +6,13 @@ const Table = (props) => {
     <div className="bg-white shadow-lg rounded-sm border border-slate-200 relative">
       <header className="px-5 py-4">
         <h2 className="font-semibold text-slate-800">
-          All categories  
-          <span className="text-slate-400 font-medium">{props.itemsList.length}</span>
+          All categories
+          <span className="text-slate-400 font-medium">
+            {props.itemsList.length}
+          </span>
         </h2>
       </header>
+
       <div>
         {/* Table */}
         <div className="overflow-x-auto">
@@ -23,6 +26,7 @@ const Table = (props) => {
                 <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap"></th>
               </tr>
             </thead>
+
             {/* Table body */}
             <tbody className="text-sm divide-y divide-slate-200">
               {props.itemsList.map((item) => {
