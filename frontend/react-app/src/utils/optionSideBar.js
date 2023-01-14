@@ -3,6 +3,7 @@ export const linksJsonAdmin = {
   links: [
     {
       topic: "List",
+      type: "group",
       subTopics: [
         {
           name: "Users",
@@ -30,17 +31,14 @@ export const linksJsonEmployees = {
   login: "/auth/login/user",
   links: [
     {
+      topic: "Home",
+      type: "simple",
+      url: "/employee/home"
+    },
+    {
       topic: "Cook",
-      subTopics: [
-        {
-          name: "Orders",
-          url: "/employee/orders"
-        },
-        {
-          name: "Drinks",
-          url: "/employee/drinks"
-        }
-      ]
+      type: "simple",
+      url: "/employee/cook"
     }
   ]
 }
@@ -51,6 +49,7 @@ export const linksJsonCustomer = {
   links: [
     {
       topic: "Home",
+      type: "group",
       subTopics: [
         {
           name: "Foods",
@@ -61,9 +60,10 @@ export const linksJsonCustomer = {
           url: "/customer/cart-review"
         }
       ]
-    }, 
+    },
     {
       topic: "Order",
+      type: "group",
       subTopics: [
         {
           name: "Search",
