@@ -19,7 +19,7 @@ async def emit_orders_ws(request: Request):
     # this cookie is from create_order endpoint
     cookie = request.cookies.get("emit", None)
     if cookie == 'create_order':
-        await manager.broadcast()
+        await manager.send_all()
         return {"msg":"Broadcast Orders"}
     else:
         return {"msg":"Not allowed"}

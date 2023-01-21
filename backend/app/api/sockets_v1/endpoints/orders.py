@@ -16,7 +16,6 @@ from app.db.session import database_async
 class ConnectionManager:
     def __init__(self):
         self.active_connections: list[WebSocket] = []
-        self.active_orders: list = []
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
@@ -25,19 +24,22 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
-    def add_new_order(self, order: dict):
-        self.active_orders.append(order)
-
     async def send_personal_message(self, message: str, websocket: WebSocket):
         await websocket.send_json({"msg": message})
 
-    async def broadcast(self):
+    async def send_all(self):
         """
             Sent all current orders to active connections
         """
         # prepare query async
         query = select(models.Order)
         result = await database_async.fetch_all(query=query)
+
+        # iterate for every order and get the foods associate because database async library dont do that (we do manually)
+        for order in result:
+            query = select(models.Order_Food).where(order.id == models.Order_Food.order_id)
+            foods = await database_async.fetch_all(query=query)
+            order.foods = foods
       
         # parse order model to json and dict
         orders = parse_obj_as(list[schemas.Order], result)
@@ -45,27 +47,36 @@ class ConnectionManager:
 
         # Notify all websockets clients new order arrives
         for connection in self.active_connections:
-            await connection.send_json(orders)
+            try:
+                await connection.send_json({"type": "SendAll", "data": orders})
+            except Exception as e:
+                print(f"websocket error when try to send boards:\n {e}")
+                # connection error and close 
+                self.disconnect(connection)
 
 
 manager = ConnectionManager()
 router = APIRouter()
 
 
-@router.websocket("/read")
-async def read_orders(
+@router.websocket("/")
+async def handle_boards(
     websocket: WebSocket, 
     # is_authorize: Union[str, None] = Depends(authorize_ws_token_data),
 ):
     # if not is_authorize: return 
     await manager.connect(websocket)
-    await manager.send_personal_message("Connected", websocket)
+    print(f"Active connections: {len(manager.active_connections)}")
     try:
         while True:
+            # waiting for new messages arrives from sockets clients
             data = await websocket.receive_json()
-            manager.add_new_order(data)
-            await manager.send_personal_message(f"Your add new order", websocket)
-            await manager.broadcast()
+            # check type of message
+            if data.get('type') == 'RequestAll':
+                await manager.send_all()
+            if data.get('type') == 'RequestUpdate':
+                manager.change_status_board(data.get("data", {}))
+                await manager.send_all()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast()
+        print(f"Active connections: {len(manager.active_connections)}")

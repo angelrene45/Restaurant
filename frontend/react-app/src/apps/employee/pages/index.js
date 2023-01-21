@@ -1,2 +1,2 @@
 export * from './EmployeePage'
-export * from './CookPage'
+export * from './KitchenPage'
