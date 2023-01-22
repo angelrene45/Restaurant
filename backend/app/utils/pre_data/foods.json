@@ -2,9 +2,26 @@
     {
         "name": "Shrimp Cocktail",
         "description": "Shrimp cocktail",
-        "variants": [{"name": "orginal", "image": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2004/4/21/0/bw2b09_shrimp_cocktail.jpg.rend.hgtvcom.616.462.suffix/1557928675507.jpeg"}],
-        "units": [{"unit":"Sm", "price": 15.99}, {"unit": "Lg", "price": 20.98}],
-        "categories": ["Seafood Cocktails", "Mesa Fria"],
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2004/4/21/0/bw2b09_shrimp_cocktail.jpg.rend.hgtvcom.616.462.suffix/1557928675507.jpeg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 15.99
+            },
+            {
+                "unit": "Lg",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Seafood Cocktails",
+            "Mesa Fria"
+        ],
         "discount": 0,
         "is_active": true
     },
@@ -12,92 +29,2028 @@
         "name": "Aguachile",
         "description": "Cutted Shrimp with spicy lemon juice and onion.",
         "variants": [
-            {"name": "orginal", "image": "https://camaroneros.info/wp-content/uploads/aguachile-camaron-molcajete..jpg"},
-            {"name": "black", "image": "https://cdn7.kiwilimon.com/recetaimagen/37894/48163.jpg"}
+            {
+                "name": "Orginal",
+                "image": "https://camaroneros.info/wp-content/uploads/aguachile-camaron-molcajete..jpg"
+            },
+            {
+                "name": "Aguachilajo (Negro)",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/37894/48163.jpg"
+            }
         ],
-        "units": [{"unit":"normal", "price": 19.99}],
-        "categories": ["Appetizer", "Mesa Fria"],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 19.99
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Mesa Fria"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
         "name": "Molcajete del Dios Huichol",
         "description": "Molcajete filled with crab legs, mussels, shrimp, octopus, scallops and clams seasoned with our spicy spices and garlic",
-        "variants": [{"name": "orginal", "image": "https://i.pinimg.com/originals/2e/61/85/2e6185ef73e2152cc50234d3d0598ea7.jpg"}],
-        "units": [{"unit":"normal", "price": 30.99}],
-        "categories": ["Platillos"],
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://i.pinimg.com/originals/2e/61/85/2e6185ef73e2152cc50234d3d0598ea7.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 30.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
         "name": "Patas de Jaiba",
         "description": "Crab legs seazoned",
-        "variants": [{"name": "orginal", "image": "https://i.pinimg.com/originals/77/10/8f/77108f899294ab9dfbae1f8c33e2bead.jpg"}],
-        "units": [{"unit":"normal", "price": 20.99}],
-        "categories": ["Appetizer"],
+        "variants": [
+            {
+                "name": "A la Kora",
+                "image": "https://i.pinimg.com/originals/77/10/8f/77108f899294ab9dfbae1f8c33e2bead.jpg"
+            },
+            {
+                "name": "Al Patron",
+                "image": "https://i.pinimg.com/originals/77/10/8f/77108f899294ab9dfbae1f8c33e2bead.jpg"
+            },
+            {
+                "name": "Al Mojo de Ajo",
+                "image": "https://i.pinimg.com/originals/77/10/8f/77108f899294ab9dfbae1f8c33e2bead.jpg"
+            },
+            {
+                "name": "A la Mantequilla",
+                "image": "https://i.pinimg.com/originals/77/10/8f/77108f899294ab9dfbae1f8c33e2bead.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Appetizer"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
         "name": "Salmon Zarandeado",
         "description": "Salmon cooked on the grill with our special sweet and spicy sauce.",
-        "variants": [{"name": "orginal", "image": "https://cheforopeza.com.mx/wp-content/uploads/2017/11/salmon-zarandeado-sitio.jpg"}],
-        "units": [{"unit":"normal", "price": 20.99}],
-        "categories": ["Platillos"],
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cheforopeza.com.mx/wp-content/uploads/2017/11/salmon-zarandeado-sitio.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
         "name": "Tostada Mixta",
         "description": "Mixed shrimp and pulp of crab",
-        "variants": [{"name": "orginal", "image": "https://www.recetasnestle.com.mx/sites/default/files/srh_recipes/a502d93b399f324d488a57e28bf76097.jpg"}],
-        "units": [{"unit":"normal", "price": 9.00}],
-        "categories": ["Tostadas", "Mesa Fria"],
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://www.recetasnestle.com.mx/sites/default/files/srh_recipes/a502d93b399f324d488a57e28bf76097.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 9.00
+            }
+        ],
+        "categories": [
+            "Tostadas",
+            "Mesa Fria"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
         "name": "Camarones Zarandeados",
         "description": "Shrimp cooked on the grill with our special sweet and special sauce.",
-        "variants": [{"name": "orginal", "image": "https://camaroneros.info/wp-content/uploads/camarones-zarandeados-jalisco.-.jpg"}],
-        "units": [{"unit":"normal", "price": 19.99}],
-        "categories": ["Platillos", "Camarones"],
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://camaroneros.info/wp-content/uploads/camarones-zarandeados-jalisco.-.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 19.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Camarones"
+        ],
         "discount": 0,
         "is_active": true
     },
-     {
-        "name": "Camarones a la Kora",
+    {
+        "name": "Camarones",
         "description": "Shrimp prepared your way",
-        "variants": [{"name": "orginal", "image": "https://www.recetasdecamaron.com/wp-content/uploads/2019/03/Receta-Camarones-a-la-CORA-Estilo-NAYARIT.jpg"}],
-        "units": [{"unit":"normal", "price": 19.99}],
-        "categories": ["Camarones", "Platillos"],
+        "variants": [
+            {
+                "name": "A la Kora",
+                "image": "https://www.recetasdecamaron.com/wp-content/uploads/2019/03/Receta-Camarones-a-la-CORA-Estilo-NAYARIT.jpg"
+            },
+            {
+                "name": "A la Diabla",
+                "image": "https://twitter.com/RecetasMexicana/status/719651047757602817/photo/1.jpg"
+            },
+            {
+                "name": "Al Mojo de Ajo",
+                "image": "https://popmenucloud.com/cdn-cgi/image/width=1920,height=1920,format=auto,fit=scale-down/giuomecw/2420bf44-4347-4997-801f-a81220e606e5.jpg"
+            },
+            {
+                "name": "A la Plancha",
+                "image": "https://cocinaybatidos.com/wp-content/uploads/2020/04/Camarones-a-la-parrilla.jpg"
+            },
+            {
+                "name": "Empanizados",
+                "image": "https://assets.unileversolutions.com/recipes-v2/235995.jpg?imwidth=900.jpg"
+            },
+            {
+                "name": "Al Chipotle",
+                "image": "https://www.maricruzavalos.com/wp-content/uploads/2022/02/camarones-con-crema-chipotle.webp.jpg"
+            },
+            {
+                "name": "Rancheros",
+                "image": "https://www.yocomproweb.com/web/public/storage/doctos/images/emp_100/prod_1421.jpeg"
+            },
+            {
+                "name": "Rompe Ligas",
+                "image": ""
+            },
+            {
+                "name": "A la Momia",
+                "image": "https://scontent.fntr10-1.fna.fbcdn.net/v/t1.6435-9/119254570_3715193208514257_4266726148638324185_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=rVSydS7P18QAX81g7Ke&tn=miLp0mrddq0nQMKa&_nc_ht=scontent.fntr10-1.fna&oh=00_AfBTc3hMW1ysDa5F2yBzuVylbEZLG-erE2p_lv3E5YAGVg&oe=63F3BBA3.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 19.99
+            }
+        ],
+        "categories": [
+            "Camarones",
+            "Platillos, Appetizers"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
         "name": "7 Mares",
         "description": "Soup with crab and shrimp.",
-        "variants": [{"name": "orginal", "image": "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/339363e5db5c99456ed848b010ccbd05/Derivates/1b6ffda54bd38a17ad84acbb107cae328ca716a7.jpg"}],
-        "units": [{"unit":"normal", "price": 22.99}],
-        "categories": ["Caldos"],
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/339363e5db5c99456ed848b010ccbd05/Derivates/1b6ffda54bd38a17ad84acbb107cae328ca716a7.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 22.99
+            }
+        ],
+        "categories": [
+            "Caldos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Caldo de Camaron",
+        "description": "Caliente con camarones",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://www.recetasnestle.com.mx/sites/default/files/styles/recipe_detail_desktop/public/srh_recipes/5c7bd9ab17bfc4ebe0a6823b58a78691.jpg.webp?itok=d3pBhS3c.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Caldos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Caldo de Mojarra",
+        "description": "Whole Tilapia Soup",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://www.google.com.mx/url?sa=i&url=https%3A%2F%2Fwww.cocinavital.mx%2Frecetas%2Fsopas-cremas-y-caldos%2Fcaldo-de-pescado%2F2019%2F03%2F&psig=AOvVaw2OfXOYpoKdFPEaMdt7yLWj&ust=1674421274315000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCKCQg7zH2fwCFQAAAAAdAAAAABAJ-jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Caldos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Caldo de Filete",
+        "description": "Tialapia Fillet Soup",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cdn.colombia.com/gastronomia/2011/07/27/caldo-de-pescado-fumet-1536.webp.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Caldos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Caldo de Langostino",
+        "description": "Langostino Soup",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/339363e5db5c99456ed848b010ccbd05/Derivates/1b6ffda54bd38a17ad84acbb107cae328ca716a7.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Caldos"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
         "name": "Alambre de Pollo",
         "description": "Cut chicken breast cooked with bacon, bell peppers, mushrooms and onions topped with cheese.",
-        "variants": [{"name": "orginal", "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"}],
-        "units": [{"unit":"normal", "price": 17.99}],
-        "categories": ["Platillos", "Pollo"],
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cdn2.cocinadelirante.com/sites/default/files/styles/gallerie/public/images/2016/12/alambredepollo.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 17.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo"
+        ],
         "discount": 0,
         "is_active": true
     },
     {
-        "name": "Tacos de pescado (3)",
+        "name": "Tacos de Pescado (3pcs)",
         "description": "Fish tacos",
-        "variants": [{"name": "orginal", "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"}],
-        "units": [{"unit":"normal", "price": 13.99}],
-        "categories": ["Platillos", "Starters"],
+        "variants": [
+            {
+                "name": "Dorados",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "Blanditos",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 13.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Tacos de Camaron (3pcs)",
+        "description": "Shrimp tacos",
+        "variants": [
+            {
+                "name": "Dorados",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "Blanditos",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 13.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Ceviche de Pescado (1lb)",
+        "description": "Fish Ceviche",
+        "variants": [
+            {
+                "name": "Ceviche de Camaron",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "1",
+                "price": 15.99
+            }
+        ],
+        "categories": [
+            "Mesa Fria",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Ceviche de Camaron (1lb)",
+        "description": "Shrimp Ceviche",
+        "variants": [
+            {
+                "name": "Ceviche de Pescado",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "1",
+                "price": 16.99
+            }
+        ],
+        "categories": [
+            "Mesa Fria",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Ensalada al Gusto",
+        "description": "Camaron rojo, Pulpo, Jaiva, Ceviche de Camaron, Ceviche de Pescado",
+        "variants": [
+            {
+                "name": "Original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 20.99
+            },
+            {
+                "unit": "Lg",
+                "price": 25.99
+            }
+        ],
+        "categories": [
+            "Mesa Fria",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Ostiones",
+        "description": "Ostiones en concha",
+        "variants": [
+            {
+                "name": "En su Concha",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "Preparados",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "A la Kora",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "1/2 doz.",
+                "price": 13.99
+            },
+            {
+                "unit": "1 doz.",
+                "price": 19.99
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Empanadas de Camaron",
+        "description": "Shrimp Empanadas",
+        "variants": [
+            {
+                "name": "Camaron y Queso",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "3",
+                "price": 12.99
+            },
+            {
+                "unit": "6",
+                "price": 17.99
+            },
+            {
+                "unit": "12",
+                "price": 25.99
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Empanadas de Camaron y Queso",
+        "description": "Shrimp and Cheese Empanadas",
+        "variants": [
+            {
+                "name": "Empanadas de Camaron",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "3",
+                "price": 12.99
+            },
+            {
+                "unit": "6",
+                "price": 17.99
+            },
+            {
+                "unit": "12",
+                "price": 25.99
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Tostada de Ceviche de Pescado",
+        "description": "Fish Ceviche Tostada",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.00
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters",
+            "Tostadas"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Tostada de Ceviche de Camaron",
+        "description": "Shrimp Ceviche Tostada",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.00
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters",
+            "Tostadas"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Tostada de Camaron Rojo",
+        "description": "Red Shrimp Tostada",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 7.00
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters",
+            "Tostadas"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Tostada de Jaiva",
+        "description": "Crab Tostada",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 6.50
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters",
+            "Tostadas"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Langostinos",
+        "description": "Lagostinos",
+        "variants": [
+            {
+                "name": "A la Kora",
+                "image": "https://i.ytimg.com/vi/5yGL-zUEAWI/maxresdefault.jpg"
+            },
+            {
+                "name": "Al patron",
+                "image": "https://i.ytimg.com/vi/07v9EmfLdbQ/maxresdefault.jpg"
+            },
+            {
+                "name": "A la plancha",
+                "image": "https://static-sevilla.abc.es/media/gurmesevilla/2010/11/langostinosalaplancha.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 19.99
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Mejillones",
+        "description": "Mellijones",
+        "variants": [
+            {
+                "name": "A la Kora",
+                "image": "https://laperladehamilton.com/wp-content/uploads/2021/03/IMG_0732.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "1/2 doz.",
+                "price": 10.99
+            },
+            {
+                "unit": "1 doz.",
+                "price": 19.99
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Endamames",
+        "description": "Endamames with chili and cucumbers",
+        "variants": [
+            {
+                "name": "A la Kora",
+                "image": "https://img-global.cpcdn.com/recipes/66d4b6f3e47f6b79/1200x630cq70/photo.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 7.99
+            }
+        ],
+        "categories": [
+            "Appetizer",
+            "Starters"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Pescado Zarandeado (Min 2lb)",
+        "description": "Pescado Robalo cooked on the grill with our special sweet and spicy sauce",
+        "variants": [
+            {
+                "name": "2lb",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "3lb",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "4lb",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "5lb",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "6lb",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "7lb",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "8lb",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "2lbs",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Fuente Marina",
+        "description": "Rice cooked with crab legs, mussels, shrimp, scallops, octopus and baby clams",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 24.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Pasta Brava",
+        "description": "Spicy pasta with shrimp",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 20.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Piña Rellena",
+        "description": "Stuffed Pineapple",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 31.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Coctel de Camaron y Pulpo",
+        "description": "Shrimp and Octopus Cocktail  ",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://guaymas.mariscoselrey.com.mx/wp-content/uploads/sites/4/2020/03/camaron_y_pulpo_mariscos_el_rey.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 16.99
+            },
+            {
+                "unit": "Lg",
+                "price": 21.99
+            }
+        ],
+        "categories": [
+            "Seafood Cocktails",
+            "Mesa Fria"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Campechana",
+        "description": "Shrimp, octopus, crab meat, baby clams and scallops cocktail",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.hotelplayamazatlan.com/wp-content/uploads/2021/08/Campechana-estilo-Mazatl%C3%A1n.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 16.99
+            },
+            {
+                "unit": "Lg",
+                "price": 21.99
+            }
+        ],
+        "categories": [
+            "Seafood Cocktails",
+            "Mesa Fria"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Vuelve a la Vida",
+        "description": "Shrimp, octopus, crab meat, baby clams and oysters cocktail",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.hogarmania.com/archivos/201708/cabi0068nv17-vuelve-a-la-vida-coctel-marisco-mexicano-xl-1280x720x80xX.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 17.99
+            },
+            {
+                "unit": "Lg",
+                "price": 22.99
+            }
+        ],
+        "categories": [
+            "Seafood Cocktails",
+            "Mesa Fria"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Mojarra Frita",
+        "description": "Fried Tilapía",
+        "variants": [
+            {
+                "name": "Al Natural",
+                "image": "https://static5.depositphotos.com/1053932/528/i/950/depositphotos_5282699-stock-photo-fried-mojarra-tilapia-fish-mexico.jpg"
+            },
+            {
+                "name": "A la Diabla",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "A la Kora",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "Devil Style",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "Mexican Style",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "Ranchera Natural",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Natural",
+                "price": 17.99
+            },
+            {
+                "unit": "Sazonada",
+                "price": 18.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Filete de Pescado",
+        "description": "Fish Fillet",
+        "variants": [
+            {
+                "name": "Empanizado",
+                "image": "https://www.recetassalvador.com/base/stock/Recipe/73-image/73-image_web.jpg"
+            },
+            {
+                "name": "A la Diabla",
+                "image": "https://i.ytimg.com/vi/XCBCJtl3Roc/maxresdefault.jpg"
+            },
+            {
+                "name": "A la Kora",
+                "image": "https://cocinaperuana.espaciolatino.com/recetas-de-pescado/img600/filete-pescado-kion.jpg"
+            },
+            {
+                "name": "Devil Style",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            },
+            {
+                "name": "Mexican Style",
+                "image": "https://cocinaperuana.espaciolatino.com/recetas-de-pescado/img600/filete-pescado-kion.jpg"
+            },
+            {
+                "name": "A la Mantequilla",
+                "image": "https://i.ytimg.com/vi/2wLa-b2z-gk/maxresdefault.jpg"
+            },
+            {
+                "name": "Al Ajo Breaded",
+                "image": "https://www.tqma.com.ec/images/com_yoorecipe/banner_superior/3165_1.jpg"
+            },
+            {
+                "name": "Natural",
+                "image": "https://cocinaperuana.espaciolatino.com/recetas-de-pescado/img600/filete-pescado-kion.jpg"
+            },
+            {
+                "name": "With Garlic",
+                "image": "https://cocinaperuana.espaciolatino.com/recetas-de-pescado/img600/filete-pescado-kion.jpg"
+            },
+            {
+                "name": "Ranchera",
+                "image": "https://mariscoselrey.com.mx/wp-content/uploads/2020/03/filete-ranchero.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 18.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Camaron y Pulpo a la Kora",
+        "description": "Camaron y Pulpo sazonados a la Kora",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://lasislitasenwoodland.com/wp-content/uploads/2022/11/CAMARON-Y-PULPO.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 22.99
+            }
+        ],
+        "categories": [
+            "Platillos"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Pollo con Crema",
+        "description": "Chicken strips cooked in our special white sauce with bell peppers, mushrooms and onions",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 14.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Pechuga Asada",
+        "description": "Grilled Chicken Breast",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 14.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Pechuga Asada Especial",
+        "description": "Grilled Chicken Breast topped with cheese and pico de gallo",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.goya.com/media/4192/grilled-fish-tacos.jpg?quality=80"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 15.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Burrito de Pollo",
+        "description": "Chicken Burrito",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://images.aws.nestle.recipes/original/fd7a91342d8722a0337e21b90deb8845_chikn_and_avocado_burrito.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 9.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Burrito de Camaron",
+        "description": "Shrimp Burrito",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://camaroneros.info/wp-content/uploads/burritos-camarones.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 10.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo",
+            "Camarones"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Alambre de Res",
+        "description": "Cut steak cooked with bacon, bell peppers, mushrooms and onions topped with cheese.",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://i.blogs.es/eab35d/como-hacer-alambre-de-res/450_1000.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 18.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Carnes"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Carne Zarandeada",
+        "description": "Steak cooked on the grill with our Zarandeada Sauce",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 17.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Carnes"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Carne Asada con Pollo",
+        "description": "Steak cooked on the grill with our special seasoning with chicken ",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 17.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo",
+            "Carnes"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Carne Asada con Camarones",
+        "description": "Shrimps and steak cooked on the grill with our special seasoning",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 19.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Carnes",
+            "Camarones"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Parrillada Cielo Mar y Tierra",
+        "description": "Carne Asada, Chicken Breast and Grilled Shrimp",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 32.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo",
+            "Carnes",
+            "Camarones"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Burrito de Asada",
+        "description": "Steak Burrito",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://www.larutadelagarnacha.mx/wp-content/uploads/2021/02/burro-portada.jpeg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 9.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Carnes"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Tacos de Asada",
+        "description": "Steak Tacos",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://www.eatingonadime.com/wp-content/uploads/2020/10/carne-asada-1-square.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 2.50
+            }
+        ],
+        "categories": [
+            "Starters",
+            "Carnes"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Fajitas",
+        "description": "All Fajitas are served with rice, beans and salad and are cooked with bell peppers, mushrooms, onions and tomatoes",
+        "variants": [
+            {
+                "name": "Fajitas de Carne",
+                "image": "https://st1.uvnimg.com/2b/a6/af9ef76c4361bb0921cae81e3e17/fajitas.jpg"
+            },
+            {
+                "name": "Fajitas de Pollo",
+                "image": "https://tacos10.com/wp-content/uploads/2019/01/fajitas-de-pollo.jpg"
+            },
+            {
+                "name": "Fajitas Mixtas",
+                "image": "https://i.ytimg.com/vi/iYHEPi2v0X4/maxresdefault.jpg"
+            },
+            {
+                "name": "Fajitas de Camaron",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Fajitas de Carne con Camaron",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Fajitas de Pollo con Camaron",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Carne",
+                "price": 17.99
+            },
+            {
+                "unit": "Camaron",
+                "price": 18.99
+            }
+        ],
+        "categories": [
+            "Platillos",
+            "Pollo",
+            "Camarones",
+            "Carnes",
+            "Fajitas"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Palitos de Queso",
+        "description": "Cheese Sticks",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://babycocina.com/wp-content/uploads/2021/09/Palitos-de-queso-para-ninos.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 6.99
+            }
+        ],
+        "categories": [
+            "Kids Meal"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Nuggets de Pollo",
+        "description": "Chicken Nuggets",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://i.ytimg.com/vi/l-6n2DZG6xE/maxresdefault.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 6.99
+            }
+        ],
+        "categories": [
+            "Kids Meal"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Combinacion",
+        "description": "Chicken Tenders, French Fries, and Cheese Sticks",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 7.99
+            }
+        ],
+        "categories": [
+            "Kids Meal"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Chicken Tenders",
+        "description": "Chicken Tenders",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://images-gmi-pmc.edge-generalmills.com/3973d54d-0004-4c06-a9d1-0843f3bf3efa.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 6.99
+            }
+        ],
+        "categories": [
+            "Kids Meal"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "French Fries",
+        "description": "French Fries",
+        "variants": [
+            {
+                "name": "orginal",
+                "image": "https://thecozycook.com/wp-content/uploads/2020/02/Copycat-McDonalds-French-Fries-.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "normal",
+                "price": 4.99
+            }
+        ],
+        "categories": [
+            "Kids Meal, Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Refreso de Maquina",
+        "description": "Refresco servido en vaso con hielos, incluye un refill gratis",
+        "variants": [
+            {
+                "name": "Coca-Cola",
+                "image": "https://tentulogo.com/wp-content/uploads/2017/06/cocacola-logo.jpg"
+            },
+            {
+                "name": "Coca-Cola Light",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Coca_Cola-light_Logo.jpg/800px-Coca_Cola-light_Logo.jpg"
+            },
+            {
+                "name": "Sprite",
+                "image": "https://www.america-retail.com/static//2021/01/logo-sprite.jpg"
+            },
+            {
+                "name": "Fanta",
+                "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Fanta_logo_%282009%29.jpg/2461px-Fanta_logo_%282009%29.jpg"
+            },
+            {
+                "name": "Iced Tea",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Hi-C Pink Lemonade",
+                "image": "https://denverbeverage.com/wp-content/uploads/2018/07/00999997150370_CX__JPEG_3.jpg"
+            },
+            {
+                "name": "Dr. Pepper",
+                "image": "https://ts-spain.com/wp-content/uploads/2019/02/Dr-Pepper.jpg"
+            },
+            {
+                "name": "Root Beer",
+                "image": "http://www.dsvendinginc.com/images/product/large/8967.jpg"
+            },
+            {
+                "name": "",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 2.99
+            },
+            {
+                "unit": "Lg",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Bebidas"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Agua Fresca",
+        "description": "Agua fresca de sabor servida en vaso con hielos",
+        "variants": [
+            {
+                "name": "Horchata",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31780/36562.jpg"
+            },
+            {
+                "name": "Jamaica",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31783/36556.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 2.99
+            },
+            {
+                "unit": "Md",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Bebidas"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Modelo Especial",
+        "description": ".",
+        "variants": [
+            {
+                "name": "Modelo Especial Regular",
+                "image": "https://cdn.shopify.com/s/files/1/0605/9520/8383/files/block-product-hero-especial-bottle-small_1.jpg?v=1638119550"
+            },
+            {
+                "name": "Negra Modelo",
+                "image": "https://diresa.es/wp-content/uploads/2021/02/MODELO-NEGRA-PRINCIPAL.jpg"
+            },
+            {
+                "name": "Modelo Especial de Bote",
+                "image": "https://venecia-restaurant.weebly.com/uploads/2/0/9/4/20940664/9397616_orig.jpg?123"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.50
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Corona",
+        "description": ".",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://mundogourmet.com.mx/tienda/wp-content/uploads/2020/09/cerveza-corona-355ml.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.99
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Pacifico",
+        "description": ".",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://mundogourmet.com.mx/tienda/wp-content/uploads/2020/09/cerveza-pacifico-clara-botella-355ml.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.99
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Budweiser",
+        "description": ".",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://st3.depositphotos.com/1010386/14695/i/600/depositphotos_146954799-stock-photo-londonuk-march-21-2017-bottle.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.00
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Bud Light",
+        "description": ".",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://media.istockphoto.com/id/458464889/photo/ice-cold-bottle-of-bud-light.jpg?s=612x612&w=0&k=20&c=Z7NO5mbkGGXvSmwnGBXPjj2i8Xzy4TBUXf_nPBHhHRQ="
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.00
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Coors Light",
+        "description": ".",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://bottegavenezuela.com/wp-content/uploads/2022/02/CERVEZA-COORS-LIGHT-7oz.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.00
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Victoria",
+        "description": ".",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://pasareladiag.blob.core.windows.net/images/113018.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.50
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Tecate",
+        "description": ".",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://turismoysabores.files.wordpress.com/2016/01/tecate_botella_355ml_original.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 5.50
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Michelada",
+        "description": "Jugo de michelada combinado con tu cerveza favorita",
+        "variants": [
+            {
+                "name": "Negra Modelo",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Modelo Especial",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Corona",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Pacifico",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Victoria",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Budweiser",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Bud Light",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Coors Light",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "XX",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Tecate",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Modelo Especial de Bote",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Agua Mineral",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 8.99
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Rusa",
+        "description": "Combinacion de de jugo de limon con sal con tu cerveza favorita",
+        "variants": [
+            {
+                "name": "Negra Modelo",
+                "image": "https://cdn.shopify.com/s/files/1/0605/9520/8383/files/Mex-City_Michelada_Filter_1024x1024.jpg?v=1643615556"
+            },
+            {
+                "name": "Modelo Especial",
+                "image": "https://cdn.shopify.com/s/files/1/0605/9520/8383/files/cta-images-right-chelada.jpg?v=1641380955"
+            },
+            {
+                "name": "Corona",
+                "image": "https://scontent.fntr10-2.fna.fbcdn.net/v/t1.6435-9/192325923_2866755990261429_5879029268137948283_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=730e14&_nc_ohc=1ypEbG6CZVsAX8QcZO6&_nc_ht=scontent.fntr10-2.fna&oh=00_AfBbCJbPSaPIpa9cydKLjeq6pZIekxyxTpeVzb61V_JtPA&oe=63F3D03E"
+            },
+            {
+                "name": "Pacifico",
+                "image": "https://live.staticflickr.com/5122/5225352086_b648b6e612_b.jpg"
+            },
+            {
+                "name": "Victoria",
+                "image": "https://i.pinimg.com/originals/55/3b/ba/553bba0f0323276c435155035ecbb706.jpg"
+            },
+            {
+                "name": "Budweiser",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Bud Light",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Coors Light",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "XX",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Tecate",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Modelo Especial de Bote",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            },
+            {
+                "name": "Agua Mineral",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 6.00
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Jugo de Michelada",
+        "description": "Jugo de Michelada Solo",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.gastrolabweb.com/u/fotografias/m/2022/3/30/f850x638-27703_105192_5627.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "Sm",
+                "price": 6.99
+            },
+            {
+                "unit": "Lg",
+                "price": 10.99
+            }
+        ],
+        "categories": [
+            "Cerveza"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Bread",
+        "description": "Una pieza de pan",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://i.ytimg.com/vi/ZxZO9wdOHPU/maxresdefault.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Aguacate",
+        "description": "Una pieza de aguacate",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.telemundo.com/sites/nbcutelemundo/files/styles/fit-760w/public/aguacate-partido_0.jpg?ramen_itok=iqwQftIcTf"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Cebollitas",
+        "description": "Una pieza de cebollitas",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://okdiario.com/img/2018/10/03/cebollas-asadas.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Arroz y Frijoles",
+        "description": "Plato de arroz y frijoles",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://familiakitchen.com/wp-content/uploads/2021/07/dominican-rice-beans-1-1-1.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Chiles Toreados",
+        "description": "Molcajetito de chiles toreados",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.cocinavital.mx/wp-content/uploads/2017/09/Chiles-toreados.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Ensalada",
+        "description": "Plata de ensalada",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.pcrm.org/sites/default/files/2019-12/Untitled%20%283%29_1.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Guacamole",
+        "description": "Molcajetito de guacamole",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://www.giallozafferano.com/images/255-25549/Guacamole_1200x800.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
+        "discount": 0,
+        "is_active": true
+    },
+    {
+        "name": "Salsa Kora",
+        "description": "Molcajetito de Salsa Kora",
+        "variants": [
+            {
+                "name": "original",
+                "image": "https://cdn7.kiwilimon.com/recetaimagen/31787/36652.jpg"
+            }
+        ],
+        "units": [
+            {
+                "unit": "regular",
+                "price": 3.99
+            }
+        ],
+        "categories": [
+            "Extras"
+        ],
         "discount": 0,
         "is_active": true
     }

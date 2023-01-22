@@ -42,11 +42,11 @@ def init_db(db: Session) -> None:
     path_foods = os.path.join(path_assets, "foods.json")
     with open(path_foods) as json_file:
         list_foods = json.load(json_file)
-        for data_food in list_foods:
+        for num, data_food in enumerate(list_foods, start=1):
             food = crud.food.get_by_name(db=db, name=data_food.get("name"))
             if food: continue
             if not data_food.get("name"): continue
-            categories = [crud.category.get_by_name(db=db, name=category_name) for category_name in data_food.get("categories")]
+            categories = [crud.category.get_by_name(db=db, name=category_name) for category_name in data_food.get("categories") if crud.category.get_by_name(db=db, name=category_name) is not None]
             
             # Upload images
             variants = data_food.get("variants", [])
@@ -77,4 +77,6 @@ def init_db(db: Session) -> None:
                 is_active=data_food.get("is_active"),
             )
             
+            print("*"*50)
+            print(f"{num}/{len(list_foods)}")
             crud.food.create(db, obj_in=food_in, categories_db=categories)

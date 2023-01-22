@@ -36,6 +36,20 @@
     },
     {
         "name": "Pollo"
+    },
+    {
+        "name": "Carnes"
+    },
+    {
+        "name": "Extras"
+    },
+    {
+        "name": "Bebidas"
+    },
+    {
+        "name": "Cerveza"
+    },
+    {
+        "name": "Fajitas"
     }
-
 ]
