@@ -12,8 +12,9 @@ function classNames(...classes) {
 
 export const FoodInfoModal = ({open, setOpen, food}) => {
 
-  const {variants, units} = food
+  const {variants, units, categories} = food
 
+  const [category, setCategory] = useState(categories[0].name)
   const [variant, setVariant] = useState(variants[0].name)
   const [image, setImage] = useState(variants[0].image)
   const [unit, setSelectedUnit] = useState(units[0].unit)
@@ -48,7 +49,7 @@ export const FoodInfoModal = ({open, setOpen, food}) => {
       // add order to cart
       dispatch(
         addToCart({
-        food_id: food.id, name: food.name, variant: variant, unit: unit, image, price, quantity, description: food.description
+        food_id: food.id, name: food.name, variant: variant, unit: unit, image, price, quantity, description: food.description, category
       }))
       // close modal
       setOpen(false)

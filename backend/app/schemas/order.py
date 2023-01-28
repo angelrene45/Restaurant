@@ -14,6 +14,7 @@ schema_example = {
         "foods": [
             {
                 "food_id": "<food_id>",
+                "category": "<name of category>",
                 "name": "<name of food>",
                 "variant": "<variant food chosen by user>",
                 "unit": "<unit food chosen by user>",
@@ -35,6 +36,7 @@ schema_example = {
 
 class OrderFood(BaseModel):
     food_id: Optional[int]
+    category: Optional[str]
     name: Optional[str]
     variant: Optional[str]
     unit: Optional[str]

@@ -43,6 +43,16 @@ class ConnectionManager:
       
         # parse order model to json and dict
         orders = parse_obj_as(list[schemas.Order], result)
+
+        # create new list and sort by categories
+        for order in orders:
+            # dict {'name_category': [<foods>]}
+            order_by_categories = {}
+            for food in order.foods:
+                order_by_categories.setdefault(food.category, []).append(food)
+            # set the foods sorted by categories
+            order.foods = order_by_categories
+        
         orders = [json.loads(order.json()) for order in orders]
 
         # Notify all websockets clients new order arrives

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 
 import { CardKitchen } from "../layout";
+import { Loading } from "../../../components/items/Spinner";
 
 
 export const KitchenPage = (props) => {
 
+  const [isLoading, setIsLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [webSocketReady, setWebSocketReady] = useState(false);
   const [webSocket, setWebSocket] = useState(null);
@@ -26,7 +28,11 @@ export const KitchenPage = (props) => {
     ws.onmessage = function (event) {
       // console.log("new socket message", event.data)
       const { type, data } = JSON.parse(event.data)
-      if (type === 'SendAll') setOrders(data)
+      if (type === 'SendAll') {
+        // sort foods
+        setOrders(data)
+        setIsLoading(false)
+      }
     }
 
     // set state 
@@ -56,7 +62,7 @@ export const KitchenPage = (props) => {
 
         {/* Body */}
         <div className="px-1 py-4">
-          <CardKitchen orders={orders} />
+          { isLoading ? <Loading/> : <CardKitchen orders={orders} /> }
         </div>
 
 

@@ -1,8 +1,8 @@
-"""initial tables
+"""Initial Tables
 
-Revision ID: 5e2797ed9249
+Revision ID: 4cd452166063
 Revises: 
-Create Date: 2022-12-16 03:12:21.724846
+Create Date: 2023-01-28 18:13:32.577423
 
 """
 from alembic import op
@@ -12,7 +12,7 @@ from sqlalchemy.dialects import postgresql
 from app.utils.sqlalchemy.custom_types import TSVector
 
 # revision identifiers, used by Alembic.
-revision = '5e2797ed9249'
+revision = '4cd452166063'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -173,16 +173,18 @@ def upgrade():
     sa.Column('order_id', sa.Integer(), nullable=False),
     sa.Column('food_id', sa.Integer(), nullable=False),
     sa.Column('variant', sa.String(), nullable=False),
+    sa.Column('unit', sa.String(), nullable=False),
+    sa.Column('category', sa.String(), nullable=True),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('unit', sa.String(), nullable=True),
     sa.Column('quantity', sa.Integer(), nullable=True),
     sa.Column('price', sa.Numeric(precision=10, scale=2), nullable=True),
     sa.ForeignKeyConstraint(['food_id'], ['food.id'], ),
     sa.ForeignKeyConstraint(['order_id'], ['order.id'], ),
-    sa.PrimaryKeyConstraint('order_id', 'food_id', 'variant')
+    sa.PrimaryKeyConstraint('order_id', 'food_id', 'variant', 'unit')
     )
     op.create_index(op.f('ix_order_food_food_id'), 'order_food', ['food_id'], unique=False)
     op.create_index(op.f('ix_order_food_order_id'), 'order_food', ['order_id'], unique=False)
+    op.create_index(op.f('ix_order_food_unit'), 'order_food', ['unit'], unique=False)
     op.create_index(op.f('ix_order_food_variant'), 'order_food', ['variant'], unique=False)
     op.create_table('payment',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -218,6 +220,7 @@ def downgrade():
     op.drop_index(op.f('ix_payment_customer_id'), table_name='payment')
     op.drop_table('payment')
     op.drop_index(op.f('ix_order_food_variant'), table_name='order_food')
+    op.drop_index(op.f('ix_order_food_unit'), table_name='order_food')
     op.drop_index(op.f('ix_order_food_order_id'), table_name='order_food')
     op.drop_index(op.f('ix_order_food_food_id'), table_name='order_food')
     op.drop_table('order_food')
@@ -260,9 +263,9 @@ def downgrade():
     op.drop_index(op.f('ix_category_name'), table_name='category')
     op.drop_index(op.f('ix_category_id'), table_name='category')
     op.drop_table('category')
+    # ### end Alembic commands ###
     sa.Enum(name='statusorder').drop(op.get_bind(), checkfirst=False)
     sa.Enum(name='roluser').drop(op.get_bind(), checkfirst=False)
     sa.Enum(name='typepayment').drop(op.get_bind(), checkfirst=False)
     sa.Enum(name='statuspayment').drop(op.get_bind(), checkfirst=False)
     sa.Enum(name='typesorder').drop(op.get_bind(), checkfirst=False)
-    # ### end Alembic commands ###
