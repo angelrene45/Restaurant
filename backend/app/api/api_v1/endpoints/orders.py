@@ -90,6 +90,8 @@ def update_order(
     db: Session = Depends(deps.get_db),
     order_id: int,
     order_in: schemas.OrderUpdate,
+    background_tasks: BackgroundTasks,
+    request: Request
 ) -> Any:
     """
     Update a order.
@@ -100,4 +102,8 @@ def update_order(
             status_code=400, detail="The Order doesn't exist"
         )
     order_updated = crud.order.update(db, db_obj=order, obj_in=order_in)
+
+    # emit messages in websocket for new order arrives and avoid problem with pytest
+    if os.getenv('TESTING', '') != 'True': background_tasks.add_task(lambda: requests.get(request.url_for('emit_orders_ws'), cookies={"emit": "create_order"}))
+
     return order_updated

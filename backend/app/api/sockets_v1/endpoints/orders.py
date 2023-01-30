@@ -1,5 +1,4 @@
 import json 
-from typing import Union 
 from fastapi import (
     APIRouter,
     Depends,
@@ -10,6 +9,7 @@ from sqlalchemy import select
 from pydantic import parse_obj_as
 from app.api.deps import authorize_ws_token_data
 from app import schemas, models
+from app.models.order import StatusOrder, TypesOrder
 from app.db.session import database_async
 
 
@@ -32,29 +32,29 @@ class ConnectionManager:
             Sent all current orders to active connections
         """
         # prepare query async
-        query = select(models.Order)
+        status = [StatusOrder.new, StatusOrder.preparing, StatusOrder.delivering]
+        query = select(models.Order).where(models.Order.status.in_(status)).order_by(models.Order.id)
+        # get order by today 
         result = await database_async.fetch_all(query=query)
 
         # iterate for every order and get the foods associate because database async library dont do that (we do manually)
+        orders = []
         for order in result:
+            # get foods related to the order
             query = select(models.Order_Food).where(order.id == models.Order_Food.order_id)
             foods = await database_async.fetch_all(query=query)
             order.foods = foods
-      
-        # parse order model to json and dict
-        orders = parse_obj_as(list[schemas.Order], result)
-
-        # create new list and sort by categories
-        for order in orders:
-            # dict {'name_category': [<foods>]}
+            # order sqlalchemy model convert to pydantic schema 
+            order = parse_obj_as(schemas.Order, order)
+            # order foods by categories
             order_by_categories = {}
             for food in order.foods:
                 order_by_categories.setdefault(food.category, []).append(food)
             # set the foods sorted by categories
             order.foods = order_by_categories
-        
-        orders = [json.loads(order.json()) for order in orders]
-
+            # add to final list 
+            orders.append(json.loads(order.json()))
+      
         # Notify all websockets clients new order arrives
         for connection in self.active_connections:
             try:

@@ -18,6 +18,7 @@ schema_example = {
                 "name": "<name of food>",
                 "variant": "<variant food chosen by user>",
                 "unit": "<unit food chosen by user>",
+                "status": "<boolean of status in kitchen page>",
                 "quantity": "<quantity of food>",
                 "price": "<price of variant that choose user>",
             }
@@ -26,6 +27,8 @@ schema_example = {
         "address": "<address when order type is shipment>",
         "note": "<Order details by user>",
         "status": "<Constant of OrderStatus Schema>",
+        "status_foods": "<boolean that use in Kitchen Page>",
+        "status_drinks": "<boolean that use in Kitchen Page>",
         "subtotal": "<sum of all prices>",
         "tax": "<tax>",
         "discount": "<discount rate>",
@@ -40,6 +43,7 @@ class OrderFood(BaseModel):
     name: Optional[str]
     variant: Optional[str]
     unit: Optional[str]
+    status: Optional[bool]
     quantity: Optional[int]
     price: Optional[float]
 
@@ -57,6 +61,8 @@ class OrderBase(BaseModel):
     address: Optional[str] = None
     note: Optional[str] = None
     status: Optional[StatusOrder] = None
+    status_foods: Optional[bool] = None
+    status_drinks: Optional[bool] = None
     subtotal: Optional[float] = None
     tax: Optional[float] = None
     total: Optional[float] = None

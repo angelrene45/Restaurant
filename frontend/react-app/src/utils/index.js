@@ -1,5 +1,5 @@
 export * from './navigateUser'
-export * from './typesUser'
+export * from './enumsTypes'
 export * from './optionSideBar'
 export * from './getEnvVariables'
 export * from './getClaimsToken'

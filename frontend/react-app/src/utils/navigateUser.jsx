@@ -1,7 +1,7 @@
 import jwt from 'jwt-decode'
 
 import { Navigate } from "react-router-dom"
-import { TypeUsers } from "./typesUser"
+import { TypeUsers } from "./"
 
 export const navigateUser = () => {
     const token = localStorage.getItem('TOKEN');
