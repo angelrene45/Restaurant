@@ -16,6 +16,10 @@ export const categoriesApi = createApi({
       query: (page=0) => `/categories/open?skip=${page*MAX_RECORDS_PAGE}&limit=${MAX_RECORDS_PAGE}`,
       providesTags: ["Categories"]
     }),
+    getAllCategories: builder.query({
+      query: () => `/categories/open?limit=1000`,
+      providesTags: ["Categories"]
+    }),
     getCategoriesCount: builder.query({
       query: () => `/categories/count`,
       providesTags: ["CategoriesCount"]
@@ -46,6 +50,7 @@ export const categoriesApi = createApi({
 // auto-generated based on the defined endpoints
 export const { 
   useGetCategoriesQuery,
+  useGetAllCategoriesQuery,
   useGetCategoriesCountQuery,
   useGetCategoriesWithFoodsQuery, 
   useCreateCategoryMutation, 

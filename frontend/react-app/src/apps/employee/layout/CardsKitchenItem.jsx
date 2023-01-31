@@ -6,6 +6,8 @@ import { SpinnerButton } from '../../../components/items/Spinner';
 import { displayMessage } from '../../../utils/swalMsg';
 import { StatusOrder } from '../../../utils';
 
+import { useGetAllCategoriesQuery } from '../../../store/slices/categories/api';
+
 const statusOrder = (status) => {
     switch (status) {
         case StatusOrder.new:
@@ -19,6 +21,9 @@ const statusOrder = (status) => {
 
 
 export const CardsKitchenItem = ({ order = {} }) => {
+
+    // get categories color
+    const { data: categories = [] } = useGetAllCategoriesQuery();
 
     // value button 
     const valueButton = (
@@ -96,7 +101,7 @@ export const CardsKitchenItem = ({ order = {} }) => {
                 <div className="overflow-y-auto">
                     {Object.entries(order.foods).map(([key, foods]) =>
                         <div key={`${key}`}>
-                            <div className='bg-gray-200 text-sm uppercase pl-1'>{key}</div>
+                            <div className={`text-sm uppercase pl-1 ${categories.find(category => category.name === key)?.color}`}>{key}</div>
                             {foods.map((food, i) =>
                                 <div
                                     key={`${food.id}-${i}`}

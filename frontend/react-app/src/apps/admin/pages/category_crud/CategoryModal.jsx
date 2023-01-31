@@ -19,7 +19,7 @@ export const CategoryModal = ({
 }) => {
 
   // get data from category selected 
-  const { id = null, name = "" } = itemSelected
+  const { id = null, name = "", color = "" } = itemSelected
 
   // check if is Add or Update and set the variables
   const [triggerMutation, { isLoading }] = id ? useUpdateMutation() : useCreateMutation()
@@ -86,12 +86,14 @@ export const CategoryModal = ({
                         <Formik
                           initialValues={{
                             name: name,
+                            color: color
                           }}
                           onSubmit={async (values) => {
                             // prepare json request for backend
                             const apiData = {
                               id: id,
-                              name: values.name
+                              name: values.name,
+                              color: values.color
                             }
                             // make api request
                             const { data, error } = await triggerMutation(apiData)
@@ -101,6 +103,8 @@ export const CategoryModal = ({
                           validationSchema={
                             Yup.object({
                               name: Yup.string()
+                                .required('Required'),
+                              color: Yup.string()
                                 .required('Required')
                             })
                           }
@@ -109,13 +113,29 @@ export const CategoryModal = ({
                           {
                             (formik) => (
                               <Form>
-                                <div className="grid gap-5 md:grid-cols-1">
+                                <div className="grid gap-5 md:grid-cols-2">
+                                  {/* Name */}
                                   <div>
-                                    <label className="block text-sm font-medium mb-1" htmlFor="email">Name <span className="text-rose-500">*</span></label>
+                                    <label className="block text-sm font-medium mb-1" htmlFor="name">Name <span className="text-rose-500">*</span></label>
                                     <Field name="name" type="text" className="form-input w-full" />
                                     <ErrorMessage name="name" component="div" className="text-xs mt-1 text-rose-500" />
                                   </div>
-
+                                  {/* Color */}
+                                  <div>
+                                    <label className="block text-sm font-medium mb-1" htmlFor="color">Color<span className="text-rose-500">*</span></label>
+                                    <Field name="color" as="select" className={`form-select ${formik.values.color}`}>
+                                      <option value="">Pick a color</option>
+                                      <option className="bg-gray-200" value="bg-gray-200">Gray</option>
+                                      <option className="bg-red-300" value="bg-red-300">Red</option>
+                                      <option className="bg-orange-200" value="bg-orange-200">Orange</option>
+                                      <option className="bg-green-200" value="bg-green-200">Green</option>
+                                      <option className="bg-blue-300" value="bg-blue-300">Blue</option>
+                                      <option className="bg-yellow-200" value="bg-yellow-200">Yellow</option>
+                                      <option className="bg-purple-300" value="bg-purple-300">Purple</option>
+                                      <option className="bg-pink-300" value="bg-pink-300">Pink</option>
+                                    </Field>
+                                    <ErrorMessage name="color" component="div" className="text-xs mt-1 text-rose-500" />
+                                  </div>
                                 </div>
                                 <div className="flex items-center justify-between mt-6">
                                   <div className="mr-6"></div>

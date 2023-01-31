@@ -48,7 +48,8 @@ def init_db(db: Session) -> None:
             category = crud.category.get_by_name(db=db, name=data_category.get("name"))
             if category: continue
             category_in = schemas.CategoryCreate(
-                name=data_category.get("name")
+                name=data_category.get("name"),
+                color=data_category.get("color")
             )
             crud.category.create(db, obj_in=category_in)
 

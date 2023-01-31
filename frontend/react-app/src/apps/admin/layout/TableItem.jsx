@@ -52,6 +52,10 @@ export const TableItem = ({ item = {}, skipColumns = [], setOpen, setItemSelecte
                       <span className={statusColor(item[key].toString())}>
                         {item[key].toString()}
                       </span>
+                    : key == "color" ?
+                      <div className={`w-1/6 ${item[key]}`}>
+                        &nbsp;
+                      </div>
                     // date with moment.js 
                     : key == "last_login" && item[key] ?
                       moment(item[key]).fromNow()
