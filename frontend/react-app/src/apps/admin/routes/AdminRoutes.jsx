@@ -12,6 +12,7 @@ import { CategoryPage } from '../pages/category_crud';
 import FormCrud from '../pages/dish_crud/FormCrud';
 import { UserPage } from '../pages/user_crud';
 import { CustomerPage } from '../pages/customer_crud';
+import { SettingsAdminPage } from '../pages/settings';
 
 export const AdminRoutes = () => {
   // set sidebar admin options
@@ -30,6 +31,7 @@ export const AdminRoutes = () => {
           <Route path="food/create_food/:id" element={ <FormCrud /> } />
           <Route path="user/" element={ <UserPage /> } />
           <Route path="customer/" element={ <CustomerPage /> } />
+          <Route path="settings/" element={ <SettingsAdminPage /> } />
         
           <Route path='/*' element={ <Navigate to="/admin/home" /> } />
       </Routes>
