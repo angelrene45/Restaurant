@@ -6,3 +6,4 @@ from .layout import Layout
 from .board import Board
 from .order import Order, Order_Food
 from .payment import Payment, StatusPayment, TypePayment
+from .setting import Setting

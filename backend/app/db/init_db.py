@@ -23,8 +23,22 @@ def init_db(db: Session) -> None:
         )
         user = crud.user.create(db, obj_in=user_in)
 
-    
+    # get path from json pre_data
     path_assets = os.path.join("app", "utils", "pre_data")
+
+    # load settings 
+    path_settings = os.path.join(path_assets, "settings.json")
+    with open(path_settings) as json_file:
+        list_settings = json.load(json_file)
+        for data_setting in list_settings:
+            setting = crud.setting.get_by_name(db=db, name=data_setting.get("name"))
+            if setting: continue
+            setting_in = schemas.SettingCreate(
+                name=data_setting.get("name"), 
+                value=data_setting.get("value")
+            )
+            crud.setting.create(db, obj_in=setting_in)
+
 
     # Load categories
     path_categories = os.path.join(path_assets, "categories.json")

@@ -6,3 +6,4 @@ from .crud_layout import layout
 from .crud_board import board
 from .crud_order import order
 from .crud_payment import payment
+from .crud_setting import setting

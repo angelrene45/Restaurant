@@ -1,0 +1,16 @@
+[
+    {
+        "name": "account",
+        "value": {
+            "name": "Company Name",
+            "email": "company@test.com",
+            "location": "Company address"
+        }
+    },
+    {
+        "name": "kitchen",
+        "value": {
+            "drinks_tab": true
+        }
+    }
+]

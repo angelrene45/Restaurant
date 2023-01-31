@@ -9,3 +9,4 @@ from .layout import Layout, LayoutCreate, LayoutUpdate
 from .board import Board, BoardCreate, BoardInDB, BoardUpdate
 from .order import Order, OrderCreate, OrderInDB, OrderUpdate, OrderFood
 from .payment import Payment, PaymentCreate, PaymentUpdate, PaymentCreateApi
+from .setting import Setting, SettingCreate, SettingUpdate, SettingInDBBase
