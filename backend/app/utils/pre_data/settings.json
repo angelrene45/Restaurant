@@ -10,7 +10,8 @@
     {
         "name": "kitchen",
         "value": {
-            "drinks_tab": true
+            "drinks_tab": true,
+            "drinks_categories": []
         }
     }
 ]

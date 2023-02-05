@@ -21,6 +21,7 @@ import { customersApi } from './slices/customers';
 import { usersApi } from './slices/users';
 import { cartSlice } from './slices/cart';
 import { ordersApi } from './slices/orders';
+import { settingsApi } from './slices/settings';
 
 const persistConfig = {
     key: 'root',
@@ -47,6 +48,7 @@ export const store = configureStore({
         [customersApi.reducerPath]: customersApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,
         [ordersApi.reducerPath]: ordersApi.reducer,
+        [settingsApi.reducerPath]: settingsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -58,7 +60,8 @@ export const store = configureStore({
             foodsApi.middleware, 
             customersApi.middleware, 
             usersApi.middleware,
-            ordersApi.middleware)
+            ordersApi.middleware,
+            settingsApi.middleware)
 })
 
 export const persistor = persistStore(store)

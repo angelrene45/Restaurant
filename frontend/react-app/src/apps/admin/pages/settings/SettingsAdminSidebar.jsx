@@ -8,12 +8,12 @@ const OptionSideBar = [
   {
     title: 'Business Account',
     icon: iconSystem.account,
-    component: <AccountPanel/>
+    component: AccountPanel
   },
   {
     title: 'Kitchen',
     icon: iconSystem.kitchen,
-    component: <KitchenPanel/>
+    component: KitchenPanel
   }
 ]
 
@@ -58,7 +58,7 @@ export const SettingsAdminSidebar = () => {
 
       {/* Content */}
       {
-        selectedTabPage.component
+        <selectedTabPage.component />
       }
 
     </>
