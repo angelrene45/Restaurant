@@ -27,7 +27,6 @@ export const KitchenPanel = () => {
 
   return (
     <div className="grow">
-
       {/* Form */}
       <Formik
         initialValues={{

@@ -3,10 +3,13 @@ import { useEffect, useState } from "react";
 import { CardsKitchen } from "../layout";
 import { Loading } from "../../../components/items/Spinner";
 import { StatusOrder } from "../../../utils";
+import { useGetSettingsByNameQuery } from "../../../store/slices/settings";
+import { useGetAllCategoriesQuery } from "../../../store/slices/categories/api";
 
 
-export const KitchenPage = (props) => {
+export const KitchenPage = () => {
 
+  // state
   const [isLoading, setIsLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [webSocketReady, setWebSocketReady] = useState(false);
@@ -46,11 +49,16 @@ export const KitchenPage = (props) => {
     }
   }, []);
 
+  // from Api get kitchen settings
+  const { data: kitchenSettings = {}, isLoading: loadingSettingsKitchen } = useGetSettingsByNameQuery('kitchen');
+  // from api get all categories info 
+  const { data: categories = [], isLoading: loadingCategories } = useGetAllCategoriesQuery();
+
   // selected tab page
   const classSelected = "block pb-3 text-indigo-500 whitespace-nowrap border-t-2 border-indigo-500"
   const classUnSelected = "block pb-3 text-slate-500 hover:text-slate-600 whitespace-nowrap"
   const [selectedTabPage, setSelectedTabPage] = useState('Kitchen') // first category selected
-  const tabsPages = ['Kitchen', 'Drinks', 'History']
+  let tabsPages = ['Kitchen', 'Drinks', 'History']
 
   // get counters for every status 
   const countByStatus = orders.reduce((acc, order) => {
@@ -68,6 +76,22 @@ export const KitchenPage = (props) => {
     return acc;
   }, { new: 0, preparing: 0, completed: 0 });
 
+  // Loading websocket connection and kitchen settings
+  if (isLoading || loadingSettingsKitchen || loadingCategories) return <div className="flex h-screen w-screen items-center"> <Loading /> </div>
+
+  // get kitchen settings
+  let {
+    drinks_tab,
+    drinks_categories
+  } = kitchenSettings?.value
+
+  // check if user needs drink tab 
+  if (!drinks_tab) {
+    // remove drinks tab
+    const index = tabsPages.indexOf('Drinks');
+    if (index !== -1) tabsPages.splice(index, 1);
+  }
+
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] w-full bg-white">
 
@@ -84,7 +108,7 @@ export const KitchenPage = (props) => {
 
       {/* Body */}
       <div className="px-1 py-4">
-        {isLoading ? <Loading /> : <CardsKitchen orders={orders} tabName={selectedTabPage} />}
+        <CardsKitchen orders={orders} tabName={selectedTabPage} drinksTab={drinks_tab} drinkCategories={drinks_categories} />
       </div>
 
 

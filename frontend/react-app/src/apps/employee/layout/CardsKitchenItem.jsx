@@ -20,9 +20,9 @@ const statusOrder = (status) => {
 };
 
 
-export const CardsKitchenItem = ({ order = {} }) => {
+export const CardsKitchenItem = ({ order = {}, tabName = '', drinksTab, drinkCategories }) => {
 
-    // get categories color
+    // get categories from database (get id, name and color)
     const { data: categories = [] } = useGetAllCategoriesQuery();
 
     // value button 
@@ -40,24 +40,58 @@ export const CardsKitchenItem = ({ order = {} }) => {
     const onUpdateOrder = async (order) => {
 
         // Get foods from order and remove the filter by category
-        let foods = Object.values(order.foods).flat();
 
-        // get status from current action
-        let status = '';
+        // Get all foods from order
+        let foodsOriginal = Object.values(order.foods).flat();
+        // Get foods that filtered on this Card
+        let foodsDisplayed = Object.values(filteredFoods).flat();
+        // foods displayed change opposite boolean status and foods that doesn't displayed keep the same status 
+        let foodsWithStatus = foodsOriginal.map(food => {
+            return { ...food, status: foodsDisplayed.find((foodDis) => foodDis.food_id === food.food_id) === undefined ? food.status : !food.status}
+        });
+        // check if all status in foodsWithStatus are True (that means all food are cooked)
+        let statusFoods = foodsWithStatus.every(food => food.status === true);
+
+        // get current status from order
+        let { status_foods, status_drinks } = order
+
+        // filter order by status
+        switch (tabName) {
+            case 'Kitchen':
+                if(statusFoods) status_foods = true
+                else status_foods = false
+                break;
+            case 'Drinks':
+                if(statusFoods) status_drinks = true
+                else status_drinks = false
+                break;
+        }
+
+        // check if all foods are status in True
+        let foods = []
+        let status = ''
+
+        //  check current scenario
         switch (order.status) {
             case StatusOrder.new:
                 // status when start cook
-                foods = foods.map((food) => ({ ...food, status: false }));
+                foods = foodsWithStatus.map((food) => ({ ...food, status: false }));
                 status = StatusOrder.preparing;
                 break;
             case StatusOrder.preparing:
                 // status when cook is completed
-                status = StatusOrder.delivering;
-                foods = foods.map((food) => ({ ...food, status: true }));
+                if(statusFoods) {
+                    // all foods are cooked (kitchen and drinks confirm)
+                    status = StatusOrder.delivering;
+                }else{
+                    // partial cooked
+                    status = StatusOrder.preparing;
+                }
+                foods = foodsWithStatus
                 break;
             case StatusOrder.delivering:
                 // status when rollback in preparing again
-                foods = foods.map((food) => ({ ...food, status: false }));
+                foods = foodsWithStatus.map((food) => ({ ...food, status: false }));
                 status = StatusOrder.preparing;
                 break;
             default:
@@ -68,14 +102,48 @@ export const CardsKitchenItem = ({ order = {} }) => {
         // prepare api data
         const apiData = {
             id: order.id,
-            foods: foods,
-            status: status
+            foods,
+            status,
+            status_drinks,
+            status_foods
         }
 
         // call api and await for response
         const { data, error } = await updateOrder(apiData);
         if (error) displayMessage(error?.data?.detail, "error")
     }
+
+    // function to help to filter foods by using drink categories or not 
+    const filterFoodsByCategories = (foods, excludeDrinks = false) => {
+        // create list that will remove the keys from object
+        const keysToRemove = drinkCategories.map(id => String(id));
+        // remove foods with drink categories
+        const filteredFoods = Object.entries(foods)
+            .filter(([key, value]) => excludeDrinks ? !keysToRemove.includes(key) : keysToRemove.includes(key))
+            .reduce((obj, [key, value]) => {
+                obj[key] = value;
+                return obj;
+            }, {});
+        return filteredFoods
+    }
+
+    // filter foods if its necessary
+    let filteredFoods = order.foods
+
+    // filter data from tab page
+    switch (tabName) {
+        case 'Kitchen':
+            // display order with all categories but exclude drinks
+            filteredFoods = filterFoodsByCategories(order.foods, true)
+            break;
+        case 'Drinks':
+            // display order with only drinks categories
+            filteredFoods = filterFoodsByCategories(order.foods, false)
+            break;
+    }
+
+    // check if food are empty
+    if (Object.keys(filteredFoods).length === 0) return <></>
 
     return (
         <div className="shadow-lg rounded-lg border border-slate-200 flex-none w-[280px] h-[58vh] xl:h-[65vh] snap-always snap-center">
@@ -99,9 +167,9 @@ export const CardsKitchenItem = ({ order = {} }) => {
 
                 {/* Body Card */}
                 <div className="overflow-y-auto">
-                    {Object.entries(order.foods).map(([key, foods]) =>
+                    {Object.entries(filteredFoods).map(([key, foods]) =>
                         <div key={`${key}`}>
-                            <div className={`text-sm uppercase pl-1 ${categories.find(category => category.name === key)?.color}`}>{key}</div>
+                            <div className={`text-sm uppercase pl-1 ${categories.find(category => category.id == key)?.color}`}>{categories.find((category) => category.id == key)?.name}</div>
                             {foods.map((food, i) =>
                                 <div
                                     key={`${food.id}-${i}`}

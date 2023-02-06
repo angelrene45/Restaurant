@@ -1,8 +1,8 @@
-"""Initial Tables
+"""Initial tables
 
-Revision ID: 4cd452166063
+Revision ID: ff57737f3188
 Revises: 
-Create Date: 2023-01-28 18:13:32.577423
+Create Date: 2023-02-06 18:23:35.560589
 
 """
 from alembic import op
@@ -12,7 +12,7 @@ from sqlalchemy.dialects import postgresql
 from app.utils.sqlalchemy.custom_types import TSVector
 
 # revision identifiers, used by Alembic.
-revision = '4cd452166063'
+revision = 'ff57737f3188'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,6 +23,7 @@ def upgrade():
     op.create_table('category',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(), nullable=False),
+    sa.Column('color', sa.String(), nullable=True),
     sa.Column('created_date', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_date', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -71,6 +72,14 @@ def upgrade():
     )
     op.create_index(op.f('ix_layout_id'), 'layout', ['id'], unique=False)
     op.create_index(op.f('ix_layout_name'), 'layout', ['name'], unique=True)
+    op.create_table('setting',
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('value', sa.JSON(), nullable=True),
+    sa.Column('created_date', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('updated_date', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.PrimaryKeyConstraint('name')
+    )
+    op.create_index(op.f('ix_setting_name'), 'setting', ['name'], unique=False)
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(), nullable=True),
@@ -150,6 +159,8 @@ def upgrade():
     sa.Column('customer_id', sa.Integer(), nullable=True),
     sa.Column('board_id', sa.Integer(), nullable=True),
     sa.Column('status', postgresql.ENUM('new', 'preparing', 'delivering', 'delivered', 'returned', 'paid', 'cancel', 'failed', name='statusorder'), nullable=True),
+    sa.Column('status_foods', sa.Boolean(), nullable=True),
+    sa.Column('status_drinks', sa.Boolean(), nullable=True),
     sa.Column('order_type', postgresql.ENUM('restaurant', 'pick_up', 'shipment', name='typesorder'), nullable=False),
     sa.Column('address', sa.Text(), nullable=True),
     sa.Column('note', sa.Text(), nullable=True),
@@ -174,10 +185,12 @@ def upgrade():
     sa.Column('food_id', sa.Integer(), nullable=False),
     sa.Column('variant', sa.String(), nullable=False),
     sa.Column('unit', sa.String(), nullable=False),
-    sa.Column('category', sa.String(), nullable=True),
+    sa.Column('status', sa.Boolean(), nullable=True),
+    sa.Column('category', sa.Integer(), nullable=True),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('quantity', sa.Integer(), nullable=True),
     sa.Column('price', sa.Numeric(precision=10, scale=2), nullable=True),
+    sa.ForeignKeyConstraint(['category'], ['category.id'], ),
     sa.ForeignKeyConstraint(['food_id'], ['food.id'], ),
     sa.ForeignKeyConstraint(['order_id'], ['order.id'], ),
     sa.PrimaryKeyConstraint('order_id', 'food_id', 'variant', 'unit')
@@ -247,6 +260,8 @@ def downgrade():
     op.drop_index(op.f('ix_user_first_name'), table_name='user')
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')
+    op.drop_index(op.f('ix_setting_name'), table_name='setting')
+    op.drop_table('setting')
     op.drop_index(op.f('ix_layout_name'), table_name='layout')
     op.drop_index(op.f('ix_layout_id'), table_name='layout')
     op.drop_table('layout')

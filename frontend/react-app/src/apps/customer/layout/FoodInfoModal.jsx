@@ -14,7 +14,7 @@ export const FoodInfoModal = ({open, setOpen, food}) => {
 
   const {variants, units, categories} = food
 
-  const [category, setCategory] = useState(categories[0].name)
+  const [category, setCategory] = useState(categories[0].id)
   const [variant, setVariant] = useState(variants[0].name)
   const [image, setImage] = useState(variants[0].image)
   const [unit, setSelectedUnit] = useState(units[0].unit)

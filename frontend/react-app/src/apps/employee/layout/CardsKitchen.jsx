@@ -4,13 +4,14 @@ import { CardsKitchenItem } from './CardsKitchenItem';
 import { StatusOrder } from '../../../utils';
 
 
-export const CardsKitchen = ({ orders = [], tabName = '' }) => {
+export const CardsKitchen = ({ orders = [], tabName = '', drinksTab = false, drinkCategories = [] }) => {
     // store the filtered orders list
     let filteredOrder = []
+
     // status that display on kitchen Tab
     const statusAllowedKitchen = [StatusOrder.new, StatusOrder.preparing]
 
-    // filter data from tab page
+    // filter order by status
     switch (tabName) {
         case 'Kitchen':
             filteredOrder = orders.filter(order => statusAllowedKitchen.includes(order.status))
@@ -28,7 +29,7 @@ export const CardsKitchen = ({ orders = [], tabName = '' }) => {
             {/* Card order */}
             {filteredOrder.length > 0 ?
                 filteredOrder.map((order) =>
-                    <CardsKitchenItem key={order.id} order={order} />
+                    <CardsKitchenItem key={order.id} order={order} tabName={tabName} drinksTab={drinksTab} drinkCategories={drinkCategories} />
                 )
                 :
                 <div className="h-[58vh] xl:h-[65vh]">

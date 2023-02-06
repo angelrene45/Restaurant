@@ -50,7 +50,7 @@ class Order_Food(Base):
     variant = Column(String, primary_key=True, index=True, nullable=False)
     unit = Column(String, primary_key=True, index=True, nullable=False)
     status = Column(Boolean, default=False)
-    category = Column(String)
+    category = Column(Integer, ForeignKey("category.id"))
     name = Column(String)
     quantity = Column(Integer)
     price = Column(Numeric(10, 2))
