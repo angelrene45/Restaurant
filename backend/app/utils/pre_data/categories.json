@@ -1,70 +1,63 @@
 [
     {
-        "name": "Starters",
-        "color": "bg-gray-200"
+        "name": "Cerveza"
     },
 
     {
-        "name": "Tostadas",
-        "color": "bg-gray-200"
+        "name": "Starters"
     },
 
     {
-        "name": "Appetizer",
-        "color": "bg-gray-200"
+        "name": "Appetizer"
     },
 
     {
-        "name": "Platillos",
-        "color": "bg-gray-200"
+        "name": "Tostadas"
     },
 
     {
-        "name": "Seafood Cocktails",
-        "color": "bg-gray-200"
+        "name": "Seafood Cocktails" 
     },
 
     {
-        "name": "Kids Meal",
-        "color": "bg-gray-200"
+        "name": "Mesa Fria"
     },
 
     {
-        "name": "Caldos",
-        "color": "bg-gray-200"
+        "name": "Platillos"
     },
 
     {
-        "name": "Camarones",
-        "color": "bg-gray-200"
+        "name": "Kids Meal"
     },
 
     {
-        "name": "Mesa Fria",
-        "color": "bg-gray-200"
+        "name": "Caldos"
     },
+
     {
-        "name": "Pollo",
-        "color": "bg-gray-200"
+        "name": "Fajitas"
     },
+
     {
-        "name": "Carnes",
-        "color": "bg-gray-200"
+        "name": "Camarones"
     },
+
     {
-        "name": "Extras",
-        "color": "bg-gray-200"
+        "name": "Pollo"
     },
+
     {
-        "name": "Bebidas",
-        "color": "bg-gray-200"
+        "name": "Carnes"
     },
+
     {
-        "name": "Cerveza",
-        "color": "bg-gray-200"
+        "name": "Extras"
     },
+
     {
-        "name": "Fajitas",
-        "color": "bg-gray-200"
+        "name": "Bebidas"
     }
+    
+    
 ]
