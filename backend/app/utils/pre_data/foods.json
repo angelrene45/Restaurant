@@ -905,32 +905,6 @@
         "is_active": true
     },
     {
-        "name": "Mejillones",
-        "description": "Mellijones",
-        "variants": [
-            {
-                "name": "A la Kora",
-                "image": "https://laperladehamilton.com/wp-content/uploads/2021/03/IMG_0732.jpg"
-            }
-        ],
-        "units": [
-            {
-                "unit": "1/2 doz.",
-                "price": 10.99
-            },
-            {
-                "unit": "1 doz.",
-                "price": 19.99
-            }
-        ],
-        "categories": [
-            "Appetizer",
-            "Starters"
-        ],
-        "discount": 0,
-        "is_active": true
-    },
-    {
         "name": "Endamames a la Kora",
         "description": "Endamames with chili and cucumbers",
         "variants": [
