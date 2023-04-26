@@ -1,10 +1,10 @@
 
 export const getEnvVariables = () => {
 
-    import.meta.env;
+    process.env;
 
     return {
-        ...import.meta.env, // current env variables from linux 
+        ...process.env, // current env variables from linux 
         MAX_RECORDS_PAGE: 5
     }
 }

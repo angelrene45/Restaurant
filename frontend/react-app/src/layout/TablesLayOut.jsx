@@ -7,6 +7,7 @@ import bar from '../images/cocktail.png'
 import soda from '../images/soda-can.png'
 import cocina from '../images/sarten.png'
 import trash from '../images/eliminar.png'
+import { getEnvVariables } from "../utils"
 
 const TablesLayOut = () => {
 
@@ -14,10 +15,12 @@ const TablesLayOut = () => {
   const [webSocketReady, setWebSocketReady] = useState(false);
   const [webSocket, setWebSocket] = useState(null);
 
+  const { SERVER_HOST, BACKEND_PORT } = getEnvVariables();
+
   // handle websocket events
   useEffect(() => {
     // connect to web socket 
-    const ws = new WebSocket("ws://localhost:8000/ws/v1/boards/")
+    const ws = new WebSocket(`ws://${SERVER_HOST}:${BACKEND_PORT}/ws/v1/boards/`)
     
     // event when websocket is opened
     ws.onopen = (event) => {

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 
 import { CardsKitchen } from "../layout";
 import { Loading } from "../../../components/items/Spinner";
-import { StatusOrder } from "../../../utils";
+import { StatusOrder, getEnvVariables } from "../../../utils";
 import { useGetSettingsByNameQuery } from "../../../store/slices/settings";
 import { useGetAllCategoriesQuery } from "../../../store/slices/categories/api";
+
 
 
 export const KitchenPage = () => {
@@ -15,10 +16,12 @@ export const KitchenPage = () => {
   const [webSocketReady, setWebSocketReady] = useState(false);
   const [webSocket, setWebSocket] = useState(null);
 
+  const { SERVER_HOST, BACKEND_PORT } = getEnvVariables();
+
   // handle websocket events
   useEffect(() => {
     // connect to web socket 
-    const ws = new WebSocket("ws://localhost:8000/ws/v1/orders/")
+    const ws = new WebSocket(`ws://${SERVER_HOST}:${BACKEND_PORT}/ws/v1/orders/`)
 
     // event when websocket is opened
     ws.onopen = (event) => {

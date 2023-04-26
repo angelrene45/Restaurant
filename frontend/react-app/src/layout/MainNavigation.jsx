@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 
-import UserMenu from '../Components/items/DropdownProfile'
+import UserMenu from '../components/items/DropdownProfile'
 import { deleteToken } from "../store/slices/auth";
 import { CartInfoModal } from "../apps/customer/layout/CartInfoModal";
 import { TypeUsers } from "../utils";

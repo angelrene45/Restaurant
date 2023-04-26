@@ -2,12 +2,11 @@ import axios from 'axios';
 import { getEnvVariables } from '../utils'
 
 // base api url from .env file
-const { API_URL } = getEnvVariables()
-
+const { SERVER_HOST, BACKEND_PORT } = getEnvVariables()
 
 // setup backend api that is re-used
 const backendApi = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/v1/' 
+    baseURL: `http://${SERVER_HOST}:${BACKEND_PORT}/api/v1/`
 });
 
 
