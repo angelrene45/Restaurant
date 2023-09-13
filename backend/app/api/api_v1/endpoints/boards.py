@@ -169,3 +169,19 @@ def crud_board_multiple(
         board_updated = crud.board.update(db, db_obj=board, obj_in=board_in)
         list_boards.append(board_updated)
     return list_boards
+
+@router.delete("/{board_id}", response_model=schemas.Board)
+def read_board_by_id(
+    board_id: int,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Get a specific board by id.
+    """
+    board = crud.board.get(db, id=board_id)
+    if not board:
+        raise HTTPException(
+            status_code=400, detail="The board doesn't exists"
+        )
+    return board

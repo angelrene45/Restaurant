@@ -14,12 +14,15 @@ const BoardModal = ({
   open,
   setOpen,
   itemSelected,
-  //useCreateMutation,
-  //useUpdateMutation
+  currentTable,
+  setCurrentTable,
+  dispatchSaveTables,
+  tables,
 }) => {
 
   // get data from category selected 
   const { id = null, name = "", capacity, can_smoke } = itemSelected
+  const [isLoading, setIsLoading] = useState(false);
 
   // check if is Add or Update and set the variables
   //const [triggerMutation, { isLoading }] = useUpdateMutation();
@@ -45,6 +48,28 @@ const BoardModal = ({
     })
     setOpen(false)
   }
+
+  const handleEditTablesArray = (values, e) =>{
+    console.log(values);
+    setIsLoading(true);
+    let currentTableArr = {
+      ...currentTable,
+      name: values.name,
+      capacity: parseInt(values.capacity),
+      can_smoke: true
+    };
+    let newTablesArray = tables.map((table) =>
+        table === currentTable ? currentTableArr : table
+    );
+    console.log('llega');
+    setCurrentTable(currentTableArr);
+    dispatchSaveTables(newTablesArray);
+    console.log(newTablesArray)
+    setIsLoading(false);
+    setOpen(false);
+    console.log('llega1');
+
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -89,19 +114,7 @@ const BoardModal = ({
                             capacity: capacity,
                             can_smoke: can_smoke
                           }}
-                          onSubmit={async (values) => {
-                            // prepare json request for backend
-                            const apiData = {
-                              ...itemSelected,
-                              name: values.name,
-                              capacity: values.capacity,
-                              can_smoke: values.can_smoke,
-                            }
-                            // make api request
-                            const { data, error } = await triggerMutation(apiData)
-                            if (data) showSuccess()
-                            else showError(error)
-                          }}
+                          onSubmit={(values, e) => handleEditTablesArray(values, e)}
                           validationSchema={
                             Yup.object({
                               name: Yup.string()
@@ -121,7 +134,7 @@ const BoardModal = ({
                                   </div>
                                   <div>
                                     <label className="block text-sm font-medium mb-1" htmlFor="email">Capacity <span className="text-rose-500">*</span></label>
-                                    <Field name="capacity" type="text" className="form-input w-full" />
+                                    <Field name="capacity" type="number" className="form-input w-full" />
                                     <ErrorMessage name="name" component="div" className="text-xs mt-1 text-rose-500" />
                                   </div>
                                   <div>
@@ -133,13 +146,13 @@ const BoardModal = ({
                                 </div>
                                 <div className="flex items-center justify-between mt-6">
                                   <div className="mr-6"></div>
-                                 {/*  <SpinnerButton
-                                    classNameEnable="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap"
-                                    classNameDisabled="btn text-white ml-3 whitespace-nowrap text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                    type="submit"
-                                    isLoading={isLoading}
-                                    value={actionName}
-                                  /> */}
+                                    <SpinnerButton
+                                      classNameEnable="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3 whitespace-nowrap"
+                                      classNameDisabled="btn text-white ml-3 whitespace-nowrap text-gray-900 bg-white hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                      type="submit"
+                                      isLoading={isLoading}
+                                      value={actionName}
+                                    /> 
                                 </div>
                               </Form>
                             )

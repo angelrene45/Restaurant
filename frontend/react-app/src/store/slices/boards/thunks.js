@@ -20,7 +20,6 @@ export const postBoards = (boards = []) => {
         'Accept': "application/json",
       },
     };
-    console.log(boards)
     try {
       // execute call api
       const { data, status, statusText, headers } = await backendApi.post(
@@ -28,7 +27,9 @@ export const postBoards = (boards = []) => {
         boards,
         config
       );
-      dispatch(setCategoriesWithFoods({ categoriesWithFoods: data }));
+  
+      dispatch(setBoards({ boards: data }));
+  
       Swal.fire({
         position: "center",
         icon: "success",

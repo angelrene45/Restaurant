@@ -32,16 +32,19 @@ const FormTables = () => {
   useEffect(() => {
     if (assigned || tables.length <= 0) {
       setTables(boards);
-      console.log(tables)
     }
     setAssigned(false);
+  }, [boards]);
+
+  useEffect(() => {
+    setTables(boards);
   }, [boards]);
 
   const handleCreateTable = (name) => {
     const newTable = {
       name: inputName.current.value,
       layout_id: 1,
-      capacity: inputCapacity.current.value,
+      capacity: inputCapacity.current.value ? parseInt(inputCapacity.current.value) : 0,
       can_smoke: toggle1,
       position: {
         x: divTables.current.getBoundingClientRect().width / 2,
@@ -61,7 +64,6 @@ const FormTables = () => {
     let table_right = parseInt(table.position.width) + table.position.x;
     let table_top = table.position.y;
     let table_bottom = parseInt(table.position.height) + table.position.y;
-    console.log(x, table_left, table_right, table_top, table_bottom, y, table);
     if (
       x > table_left &&
       x < table_right &&
@@ -75,7 +77,6 @@ const FormTables = () => {
 
   const MouseDownHandler = (e) => {
     e.preventDefault();
-    console.log(tables);
     let clickX =
       parseInt(e.clientX) -
       parseInt(divTables.current.getBoundingClientRect().left);
@@ -125,6 +126,7 @@ const FormTables = () => {
         width: currentTable.position.width,
         height: currentTable.position.height,
       };
+
       let currentTableArr = {
         name: currentTable.name,
         layout_id: currentTable.layout_id,
@@ -132,6 +134,7 @@ const FormTables = () => {
         can_smoke: currentTable.can_smoke,
         position,
         qr: currentTable.qr,
+        ...(currentTable.id) && {id: currentTable.id}
       };
 
       let newTablesArray = tables.map((table) =>
@@ -159,11 +162,9 @@ const FormTables = () => {
 
   const handleSaveTables = (e) => {
     e.preventDefault();
-    if (boards == 0) {
-      dispatch(postBoards(JSON.stringify(tables)));
-    } else {
-      dispatch(updateBoards(JSON.stringify(tables)));
-    }
+    console.log(tables)
+    dispatch(postBoards(JSON.stringify(tables)));
+    
   };
 
   const isOutHandler = (e) => {
@@ -211,12 +212,28 @@ const FormTables = () => {
   const increaseSizeHandler = () => {
     if (currentTable) {
       if (currentTable.position.width >= 100) {
-        console.log(currentTable);
         return;
       }
-      let currentTableArr = currentTable;
-      currentTableArr.position.width += 5;
-      currentTableArr.position.height += 5;
+      
+      let position = {
+        x: currentTable.position.x,
+        y: currentTable.position.y,
+        percentageX: currentTable.position.percentageX,
+        percentageY: currentTable.position.percentageY,
+        width: currentTable.position.width + 5,
+        height: currentTable.position.height + 5,
+      };
+
+      let currentTableArr = {
+        name: currentTable.name,
+        layout_id: currentTable.layout_id,
+        capacity: currentTable.capacity,
+        can_smoke: currentTable.can_smoke,
+        position,
+        qr: currentTable.qr,
+        ...(currentTable.id) && {id: currentTable.id}
+      };
+      setCurrentTable(currentTableArr);
       let newTablesArray = tables.map((table) =>
         table === currentTable ? currentTableArr : table
       );
@@ -230,9 +247,25 @@ const FormTables = () => {
       if (currentTable.position.width <= 50) {
         return;
       }
-      let currentTableArr = currentTable;
-      currentTableArr.position.width -= 5;
-      currentTableArr.position.height -= 5;
+      let position = {
+        x: currentTable.position.x,
+        y: currentTable.position.y,
+        percentageX: currentTable.position.percentageX,
+        percentageY: currentTable.position.percentageY,
+        width: currentTable.position.width - 5,
+        height: currentTable.position.height - 5,
+      };
+
+      let currentTableArr = {
+        name: currentTable.name,
+        layout_id: currentTable.layout_id,
+        capacity: currentTable.capacity,
+        can_smoke: currentTable.can_smoke,
+        position,
+        qr: currentTable.qr,
+        ...(currentTable.id) && {id: currentTable.id}
+      };
+      setCurrentTable(currentTableArr);
       let newTablesArray = tables.map((table) =>
         table === currentTable ? currentTableArr : table
       );
@@ -246,7 +279,14 @@ const FormTables = () => {
     setItemSelected(currentTable)
     // open modal
     setOpenModal(true)
-}
+  };
+
+  const handleDeleteItem = () => {
+    let newTablesArray = tables.filter((table) =>
+      table.name !== currentTable.name
+    );
+    setTables(newTablesArray);
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -255,8 +295,10 @@ const FormTables = () => {
         open={openModal} 
         setOpen={setOpenModal} 
         itemSelected={itemSelected}
-       // useCreateMutation={(...args) => useCreateMutation(...args)}
-        //useUpdateMutation={(...args) => useUpdateMutation(...args)}
+        currentTable={currentTable}
+        setCurrentTable={setCurrentTable}
+        dispatchSaveTables={handleSaveTables}
+        tables={tables}
       />
         
       <div
@@ -347,7 +389,6 @@ const FormTables = () => {
 
             {/* button save */}
             <div className="col-end-7 col-span-1 flex flex-row-reverse mt-3">
-
               <button
                 className="btn-lg bg-emerald-500 hover:bg-emerald-600 text-white -order-1"
                 type="submit"
@@ -355,7 +396,6 @@ const FormTables = () => {
               >
                 Save
               </button>
-
             </div>
 
           </div>
@@ -439,7 +479,7 @@ const FormTables = () => {
           {/* Button delete board */}
           <button
             className="btn border-slate-200 hover:border-slate-300"
-            onClick={reduceSizeHandler}
+            onClick={handleDeleteItem}
           >
             <svg
               className="w-4 h-4 fill-current text-rose-500 shrink-0"
